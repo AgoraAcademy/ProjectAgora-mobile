@@ -1,5 +1,6 @@
 import '@tarojs/async-await'
 import Taro, { Component, Config } from '@tarojs/taro'
+import { Provider } from '@tarojs/redux'
 import Index from './pages/index'
 import dva from './utils/dva'
 import models from './model'
@@ -31,7 +32,8 @@ class App extends Component {
    */
   config: Config = {
     pages: [
-      'pages/index/index'
+      'pages/index/index',
+      'pages/RequestAuth/index'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -52,9 +54,9 @@ class App extends Component {
   // 在 App 类中的 render() 函数没有实际作用
   // 请勿修改此函数
   render () {
-    return (
-      <Index />
-    )
+    return (<Provider store={store}>
+      <Index/>
+    </Provider>);
   }
 }
 
