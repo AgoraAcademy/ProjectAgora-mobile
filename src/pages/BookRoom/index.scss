@@ -1,0 +1,4 @@
+@import "../../styles/mixin";
+.BookRoom-page {
+    @include wh(100%, 100%);
+}
