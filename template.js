@@ -2,13 +2,13 @@
  * pages模版快速生成脚本,执行命令 npm run tep `文件名`
  */
 
-const fs = require('fs');
+import { mkdirSync, writeFileSync } from 'fs';
 
 const dirName = process.argv[2];
 
 if (!dirName) {
     console.log('文件夹名称不能为空！');
-    console.log('示例：npm run tep test');
+    console.log('示例：npm run template test');
     process.exit(0);
 }
 
@@ -84,13 +84,13 @@ export const demo = data => Request({
 
 
 
-fs.mkdirSync(`./src/pages/${dirName}`); // mkdir $1
+mkdirSync(`./src/pages/${dirName}`); // mkdir $1
 process.chdir(`./src/pages/${dirName}`); // cd $1
 
-fs.writeFileSync('index.tsx', indexTep);
-fs.writeFileSync('index.scss', scssTep);
-fs.writeFileSync('model.js', modelTep);
-fs.writeFileSync('service.js', serviceTep);
+writeFileSync('index.tsx', indexTep);
+writeFileSync('index.scss', scssTep);
+writeFileSync('model.js', modelTep);
+writeFileSync('service.js', serviceTep);
 
 console.log(`模版${dirName}已创建,请手动增加models`);
 

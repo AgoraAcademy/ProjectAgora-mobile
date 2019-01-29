@@ -26,11 +26,23 @@ export default class RequestAuth extends Component {
 
     componentDidHide() { }
 
+    tapLogin() {
+        Taro.login().then(
+            (res) => {
+                if(res.code){
+                    console.log(res)
+                }
+            }
+        )
+    }
+
     render() {
         return (
             <View className='index'>
                 <Text>Hello world!</Text>
-                <AtButton type='primary' open-type="getUserInfo">授权</AtButton>
+                <AtButton type='primary' onClick={this.tapLogin}>登录</AtButton>
+
+                {/* <AtButton type='primary' open-type="getUserInfo">授权</AtButton> */}
             </View>
         )
     }

@@ -33,7 +33,9 @@ class App extends Component {
   config: Config = {
     pages: [
       'pages/index/index',
-      'pages/RequestAuth/index'
+      'pages/RequestAuth/index',
+      'pages/BookRoom/index'
+
     ],
     window: {
       backgroundTextStyle: 'light',
