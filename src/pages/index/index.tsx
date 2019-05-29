@@ -1,109 +1,69 @@
+
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
-import { AtTabBar, AtGrid } from 'taro-ui'
-import './index.less'
 
-export interface IIndexState {
-    current: number
-}
+// import { connect } from '@tarojs/redux'
+// import Api from '../../utils/request'
+// import Tips from '../../utils/tips'
+import { IndexProps, IndexState } from './index.interface'
+import './index.scss'
+// import { } from '../../components'
+// page.js
+import { AtButton, AtFab } from 'taro-ui'
+// 除了引入所需的组件，还需要手动引入组件样式
+// app.js
 
-export interface IIndexProps {
-    main: any,
-}
+// @connect(({ index }) => ({
+//     ...index,
+// }))
 
-@connect(({ main }) => ({
-    main
-}))
-export default class Index extends Component<IIndexProps> {
-
-    public state: IIndexState = {
-        current: 0
+class Index extends Component<IndexProps,IndexState > {
+    config:Config = {
+        navigationBarTitleText: '标题'
     }
-    
-
-    /**
-     * 指定config的类型声明为: Taro.Config
-     *
-     * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
-     * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
-     * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
-     */
-    config: Config = {
-        navigationBarTitleText: '首页'
+    constructor(props: IndexProps) {
+        super(props)
+        this.state = {}
     }
 
-    public handleClickk() {
-    }
+    // componentDidMount() {
+    //     Taro.getSetting().then((setting) => {
+    //         console.log(setting)
+    //         if (!setting.authSetting['scope.userInfo']) {
+    //             Taro.authorize({
+    //                 scope: 'scope.userInfo'
+    //             }).then(
+    //                 (res) => console.log(res)
+    //             )
+    //         }
+    //     })
+    // }
 
-    componentWillMount() { }
 
-    componentDidMount() {
-        Taro.getSetting({
-            success(res) {
-                console.log("got setting", res)
-                if (!res.authSetting['scope.userInfo']) {
-                    console.log("noAuth")
-                    Taro.redirectTo({
-                        url: '/pages/RequestAuth/index'
-                    })
-                }
-            }
-        })
-    }
-
-    componentWillUnmount() { }
-
-    componentDidShow() { }
-
-    componentDidHide() { }
-
-    handleClick(value) {
-        this.setState({
-            current: value
+    handleScanCode() {
+        Taro.scanCode().then(
+            (res) => {
+                console.log(res)
         })
     }
 
     render() {
         return (
-            <View className='index'>
-                <AtGrid 
-                    onClick={this.handleClickk}
-                    data={
-                    [
-                        {
-                            image: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png',
-                            value: '预约空间',
-                        },
-                        {
-                            image: 'https://img20.360buyimg.com/jdphoto/s72x72_jfs/t15151/308/1012305375/2300/536ee6ef/5a411466N040a074b.png',
-                            value: '我的课表'
-                        },
-                        {
-                            image: 'https://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png',
-                            value: '公告宣传'
-                        },
-                    ]
-                } />
-                <AtTabBar
-                    fixed
-                    tabList={[
-                        { title: '首页', iconType: 'home' },
-                        { title: '消息', iconType: 'mail' },
-                        { title: '我的', iconType: 'user' }
-                    ]}
-                    onClick={this.handleClick.bind(this)}
-                    current={this.state.current}
-                />
+            <View className='index-wrap'>
+                <AtButton type='primary'
+                    onClick={() => Taro.navigateTo({
+                        url: '/pages/booking/booking'
+                    })}>按钮文案</AtButton>
+                <View className='bottom-bar at-row at-row__justify--center' style={{ position: "absolute", bottom: "16px" }}>
+                    <View className='at-col at-col-2'>
+                        <AtFab onClick={this.handleScanCode}>
+                            <Text className='at-fab__icon at-icon at-icon-menu'/>
+                        </AtFab>
+                    </View>
+                </View>
             </View>
         )
     }
 }
 
-
-// function mapStateToProps({main}) {
-//   return { main }
-// }
-
-
-// export default connect(mapStateToProps)(Index)
+export default Index

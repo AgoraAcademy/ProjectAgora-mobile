@@ -1,13 +1,19 @@
 {
-  "miniprogramRoot": "./dist",
-  "projectname": "ProjectAgora-mobile",
-  "description": "ProjectAgora-mobile",
-  "appid": "touristappid",
-  "setting": {
-    "urlCheck": true,
-    "es6": false,
-    "postcss": false,
-    "minified": false
-  },
-  "compileType": "miniprogram"
+	"miniprogramRoot": "dist/",
+	"projectname": "ProjectAgora-mobile",
+	"description": "ProjectAgora-mobile",
+	"appid": "wx1e434ebff0698a5b",
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true,
+		"autoAudits": false,
+		"checkInvalidKey": true
+	},
+	"compileType": "miniprogram",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {}
 }
