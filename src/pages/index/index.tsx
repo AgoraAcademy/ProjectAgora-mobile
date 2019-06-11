@@ -53,9 +53,10 @@ class Index extends Component<IndexProps,IndexState > {
                 <AtButton type='primary'
                     onClick={() => Taro.navigateTo({
                         url: '/pages/booking/booking'
-                    })}>按钮文案</AtButton>
-                <View className='bottom-bar at-row at-row__justify--center' style={{ position: "absolute", bottom: "16px" }}>
-                    <View className='at-col at-col-2'>
+                    })}>房间预约</AtButton>
+                <AtButton customStyle={{display: Taro.getStorageSync("isAdmin") ? "block": "none"}} onClick={() => console.log(Taro.getStorageSync('token'), Taro.getStorageSync("isAdmin") )}>获取session_key</AtButton>
+                <View className='bottom-bar at-row at-row__justify--center' style={{ position: "absolute", bottom: "16px", left: "50%" }}>
+                    <View style={{position: "relative", left:"-50%"}}>
                         <AtFab onClick={this.handleScanCode}>
                             <Text className='at-fab__icon at-icon at-icon-menu'/>
                         </AtFab>

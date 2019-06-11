@@ -33,12 +33,6 @@ export default class Index extends Component<IIndexProps> {
         navigationBarTitleText: '首页'
     }
 
-    public handleClickk(item,index) {
-        Taro.redirectTo({
-            url: '/pages/RequestAuth/index'
-        })
-    }
-
     componentWillMount() { }
 
     componentDidMount() {
@@ -74,7 +68,7 @@ export default class Index extends Component<IIndexProps> {
         return (
             <View className='index'>
                 <AtGrid 
-                    onClick={this.handleClickk}
+                    onClick={this.handleClick}
                     data={
                     [
                         {

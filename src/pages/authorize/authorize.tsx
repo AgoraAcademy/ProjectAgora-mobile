@@ -1,6 +1,6 @@
 
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 // import Api from '../../utils/request'
 // import Tips from '../../utils/tips'
@@ -37,17 +37,25 @@ class Authorize extends Component<AuthorizeProps,AuthorizeState > {
         // })
     }
 
-    onGetUserInfo(e) { 
-        console.log(e)
+    onGetUserInfo = async (userInfo) => {
+        console.log("userInfo", userInfo)
+        await this.props.dispatch({
+            type: "authorize/onAuthorize",
+            payload: {
+                encryptedData: userInfo.detail.encryptedData,
+                iv: userInfo.detail.iv,
+            }
+        })
     }
 
     render() {
         return (
             <View className='authorize-wrap'>
-                <AtButton open-type="getUserInfo" onGetUserInfo={this.onGetUserInfo}>授权</AtButton>
+                <AtButton customStyle={{display: Taro.getStorageSync("isAdmin") ? "block": "none"}} onClick={() => console.log(Taro.getStorageSync('token'))}>获取session_key</AtButton>
+                <AtButton type="primary" openType="getUserInfo" onGetUserInfo={this.onGetUserInfo}>授权</AtButton>
+                <AtButton customStyle={{display: Taro.getStorageSync("isAdmin") ? "block": "none"}} onClick={() => console.log(Taro.getUserInfo().then((res) => console.log(res)))}>获取userInfo</AtButton>
             </View>
         )
     }
     }
-
 export default Authorize

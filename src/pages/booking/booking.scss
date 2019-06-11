@@ -1,5 +1,14 @@
+@import "~taro-ui/dist/style/components/flex.scss";
 
 booking-wrap {
     width: 100%;
     min-height: 100vh;
+}
+
+.previousStepButton {
+    margin-top: 50px
+}
+
+.stepIndicator {
+    margin-bottom: 50px
 }

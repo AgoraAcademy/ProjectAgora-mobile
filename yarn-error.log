@@ -1,0 +1,102 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\xct24\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add dist/pages/booking/booking --silent --no-progress
+
+PATH: 
+  C:\Program Files\nodejs\node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin;C:\Users\xct24\GitVSCode\ProjectAgora-mobile\node_modules\.bin;C:\Program Files\nodejs\node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin;C:\Users\xct24\GitVSCode\ProjectAgora-mobile\node_modules\.bin;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\iCLS\;C:\Program Files\Intel\Intel(R) Management Engine Components\iCLS\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\nodejs\;C:\Program Files\MySQL\MySQL Utilities 1.6\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Git\cmd;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Android;C:\Users\xct24\AppData\Local\Programs\Python\Python37\Scripts\;C:\Users\xct24\AppData\Local\Programs\Python\Python37\;C:\Users\xct24\.windows-build-tools\python27\;C:\Program Files\nodejs\node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin;C:\Users\xct24\AppData\Roaming\npm\node_modules\windows-build-tools\node_modules\.bin;C:\Users\xct24\AppData\Roaming\npm\node_modules\.bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\Docker\Docker\Resources\bin;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\iCLS\;C:\Program Files\Intel\Intel(R) Management Engine Components\iCLS\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Users\xct24\Anaconda3;C:\Users\xct24\Anaconda3\Library\mingw-w64\bin;C:\Users\xct24\Anaconda3\Library\usr\bin;C:\Users\xct24\Anaconda3\Library\bin;C:\Users\xct24\Anaconda3\Scripts;C:\Users\xct24\AppData\Local\Microsoft\WindowsApps;C:\Users\xct24\AppData\Local\Bandizip\7z;C:\Users\xct24\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\xct24\AppData\Roaming\npm;C:\Program Files\heroku;C:\Users\xct24\.dotnet\tools
+
+Yarn version: 
+  1.16.0
+
+Node version: 
+  10.15.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: https://registry.npm.taobao.org/dist%2fpages/booking/booking: [not_found] document not found
+      at Request.params.callback [as _callback] (C:\Users\xct24\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66091:18)
+      at Request.self.callback (C:\Users\xct24\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:129590:22)
+      at Request.emit (events.js:182:13)
+      at Request.<anonymous> (C:\Users\xct24\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:130562:10)
+      at Request.emit (events.js:182:13)
+      at Gunzip.<anonymous> (C:\Users\xct24\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:130484:12)
+      at Object.onceWrapper (events.js:273:13)
+      at Gunzip.emit (events.js:187:15)
+      at endReadableNT (_stream_readable.js:1094:12)
+      at process._tickCallback (internal/process/next_tick.js:63:19)
+
+npm manifest: 
+  {
+    "name": "ProjectAgora-mobile",
+    "version": "1.0.0",
+    "private": true,
+    "description": "ProjectAgora-mobile",
+    "scripts": {
+      "build:weapp": "taro build --type weapp",
+      "build:swan": "taro build --type swan",
+      "build:alipay": "taro build --type alipay",
+      "build:tt": "taro build --type tt",
+      "build:h5": "taro build --type h5",
+      "build:rn": "taro build --type rn",
+      "dev:weapp": "npm run build:weapp -- --watch",
+      "dev:swan": "npm run build:swan -- --watch",
+      "dev:alipay": "npm run build:alipay -- --watch",
+      "dev:tt": "npm run build:tt -- --watch",
+      "dev:h5": "npm run build:h5 -- --watch",
+      "dev:rn": "npm run build:rn -- --watch",
+      "template": "node scripts/template",
+      "component": "node scripts/component"
+    },
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+      "@tarojs/async-await": "^1.3.0-beta.5",
+      "@tarojs/components": "1.3.0-beta.5",
+      "@tarojs/redux": "^1.3.0-beta.5",
+      "@tarojs/redux-h5": "1.3.0-beta.5",
+      "@tarojs/router": "1.3.0-beta.5",
+      "@tarojs/taro": "1.3.0-beta.5",
+      "@tarojs/taro-alipay": "^1.3.0-beta.5",
+      "@tarojs/taro-h5": "^1.3.0-beta.5",
+      "@tarojs/taro-swan": "^1.3.0-beta.5",
+      "@tarojs/taro-tt": "^1.3.0-beta.5",
+      "@tarojs/taro-weapp": "^1.3.0-beta.5",
+      "dva-core": "^1.4.0",
+      "dva-loading": "^2.0.6",
+      "nerv-devtools": "^1.3.9",
+      "nervjs": "^1.3.9",
+      "redux-logger": "^3.0.6",
+      "redux-thunk": "^2.3.0",
+      "taro-ui": "^2.1.0"
+    },
+    "devDependencies": {
+      "@tarojs/plugin-babel": "^1.2.3",
+      "@tarojs/plugin-csso": "^1.2.3",
+      "@tarojs/plugin-less": "^1.2.3",
+      "@tarojs/plugin-sass": "^1.2.8",
+      "@tarojs/plugin-uglifyjs": "^1.2.3",
+      "@tarojs/webpack-runner": "^1.2.3",
+      "@types/react": "^16.4.6",
+      "@types/webpack-env": "^1.13.6",
+      "babel-eslint": "^8.2.3",
+      "babel-plugin-transform-class-properties": "^6.24.1",
+      "babel-plugin-transform-decorators-legacy": "^1.3.4",
+      "babel-plugin-transform-jsx-stylesheet": "^0.6.5",
+      "babel-plugin-transform-object-rest-spread": "^6.26.0",
+      "babel-preset-env": "^1.6.1",
+      "eslint": "^4.19.1",
+      "eslint-config-taro": "1.2.3",
+      "eslint-plugin-import": "^2.12.0",
+      "eslint-plugin-react": "^7.8.2",
+      "eslint-plugin-taro": "1.2.3",
+      "eslint-plugin-typescript": "^0.12.0",
+      "typescript": "^3.0.1"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

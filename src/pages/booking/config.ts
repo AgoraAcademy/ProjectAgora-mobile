@@ -1,4 +1,4 @@
 
 export default {
-    test: '/wechat/perfect-info', //xxx接口
+    getRoomList: '/booking', //获取房间列表
 }

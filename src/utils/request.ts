@@ -44,6 +44,11 @@ export class Request {
      */
     static combineOptions(opts, data: Datas, method: Methods): Options {
         typeof opts === 'string' && (opts = { url: opts })
+        console.log("lalala", {
+            data: { ...commonParams, ...opts.data, ...data },
+            method: opts.method || data.method || method || 'GET',
+            url: `${opts.host || MAINHOST}${opts.url}`
+        }, "opts", opts, "data", data) 
         return {
             data: { ...commonParams, ...opts.data, ...data },
             method: opts.method || data.method || method || 'GET',
@@ -67,8 +72,9 @@ export class Request {
             await this.login() 
         }
         // token存在
-        // let options = Object.assign(opts, { header: { 'token': this.getToken() } })
+        Object.assign(opts, { header: { 'token': this.getToken() } })
         //  Taro.request 请求
+        console.log("before TaroRequest", opts)
         const res = await Taro.request(opts)
 
         // 是否mock
@@ -155,7 +161,6 @@ export class Request {
         Object.keys(requestConfig).forEach((key) => {
             this.apiLists[key] = this.creatRequests(requestConfig[key])
         })
-
         return this.apiLists
     }
 }
