@@ -11,14 +11,21 @@ import Tips from '../../utils/tips'
 export default {
     namespace: 'booking',
     state: {
+        isLoadingFailed: false,
         loadedEvents: []
     },
 
     effects: {
         * getRoomList({ payload }, { select, call, put }) {
             try {
+                console.log("开始尝试获取roomList")
                 const result = yield call(bookingApi.getRoomList)
-                return result
+                if (result.length > 0 ) {
+                    return result
+                } else {
+                    yield put({ type: "setField", name: "isLoadingFailed", value: true})
+                }
+                
             } catch(err){
                 console.log("err", err)
             }

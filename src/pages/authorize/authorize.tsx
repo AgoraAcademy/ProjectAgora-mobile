@@ -29,7 +29,6 @@ class Authorize extends Component<AuthorizeProps,AuthorizeState > {
     }
 
     componentDidMount() {
-        this.ping()
         // Taro.login()
         // .then((res) => console.log(res))
         // .catch((failRes) => {

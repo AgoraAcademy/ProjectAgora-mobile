@@ -67,15 +67,22 @@ export class Request {
      * @param {Options} opts 
      */
     static async request(opts: Options) {
-        // token不存在
-        if (!this.getToken()) { 
-            await this.login() 
+        // token不存在或learnerFullName不存在
+        if (!this.getToken() || Taro.getStorageSync("learnerFullName") == "") { 
+            await this.login()
+            .then(() => Taro.redirectTo({url: "/pages/authorize/authorize"}))
         }
         // token存在
         Object.assign(opts, { header: { 'token': this.getToken() } })
         //  Taro.request 请求
         console.log("before TaroRequest", opts)
         const res = await Taro.request(opts)
+
+        if (res.statusCode === 401 || res.statusCode === 400 || res.statusCode === 403) {
+            Taro.navigateBack({delta: 999})
+            .then(() => Taro.redirectTo({url: "/pages/authorize/authorize"}))
+            .then(() => Tips.toast("鉴权失败，请尝试重新授权。如果依然失败，请联系管理员"))
+        }
 
         // 是否mock
         if (ISMOCK) { return res.data }
@@ -89,7 +96,9 @@ export class Request {
 
         // 请求错误
         const d = { ...res.data, err: (res.data && res.data.msg) || `网络错误～` }
+        await this.login()
         Tips.toast(d.err);
+        Taro.redirectTo({url: "/pages/authorize/authorize"}).then(() => Tips.toast("鉴权失败，请尝试重新授权。如果依然失败，请联系管理员"))
         throw new Error(d.err)
     }
 
@@ -120,7 +129,10 @@ export class Request {
                 url: `${MAINHOST}${requestConfig.loginUrl}`,
                 data: { js_code: code }
             })
-            console.log(data)
+            console.log("onLogining.data", data)
+            if (data.unionid! === "") {
+                Taro.navigateTo({url: "/pages/identity/identity"})
+            }
 
             if (!data.token) {
                 reject()

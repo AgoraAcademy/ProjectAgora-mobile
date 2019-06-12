@@ -19,7 +19,7 @@ import { AtButton, AtFab } from 'taro-ui'
 
 class Index extends Component<IndexProps,IndexState > {
     config:Config = {
-        navigationBarTitleText: '标题'
+        navigationBarTitleText: 'ProjectAgora'
     }
     constructor(props: IndexProps) {
         super(props)
@@ -55,8 +55,9 @@ class Index extends Component<IndexProps,IndexState > {
                         url: '/pages/booking/booking'
                     })}>房间预约</AtButton>
                 <AtButton customStyle={{display: Taro.getStorageSync("isAdmin") ? "block": "none"}} onClick={() => console.log(Taro.getStorageSync('token'), Taro.getStorageSync("isAdmin") )}>获取session_key</AtButton>
+                <AtButton customStyle={{display: Taro.getStorageSync("isAdmin") ? "block": "none"}} onClick={() => Taro.navigateTo({url: "/pages/identity/identity"})}>跳转identity页</AtButton>
                 <View className='bottom-bar at-row at-row__justify--center' style={{ position: "absolute", bottom: "16px", left: "50%" }}>
-                    <View style={{position: "relative", left:"-50%"}}>
+                    <View style={{position: "relative", left:"-50%", display: "none"}}>
                         <AtFab onClick={this.handleScanCode}>
                             <Text className='at-fab__icon at-icon at-icon-menu'/>
                         </AtFab>

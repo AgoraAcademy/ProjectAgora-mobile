@@ -8,6 +8,10 @@ import models from './models'
 import './app.scss'
 import 'taro-ui/dist/style/index.scss' // 全局引入一次即可
 import { globalData } from "./utils/common";
+import { MAINHOST } from './config'
+import {
+    requestConfig
+} from './config/requestConfig'
 
 
 
@@ -41,7 +45,8 @@ class App extends Component {
         pages: [
             'pages/index/index',
             'pages/booking/booking',
-            'pages/authorize/authorize'
+            'pages/authorize/authorize',
+            'pages/identity/identity'
         ],
         window: {
             backgroundTextStyle: 'light',
@@ -85,11 +90,41 @@ class App extends Component {
     componentDidCatchError() { }
 
     componentDidMount() {
+
+        console.log("Debug", "token", Taro.getStorageSync('token'), "learnerFullName", Taro.getStorageSync("learnerFullName"))
         Taro.getUserInfo()
-        .then((successRes) => console.log(successRes))
-        .catch((failRes) => Taro.navigateTo({
+        .then(async (successRes) => {
+            if (!Taro.getStorageSync('token') || Taro.getStorageSync("learnerFullName")) {
+                Taro.login()
+                .then((result) => Taro.request({
+                    url: `${MAINHOST}${requestConfig.loginUrl}`,
+                    data: { js_code: result.code }
+                }))
+                .then((data) => {
+                    Taro.setStorageSync('token', data.data.token)
+                    Taro.request({
+                        url: `${MAINHOST}${requestConfig.loginUrl}`,
+                        method: "POST",
+                        header: { token: data.data.token},
+                        data: { 
+                            encryptedData: successRes.encryptedData,
+                            iv: successRes.iv
+                        }
+                    })
+                    .then((authorizeResult) => {
+                        Taro.setStorageSync("learnerFullName", authorizeResult.data.learnerFullName)
+                        Taro.setStorageSync("isAdmin", authorizeResult.data.isAdmin)
+                    })
+                })
+            }
+        })
+        .catch((failRes) => Taro.redirectTo({
             url: '/pages/authorize/authorize'
         }))
+        if (!Taro.getStorageSync('token') || Taro.getStorageSync("learnerFullName") == "") { 
+            Taro.redirectTo({url: "/pages/authorize/authorize"})
+        }
+
     }
 
     // 在 App 类中的 render() 函数没有实际作用

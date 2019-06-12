@@ -1,9 +1,8 @@
-
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Picker, Button, Text, Input, Textarea } from '@tarojs/components'
 import moment from 'moment';
 import { connect } from '@tarojs/redux'
-import { AtTabs, AtTabsPane, AtButton, AtDivider, AtSteps, AtAvatar, AtCalendar, AtListItem, AtActivityIndicator, AtTag, AtInput } from 'taro-ui'
+import { AtSteps, AtAvatar, AtCalendar, AtListItem, AtActivityIndicator, AtTag } from 'taro-ui'
 // import Api from '../../utils/request'
 // import Tips from '../../utils/tips'
 import { BookingProps, BookingState, RoomEvent } from './booking.interface'
@@ -39,7 +38,10 @@ class Booking extends Component<BookingProps, BookingState> {
                 subject: "",
                 description: ""
             },
-            confirmLoading: false
+            confirmLoading: false,
+            bookingDeleteBody: {
+                changekey: ""
+            }
         }
     }
 
@@ -390,7 +392,7 @@ class Booking extends Component<BookingProps, BookingState> {
                         确认
                     </Button>
                     <Button
-                        style={{display: this.state.selectRoomEvent!.bookedByName === Taro.getStorageSync("learnerFullName")? "block": "none"}}
+                        style={{display: (this.state.selectRoomEvent!.bookedByName === Taro.getStorageSync("learnerFullName") && this.state.selectRoomEvent!.type === "appointment" )? "block": "none"}}
                         type="warn"
                         loading={this.state.confirmLoading}
                         onClick={handleBookingDelete

@@ -12,19 +12,20 @@ export default {
                 const result = yield call(authorizeApi.ping)
                 console.log(result)
             } catch(err){
-                console.log("err", err)
+                console.log("booking/ping错误", err)
             }
         },
         * onAuthorize({ payload }, { select, call, put }) {
             try {
                 const result = yield call(authorizeApi.authorize, {...payload})
+                console.log("执行booking/onAuthorize, result=", result)
                 Taro.setStorageSync("learnerFullName", result.learnerFullName)
                 Taro.setStorageSync("isAdmin", result.isAdmin)
                 Taro.redirectTo({
                     url: '/pages/index/index'
                 })
             } catch(err){
-                console.log("err", err)
+                console.log("booking/onAuthorize", err)
             }
         }
     },

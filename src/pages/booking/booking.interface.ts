@@ -1,4 +1,3 @@
-import { loadEvents } from "./service";
 
 /**
  * booking.state 参数类型
