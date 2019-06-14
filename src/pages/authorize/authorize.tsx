@@ -7,6 +7,10 @@ import { connect } from '@tarojs/redux'
 import { AuthorizeProps, AuthorizeState } from './authorize.interface'
 import './authorize.scss'
 import { AtButton } from 'taro-ui';
+import { MAINHOST } from '../../config'
+import {
+    requestConfig
+} from '../../config/requestConfig'
 // import { } from '../../components'
 
 @connect(({ authorize }) => ({
@@ -36,15 +40,35 @@ class Authorize extends Component<AuthorizeProps,AuthorizeState > {
         // })
     }
 
-    onGetUserInfo = async (userInfo) => {
-        console.log("userInfo", userInfo)
-        await this.props.dispatch({
-            type: "authorize/onAuthorize",
-            payload: {
-                encryptedData: userInfo.detail.encryptedData,
-                iv: userInfo.detail.iv,
+    onGetUserInfo = (userInfo) => {
+        Taro.checkSession({
+            success: async () => await this.props.dispatch({
+                type: "authorize/onAuthorize",
+                payload: {
+                    encryptedData: userInfo.detail.encryptedData,
+                    iv: userInfo.detail.iv,
+                }
+            }),
+            fail: async () => {
+                const { code } = await Taro.login()
+                // 请求登录
+                const { data } = await Taro.request({
+                    url: `${MAINHOST}${requestConfig.loginUrl}`,
+                    data: { js_code: code }
+                })
+                if (data.unionid! === "") {
+                    Taro.navigateTo({ url: "/pages/identity/identity" })
+                }
+                await this.props.dispatch({
+                    type: "authorize/onAuthorize",
+                    payload: {
+                        encryptedData: userInfo.detail.encryptedData,
+                        iv: userInfo.detail.iv,
+                    }
+                })
             }
         })
+        
     }
 
     render() {

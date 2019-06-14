@@ -68,9 +68,12 @@ export class Request {
      */
     static async request(opts: Options) {
         // token不存在或learnerFullName不存在
-        if (!this.getToken() || Taro.getStorageSync("learnerFullName") == "") { 
+        if (!this.getToken()){
             await this.login()
-            .then(() => Taro.redirectTo({url: "/pages/authorize/authorize"}))
+        }
+
+        if (Taro.getStorageSync("learnerFullName") == "") {
+            await Taro.redirectTo({url: "/pages/authorize/authorize"})
         }
         // token存在
         Object.assign(opts, { header: { 'token': this.getToken() } })
@@ -139,7 +142,7 @@ export class Request {
                 return
             }
 
-            Taro.setStorageSync('token', data.token)
+            await Taro.setStorageSync('token', data.token)
             this.isLogining = false
             resolve()
         })

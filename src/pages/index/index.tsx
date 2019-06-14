@@ -63,6 +63,10 @@ class Index extends Component<IndexProps,IndexState > {
                         </AtFab>
                     </View>
                 </View>
+                <AtButton onClick={async () => {
+                    await Taro.clearStorageSync()
+                    Taro.navigateTo({ url: "/pages/authorize/authorize" })
+                }}>清除缓存（出错时使用）</AtButton>
             </View>
         )
     }
