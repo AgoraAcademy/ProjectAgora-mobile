@@ -72,9 +72,6 @@ export class Request {
             await this.login()
         }
 
-        if (Taro.getStorageSync("learnerFullName") == "") {
-            await Taro.redirectTo({url: "/pages/authorize/authorize"})
-        }
         // token存在
         Object.assign(opts, { header: { 'token': this.getToken() } })
         //  Taro.request 请求
@@ -82,9 +79,8 @@ export class Request {
         const res = await Taro.request(opts)
 
         if (res.statusCode === 401 || res.statusCode === 400 || res.statusCode === 403) {
-            Taro.navigateBack({delta: 999})
-            .then(() => Taro.redirectTo({url: "/pages/authorize/authorize"}))
-            .then(() => Tips.toast("鉴权失败，请尝试重新授权。如果依然失败，请联系管理员"))
+            console.log(res)
+            Tips.toast("出错，请联系管理员PP")
         }
 
         // 是否mock
@@ -134,8 +130,9 @@ export class Request {
             })
             console.log("onLogining.data", data)
             if (data.unionid! === "") {
-                Taro.navigateTo({url: "/pages/identity/identity"})
+                Taro.navigateTo({url: "/pages/authorize/authorize"})
             }
+            console.log("redirected to authorize", "unionid: ", data.unionid, "learnerFullName: ", data.learnerFullName)
 
             if (!data.token) {
                 reject()
@@ -143,6 +140,9 @@ export class Request {
             }
 
             await Taro.setStorageSync('token', data.token)
+            await Taro.setStorageSync('learnerFullName', data.learnerFullName)
+            await Taro.setStorageSync('unionid', data.unionid)
+            await Taro.setStorageSync('isAdmin', data.isAdmin)
             this.isLogining = false
             resolve()
         })

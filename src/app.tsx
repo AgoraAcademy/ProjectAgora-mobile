@@ -90,9 +90,6 @@ class App extends Component {
     componentDidCatchError() { }
 
     componentDidMount() {
-        if (!Taro.getStorageSync('token') || Taro.getStorageSync("learnerFullName") == "") { 
-            Taro.redirectTo({url: "/pages/authorize/authorize"})
-        }
     }
 
     // 在 App 类中的 render() 函数没有实际作用

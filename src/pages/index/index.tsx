@@ -1,6 +1,10 @@
 
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
+import { MAINHOST } from '../../config'
+import {
+    requestConfig
+} from '../../config/requestConfig'
 
 // import { connect } from '@tarojs/redux'
 // import Api from '../../utils/request'
@@ -26,18 +30,44 @@ class Index extends Component<IndexProps,IndexState > {
         this.state = {}
     }
 
-    // componentDidMount() {
-    //     Taro.getSetting().then((setting) => {
-    //         console.log(setting)
-    //         if (!setting.authSetting['scope.userInfo']) {
-    //             Taro.authorize({
-    //                 scope: 'scope.userInfo'
-    //             }).then(
-    //                 (res) => console.log(res)
-    //             )
-    //         }
-    //     })
-    // }
+    componentDidMount() {
+        Taro.checkSession({
+            success: async () => {
+                const unionid = await Taro.getStorageSync("unionid")
+                const learnerFullName = await Taro.getStorageSync("learnerFullName")
+                if (unionid == "" || learnerFullName == "") {
+                    Taro.redirectTo({ url: "/pages/authorize/authorize"})
+                    console.log("redirected to authorize", "unionid: ", unionid, "learnerFullName: ", learnerFullName)
+                }
+            },
+            fail: async () => {
+                const { code } = await Taro.login()
+                // 请求登录
+                const { data } = await Taro.request({
+                    url: `${MAINHOST}${requestConfig.loginUrl}`,
+                    data: { js_code: code }
+                })
+                await Taro.setStorageSync('token', data.token)
+                if (data.unionid! === "") {
+                    console.log("data", data)
+                    const unionid = await Taro.getStorageSync("unionid")
+                    const learnerFullName = await Taro.getStorageSync("learnerFullName")
+                    console.log("redirected to authorize", "unionid: ", unionid, "learnerFullName: ", learnerFullName)
+                    Taro.navigateTo({ url: "/pages/authorize/authorize"})
+                }
+            }
+        })
+        Taro.getSetting().then(async (setting) => {
+            console.log(setting)
+            const unionid = await Taro.getStorageSync("unionid")
+            const learnerFullName = await Taro.getStorageSync("learnerFullName")
+            if (!setting.authSetting['scope.userInfo']) {
+                Taro.navigateTo({ url: "/pages/authorize/authorize"})
+                console.log("redirected to authorize", "unionid: ", unionid, "learnerFullName: ", learnerFullName)
+            }
+            
+        })
+    }
 
 
     handleScanCode() {

@@ -33,32 +33,11 @@ class Authorize extends Component<AuthorizeProps,AuthorizeState > {
     }
 
     componentDidMount() {
-        // Taro.login()
-        // .then((res) => console.log(res))
-        // .catch((failRes) => {
-        //     console.log(failRes)
-        // })
     }
 
-    onGetUserInfo = (userInfo) => {
-        Taro.checkSession({
-            success: async () => await this.props.dispatch({
-                type: "authorize/onAuthorize",
-                payload: {
-                    encryptedData: userInfo.detail.encryptedData,
-                    iv: userInfo.detail.iv,
-                }
-            }),
-            fail: async () => {
-                const { code } = await Taro.login()
-                // 请求登录
-                const { data } = await Taro.request({
-                    url: `${MAINHOST}${requestConfig.loginUrl}`,
-                    data: { js_code: code }
-                })
-                if (data.unionid! === "") {
-                    Taro.navigateTo({ url: "/pages/identity/identity" })
-                }
+    onGetUserInfo = async (userInfo) => {
+        await Taro.checkSession({
+            success: async () => {
                 await this.props.dispatch({
                     type: "authorize/onAuthorize",
                     payload: {
@@ -66,9 +45,36 @@ class Authorize extends Component<AuthorizeProps,AuthorizeState > {
                         iv: userInfo.detail.iv,
                     }
                 })
+                const currentUnionid = await Taro.getStorageSync("unionid")
+                if (!currentUnionid) {
+                    Taro.navigateTo({url: "/pages/identity/identity"})
+                } else {
+                    Taro.redirectTo({url: "/pages/index/index"})
+                }
+            },
+            fail: async () => {
+                const { code } = await Taro.login()
+                // 请求登录
+                const { data } = await Taro.request({
+                    url: `${MAINHOST}${requestConfig.loginUrl}`,
+                    data: { js_code: code }
+                })
+                await Taro.setStorageSync('token', data.token)
+                await this.props.dispatch({
+                    type: "authorize/onAuthorize",
+                    payload: {
+                        encryptedData: userInfo.detail.encryptedData,
+                        iv: userInfo.detail.iv,
+                    }
+                })
+                const currentUnionid = await Taro.getStorageSync("unionid")
+                if (!currentUnionid) {
+                    Taro.navigateTo({url: "/pages/identity/identity"})
+                } else {
+                    Taro.redirectTo({url: "/pages/index/index"})
+                }
             }
         })
-        
     }
 
     render() {

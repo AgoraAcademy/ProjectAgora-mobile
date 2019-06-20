@@ -22,7 +22,6 @@ function createApp(opt) {
     app.use({
         onError(err) {
             console.log(err)
-            Taro.redirectTo({url: "/pages/authorize/authorize"})
         },
     })
     dispatch = store.dispatch;
