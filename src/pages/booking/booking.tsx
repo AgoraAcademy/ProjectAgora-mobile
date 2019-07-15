@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Picker, Button, Text, Input, Textarea } from '@tarojs/components'
+import { View, Picker, Button, Text, Input, Textarea, Form } from '@tarojs/components'
 import moment from 'moment';
 import { connect } from '@tarojs/redux'
 import { AtSteps, AtAvatar, AtCalendar, AtListItem, AtActivityIndicator, AtTag } from 'taro-ui'
@@ -172,7 +172,7 @@ class Booking extends Component<BookingProps, BookingState> {
     render() {
         const roomListNames = this.getRoomListNames()
         const dataSource = this.getDataSource()
-        const handleBookingPost = async () =>  {
+        const handleBookingPost = async (e) =>  {
             this.setState({confirmLoading: true})
             const { bookingPostBody, selectedDate } = this.state
             const dateMoment = moment(selectedDate, "YYYY-MM-DD")
@@ -192,14 +192,16 @@ class Booking extends Component<BookingProps, BookingState> {
                 endDay: dateMoment.date(),
                 endHour: endMoment.hour(),
                 endMinute: endMoment.minute(),
+                formId: e.detail.formId || ""
             }
             this.props.dispatch({type: "booking/createEvent", payload: {body, roomCode: this.state.selectedRoomCode}})
         }
-        const handleBookingDelete = async () =>{
+        const handleBookingDelete = async (e) =>{
             this.setState({confirmLoading: true})
             const { changekey, startDate } = this.state.selectRoomEvent!
             let body = {
-                changekey
+                changekey,
+                formId: e.detail.formId || ""
             }
             this.props.dispatch({type: "booking/deleteEvent", payload: {body, roomCode: this.state.selectedRoomCode, startDate}})
         }
@@ -376,29 +378,32 @@ class Booking extends Component<BookingProps, BookingState> {
                                 onInput={(value) => {
                                     this.setState({ bookingPostBody: { ...this.state.bookingPostBody!, description: value.detail.value} })
                                 }}
-                                style='background:#fff;width:100%;min-height:80px;padding:0;' 
+                                style='background:#fff;width:100%;min-height:80px;padding:0;'
                                 autoHeight
                             />
                         }
                     </View>
                 </View>
                 <View>
-                    <Button
-                        style={{display: this.state.selectRoomEvent!.type === "vacancy" ? "block": "none"}}
-                        type="primary"
-                        loading={this.state.confirmLoading}
-                        onClick={handleBookingPost
-                        }>
-                        确认
-                    </Button>
-                    <Button
-                        style={{display: (this.state.selectRoomEvent!.bookedByName === Taro.getStorageSync("learnerFullName") && this.state.selectRoomEvent!.type === "appointment" )? "block": "none"}}
-                        type="warn"
-                        loading={this.state.confirmLoading}
-                        onClick={handleBookingDelete
-                        }>
-                        删除
-                    </Button>
+                    <Form reportSubmit onSubmit={handleBookingPost}>
+                        <Button
+                            style={{ display: this.state.selectRoomEvent!.type === "vacancy" ? "block" : "none" }}
+                            type="primary"
+                            loading={this.state.confirmLoading}
+                            formType="submit"
+                        >
+                            确认
+                        </Button>
+                    </Form>
+                    <Form reportSubmit onSubmit={handleBookingDelete}>
+                        <Button
+                            style={{ display: (this.state.selectRoomEvent!.bookedByName === Taro.getStorageSync("learnerFullName") && this.state.selectRoomEvent!.type === "appointment") ? "block" : "none" }}
+                            type="warn"
+                            loading={this.state.confirmLoading}
+                        >
+                            删除
+                        </Button>
+                    </Form>
                 </View>
             </View>
         }

@@ -38,6 +38,7 @@ class Index extends Component<IndexProps,IndexState > {
                 if (unionid == "" || learnerFullName == "") {
                     Taro.redirectTo({ url: "/pages/authorize/authorize"})
                     console.log("redirected to authorize", "unionid: ", unionid, "learnerFullName: ", learnerFullName)
+                    return
                 }
             },
             fail: async () => {
@@ -55,6 +56,7 @@ class Index extends Component<IndexProps,IndexState > {
                     console.log("redirected to authorize", "unionid: ", unionid, "learnerFullName: ", learnerFullName)
                     Taro.navigateTo({ url: "/pages/authorize/authorize"})
                 }
+                return
             }
         })
         Taro.getSetting().then(async (setting) => {
@@ -65,7 +67,6 @@ class Index extends Component<IndexProps,IndexState > {
                 Taro.navigateTo({ url: "/pages/authorize/authorize"})
                 console.log("redirected to authorize", "unionid: ", unionid, "learnerFullName: ", learnerFullName)
             }
-            
         })
     }
 

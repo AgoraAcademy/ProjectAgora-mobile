@@ -6,7 +6,8 @@ import Index from "./pages/index";
 import dva from './utils/dva'
 import models from './models'
 import './app.scss'
-import 'taro-ui/dist/style/index.scss' // 全局引入一次即可
+// import 'taro-ui/dist/style/index.scss' // 全局引入一次即可
+import './custom-theme.scss'
 import { globalData } from "./utils/common";
 import { MAINHOST } from './config'
 import {
