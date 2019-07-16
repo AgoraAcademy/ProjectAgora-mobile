@@ -60,6 +60,7 @@ class Authorize extends Component<AuthorizeProps,AuthorizeState > {
                     data: { js_code: code }
                 })
                 await Taro.setStorageSync('token', data.token)
+                console.log("66666666666666")
                 await this.props.dispatch({
                     type: "authorize/onAuthorize",
                     payload: {

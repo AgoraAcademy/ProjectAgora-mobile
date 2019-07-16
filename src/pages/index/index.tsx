@@ -85,6 +85,8 @@ class Index extends Component<IndexProps,IndexState > {
                     onClick={() => Taro.navigateTo({
                         url: '/pages/booking/booking'
                     })}>房间预约</AtButton>
+                <AtButton type='primary'
+                    onClick={() => Taro.navigateTo({url: "/pages/identity/identity"})}>注册页</AtButton>
                 <AtButton customStyle={{display: Taro.getStorageSync("isAdmin") ? "block": "none"}} onClick={() => console.log(Taro.getStorageSync('token'), Taro.getStorageSync("isAdmin") )}>获取session_key</AtButton>
                 <AtButton customStyle={{display: Taro.getStorageSync("isAdmin") ? "block": "none"}} onClick={() => Taro.navigateTo({url: "/pages/identity/identity"})}>跳转identity页</AtButton>
                 <View className='bottom-bar at-row at-row__justify--center' style={{ position: "absolute", bottom: "16px", left: "50%" }}>

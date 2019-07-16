@@ -1,5 +1,59 @@
-
 identity-wrap {
     width: 100%;
     min-height: 100vh;
+}
+.formPanel {
+    width: 90vw;
+    padding: 60rpx 20rpx;
+    box-shadow: 6rpx 6rpx 20rpx 6rpx rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    margin-top: 20rpx;
+}
+.register-title-panel{
+    background: rgb(179, 27, 47);
+    color: white;
+    border: none;
+    height: 60rpx;
+    width: 220rpx;
+    margin-top: 20rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size:32rpx;
+    margin:0 auto 30rpx auto;
+}
+.sub-button {
+    background: rgb(179, 27, 47);
+    color: white;
+    border: none;
+    border-radius: 40rpx;
+    height: 60rpx;
+    width: 370rpx;
+    line-height: 60rpx;
+    margin-top: 20rpx;
+}
+.label-item {
+    margin-right: 16rpx;
+    width: 172rpx;
+    font-size: 32rpx;
+    line-height: 1.5;
+    vertical-align: middle;
+    text-align: left;
+    display: inline-block;
+}
+.my-form-item {
+    position: relative;
+    padding: 24rpx 0;
+    color: #333;
+    background-color: #fff;
+    margin-left: 32rpx;
+    margin-bottom: 1px;
+    position: relative;
+}
+.value-item {
+    color: #333;
+    font-size: 32rpx;
+    height: 44.8rpx;
+    line-height: 1.5;
+    display: inline-block;
 }

@@ -44,10 +44,12 @@ class App extends Component {
      */
     config: Config = {
         pages: [
+            
             'pages/index/index',
             'pages/booking/booking',
             'pages/authorize/authorize',
-            'pages/identity/identity'
+            'pages/identity/identity',
+            
         ],
         window: {
             backgroundTextStyle: 'light',
