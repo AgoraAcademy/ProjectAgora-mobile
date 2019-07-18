@@ -7,6 +7,7 @@ import Tips from '../../utils/tips'
 import { IdentityProps, IdentityState } from "./identity.interface";
 import "./identity.scss";
 import { MAINHOST } from "../../config";
+import ComponentBaseNavigation from "../../components/ComponentHomeNavigation/componentHomeNavigation";
 // import { } from '../../components'
 
 class Identity extends Component<IdentityProps, IdentityState> {
@@ -57,6 +58,7 @@ class Identity extends Component<IdentityProps, IdentityState> {
             <View className="identity-wrap">
                 {/* <View><Text>未能获取账户信息</Text></View>
                 <View><Text>如果你已注册ProjectAgora账户，请尝试一下登录一次网页端后再尝试</Text></View> */}
+                <ComponentBaseNavigation type="childPage"/>
                 <AtForm
                     onSubmit={this.onSubmit.bind(this)}
                     className="formPanel"

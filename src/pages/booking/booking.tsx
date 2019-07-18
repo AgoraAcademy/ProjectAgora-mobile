@@ -7,7 +7,7 @@ import { AtSteps, AtAvatar, AtCalendar, AtListItem, AtActivityIndicator, AtTag }
 // import Tips from '../../utils/tips'
 import { BookingProps, BookingState, RoomEvent } from './booking.interface'
 import './booking.scss'
-
+import ComponentBaseNavigation from "../../components/ComponentHomeNavigation/componentHomeNavigation";
 
 // import { } from '../../components'
 
@@ -410,6 +410,7 @@ class Booking extends Component<BookingProps, BookingState> {
         const stepitems = [{ title: '选择区域' }, { title: '选择房间' }, { title: '选择日期' }, { title: '选择时间' }, { title: '预约信息' }]
         return (
             <View className='booking-wrap'>
+                <ComponentBaseNavigation type="normal"/>
                 <View className="stepIndicator">
                     <AtSteps
                         items={stepitems}

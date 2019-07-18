@@ -11,6 +11,7 @@ import { MAINHOST } from '../../config'
 import {
     requestConfig
 } from '../../config/requestConfig'
+import ComponentBaseNavigation from "../../components/ComponentHomeNavigation/componentHomeNavigation";
 // import { } from '../../components'
 
 @connect(({ authorize }) => ({
@@ -81,6 +82,7 @@ class Authorize extends Component<AuthorizeProps,AuthorizeState > {
     render() {
         return (
             <View className='authorize-wrap'>
+                <ComponentBaseNavigation type="childPage"/>
                 <AtButton customStyle={{display: Taro.getStorageSync("isAdmin") ? "block": "none"}} onClick={() => console.log(Taro.getStorageSync('token'))}>获取session_key</AtButton>
                 <AtButton type="primary" openType="getUserInfo" onGetUserInfo={this.onGetUserInfo}>授权</AtButton>
                 <AtButton customStyle={{display: Taro.getStorageSync("isAdmin") ? "block": "none"}} onClick={() => console.log(Taro.getUserInfo().then((res) => console.log(res)))}>获取userInfo</AtButton>
