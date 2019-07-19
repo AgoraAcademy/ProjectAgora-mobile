@@ -57,7 +57,20 @@ class App extends Component {
             navigationBarTitleText: 'WeChat',
             navigationBarTextStyle: 'black',
             navigationStyle:"custom"
-        }
+        },
+        "tabBar": {
+            "custom": true,
+            "list": [{
+              "pagePath": "pages/index/index",
+              "text": "我的"
+            }, {
+              "pagePath": "pages/booking/booking",
+              "text": "学习"
+            }, {
+                "pagePath": "pages/identity/identity",
+                "text": "社区"
+              }]
+          },
     }
 
     /**

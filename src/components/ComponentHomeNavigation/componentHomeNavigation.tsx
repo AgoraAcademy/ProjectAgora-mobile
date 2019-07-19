@@ -21,9 +21,17 @@ class ComponentHomeNavigation extends Component<PropsInterface ,StateInterface> 
     }
     handleClick() {}
     jump(url) {
-        Taro.redirectTo({
-            url: url
-        });
+        // Taro.redirectTo({
+        //     url: url
+        // });
+        Taro.switchTab({
+            url
+        })
+    }
+    back(){
+        if( Taro.getCurrentPages().length > 1){
+            Taro.navigateBack()
+        }
     }
     render() {
         const routeMap = [
@@ -55,7 +63,7 @@ class ComponentHomeNavigation extends Component<PropsInterface ,StateInterface> 
                     ) : (
                         <View
                           onClick={() => {
-                                Taro.navigateBack();
+                                this.back()
                             }}
                         >
                            返回
