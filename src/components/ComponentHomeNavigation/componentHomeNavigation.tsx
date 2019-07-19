@@ -2,10 +2,10 @@ import Taro, { Component } from "@tarojs/taro";
 import { View, Button } from "@tarojs/components";
 import classNames from "classnames";
 import ComponentBaseNavigation from "../navigation/navigation";
-
+import { StateInterface, PropsInterface } from "./interface";
 import "./style.scss";
 
-class ComponentHomeNavigation extends Component {
+class ComponentHomeNavigation extends Component<PropsInterface ,StateInterface> {
     constructor(props) {
         super(props);
         this.state = {
