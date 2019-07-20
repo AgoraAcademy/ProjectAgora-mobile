@@ -44,7 +44,7 @@ class App extends Component {
      */
     config: Config = {
         pages: [
-            
+            'pages/homePush/homePush',
             'pages/index/index',
             'pages/booking/booking',
             'pages/authorize/authorize',
@@ -61,7 +61,7 @@ class App extends Component {
         "tabBar": {
             "custom": true,
             "list": [{
-              "pagePath": "pages/index/index",
+              "pagePath": "pages/homePush/homePush",
               "text": "我的"
             }, {
               "pagePath": "pages/booking/booking",

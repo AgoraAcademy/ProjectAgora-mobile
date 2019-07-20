@@ -35,7 +35,7 @@ class ComponentHomeNavigation extends Component<PropsInterface ,StateInterface> 
     }
     render() {
         const routeMap = [
-            { path: "/pages/index/index", name: "我的" },
+            { path: "/pages/homePush/homePush", name: "我的" },
             { path: "/pages/booking/booking", name: "学习" },
             { path: "/pages/identity/identity", name: "社区" }
         ];

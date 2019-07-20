@@ -1,0 +1,183 @@
+homePush-wrap {
+    width: 100%;
+    min-height: 100vh;
+}
+.card {
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    padding: 30rpx 40rpx 0rpx 0rpx;
+    width: 90%;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+.bottom-tab-panel{
+    display: flex;
+    height:164rpx;
+    border-top:1rpx solid #E5E5E5;
+    // border: 1px solid green;
+    .tab-item{
+        flex:1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-right: 1rpx solid #E5E5E5;
+        font-size:32rpx;
+        color:#646464;
+        .at-icon{
+            font-size:50rpx;
+        }
+        &:nth-last-of-type(1){
+            border-right: none;
+        }
+        &.active{
+            color:rgb(179, 27, 47);
+        }
+    }
+}
+.scrollview{
+    // height:400rpx;
+    height:calc(100vh - 260rpx);
+    // border: 1px solid red;
+}
+.ul-ele {
+    margin-top: 30rpx;
+    
+}
+.li-ele {
+    position: relative;
+    margin-bottom:40rpx;
+    &.active {
+        background: rgba(0, 255, 113, 0.25);
+        .tag{
+            transform: translateX(-20rpx);
+        }
+    }
+    .main-panel {
+        display: flex;
+        position: relative;
+        padding-bottom: 30rpx;
+    }
+    .action-panel{
+        display: flex;
+        height:124rpx;
+
+        .action-item{
+            flex:1;
+            border-right:1px solid #707070;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            &:nth-last-of-type(1){
+                border-right: none;
+            }
+            color:#646464;
+            font-size: 24rpx;
+            .at-icon{
+                font-size:40rpx;
+            }
+            .text{
+                
+            }
+        }
+    }
+    .green {
+        background: #13ce66!important;
+    }
+    .red {
+        background: rgb(179, 27, 47)!important;
+    }
+    .blue {
+        background: #0078d7!important;
+    }
+    .orange{
+        background: #FA2323!important;
+    }
+    .yellow{
+        background: #FAB223!important;
+    }
+    .tag {
+        height: 130rpx;
+        width: 38rpx;
+        background: #13ce66;
+        color: white;
+        font-size: 24rpx;
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .left-panel {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-left: 30rpx;
+        .avatar {
+            $size: 104rpx;
+            width: $size;
+            height: $size;
+            background: rgb(179, 27, 47);
+            border-radius: 50%;
+        }
+        .status-button {
+            background: white;
+            color: #0078d7;
+            border: 1px solid #0078d7;
+            width: 100rpx;
+            $height: 50rpx;
+            height: $height;
+            line-height: normal;
+            border-radius: 20rpx;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24rpx;
+            margin-top: 30rpx;
+        }
+    }
+
+    .infoPanel {
+        display: flex;
+        // justify-content: center;
+        flex-direction: column;
+        margin-left: 30rpx;
+    }
+    .title {
+        font-size: 36rpx;
+    }
+    .date {
+        font-size: 24rpx;
+        color: #646464;
+    }
+    .desc {
+        font-size: 24rpx;
+        color: #646464;
+        width: 240rpx;
+        margin-top:10rpx;
+    }
+    .sub-button {
+        position: absolute;
+        right: 60rpx;
+        top: 50rpx;
+        background: rgb(179, 27, 47);
+        color: white;
+        width: 100rpx;
+        $height: 70rpx;
+        height: $height;
+        line-height: normal;
+        border-radius: 10rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .icon-right {
+        position: absolute;
+        right: 0rpx;
+        top: 70rpx;
+        color: #646464;
+    }
+}
