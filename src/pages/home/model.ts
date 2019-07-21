@@ -1,9 +1,9 @@
 
 // import Taro from '@tarojs/taro';
-import * as homePushApi from './service';
+import * as homeApi from './service';
 
 export default {
-    namespace: 'homePush',
+    namespace: 'home',
     state: {
     },
 

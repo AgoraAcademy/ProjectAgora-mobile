@@ -4,30 +4,31 @@ import { AtButton } from "taro-ui";
 // import { connect } from '@tarojs/redux'
 // import Api from '../../utils/request'
 // import Tips from '../../utils/tips'
-import { HomePushProps, HomePushState } from "./homePush.interface";
-import "./homePush.scss";
+import { homeProps, homeState } from "./home.interface";
+import "./home.scss";
 import ComponentBaseNavigation from "../../components/ComponentHomeNavigation/componentHomeNavigation";
 import classnames from "classnames";
 // import { } from '../../components'
 
-// @connect(({ homePush }) => ({
-//     ...homePush,
+// @connect(({ home }) => ({
+//     ...home,
 // }))
 
-class HomePush extends Component<HomePushProps, HomePushState> {
+class home extends Component<homeProps, homeState> {
     config: Config = {
         navigationBarTitleText: ""
     };
-    constructor(props: HomePushProps) {
+    constructor(props: homeProps) {
         super(props);
         this.state = {
-            activeList: [],
-            chooseType: "push"
+            pushList: [],
+            chooseType: "push",
+            noticeList: []
         };
     }
 
     componentDidMount() {
-        const activeList = [
+        const pushList = [
             {
                 type: "活动",
                 title: "篮球",
@@ -71,24 +72,55 @@ class HomePush extends Component<HomePushProps, HomePushState> {
                 id: 5
             }
         ];
-        activeList.forEach(item => {
+        const noticeList = [
+            {
+                type: "社区",
+                title: "2019秋季放假安排",
+                date: "7月20日",
+                desc: "放假安排描述",
+                projectStatusText: "招募中",
+                id: 1
+            },
+            {
+                type: "活动",
+                title: "篮球",
+                date: "7月20日",
+                desc: "中银花园",
+                projectStatusText: "招募中",
+                id: 2
+            }
+        ];
+        pushList.forEach(item => {
             item["status"] = false;
         });
+        noticeList.forEach(item => {
+            item["status"] = false;
+        });
+
         this.setState({
-            activeList
+            pushList,
+            noticeList
         });
     }
     join(item) {
-        const activeList = JSON.parse(JSON.stringify(this.state.activeList));
-        activeList.forEach(active => {
+        const type =
+            this.state.chooseType === "push" ? "pushList" : "noticeList";
+        const list = JSON.parse(JSON.stringify(this.state[type]));
+        list.forEach(active => {
             if (active.id === item.id) {
                 active.status = !item.status;
-                console.log("命中");
             }
         });
-        this.setState({
-            activeList
-        });
+        if (type === "pushList") {
+            this.setState({
+                pushList: list
+            });
+        } else {
+            this.setState({
+                noticeList: list
+            });
+        }
+        // do something...
     }
     getBg(type) {
         return {
@@ -103,8 +135,8 @@ class HomePush extends Component<HomePushProps, HomePushState> {
     render() {
         const data =
             this.state.chooseType === "push"
-                ? this.state.activeList
-                : this.state.activeList;
+                ? this.state.pushList
+                : this.state.noticeList;
         const listComponent = data.map(item => {
             return (
                 <View
@@ -161,7 +193,7 @@ class HomePush extends Component<HomePushProps, HomePushState> {
             );
         });
         return (
-            <View className="homePush-wrap">
+            <View className="home-wrap">
                 <ComponentBaseNavigation type="normal" />
                 <ScrollView
                     className="scrollview"
@@ -213,4 +245,4 @@ class HomePush extends Component<HomePushProps, HomePushState> {
     }
 }
 
-export default HomePush;
+export default home;
