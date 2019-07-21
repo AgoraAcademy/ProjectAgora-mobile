@@ -1,5 +1,5 @@
 @import '../../variable.scss';
-identity-wrap {
+activityCard-wrap {
     width: 100%;
     min-height: 100vh;
 }
@@ -12,4 +12,15 @@ identity-wrap {
     width: 370rpx;
     line-height: 60rpx;
     margin-top: 20rpx;
+}
+
+.top-panel{
+    .avatar{
+        border-radius: 50%;
+        background: $main;
+        $size:100rpx;
+        height: $size;
+        width:$size;
+        margin:0 auto 20rpx auto;
+    }
 }

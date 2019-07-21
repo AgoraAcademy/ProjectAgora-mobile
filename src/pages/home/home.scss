@@ -1,3 +1,4 @@
+@import '../../variable.scss';
 home-wrap {
     width: 100%;
     min-height: 100vh;
@@ -30,7 +31,7 @@ home-wrap {
             border-right: none;
         }
         &.active{
-            color:rgb(179, 27, 47);
+            color:$main;
         }
     }
 }
@@ -47,7 +48,7 @@ home-wrap {
     position: relative;
     margin-bottom:40rpx;
     &.active {
-        background: rgba(0, 255, 113, 0.25);
+        background: $actvity-Panel;
         .tag{
             transform: translateX(-20rpx);
         }
@@ -82,24 +83,24 @@ home-wrap {
         }
     }
     .green {
-        background: #13ce66!important;
+        background: $actvity!important;
     }
     .red {
-        background: rgb(179, 27, 47)!important;
+        background: $main!important;
     }
     .blue {
-        background: #0078d7!important;
+        background: $project!important;
     }
     .orange{
-        background: #FA2323!important;
+        background: $orange!important;
     }
     .yellow{
-        background: #FAB223!important;
+        background: $notice!important;
     }
     .tag {
         height: 130rpx;
         width: 38rpx;
-        background: #13ce66;
+        background: $actvity;
         color: white;
         font-size: 24rpx;
         display: flex;
@@ -119,13 +120,13 @@ home-wrap {
             $size: 104rpx;
             width: $size;
             height: $size;
-            background: rgb(179, 27, 47);
+            background: $main;
             border-radius: 50%;
         }
         .status-button {
             background: white;
-            color: #0078d7;
-            border: 1px solid #0078d7;
+            color: $project;
+            border: 1px solid $project;
             width: 100rpx;
             $height: 50rpx;
             height: $height;
@@ -162,7 +163,7 @@ home-wrap {
         position: absolute;
         right: 60rpx;
         top: 50rpx;
-        background: rgb(179, 27, 47);
+        background: $main;
         color: white;
         width: 100rpx;
         $height: 70rpx;

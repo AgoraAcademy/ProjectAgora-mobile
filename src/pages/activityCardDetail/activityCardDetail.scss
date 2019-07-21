@@ -1,0 +1,52 @@
+@import '../../variable.scss';
+activityCard-wrap {
+    width: 100%;
+    min-height: 100vh;
+}
+.sub-button {
+    background: $actvity;
+    color: white;
+    border: none;
+    border-radius: 40rpx;
+    height: 60rpx;
+    width: 370rpx;
+    line-height: 60rpx;
+    margin-top: 0rpx;
+}
+.register-title-panel{
+    background: $actvity;
+}
+.act-panel{
+    text-align: center;
+    margin-bottom:20rpx;
+    .act-title{
+        font-size:36rpx;
+        color:#505050;
+        text-align: center;
+        display: inline-block;
+    }
+}
+
+.action-panel{
+    display: flex;
+    height:124rpx;
+    margin-top:40rpx;
+
+    .action-item{
+        flex:1;
+        border-right:1px solid #707070;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        &:nth-last-of-type(1){
+            border-right: none;
+        }
+        color:#646464;
+        font-size: 24rpx;
+        .at-icon{
+            font-size:40rpx;
+        }
+        
+    }
+}

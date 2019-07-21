@@ -192,6 +192,18 @@ class home extends Component<homeProps, homeState> {
                 </View>
             );
         });
+        const tabList = [
+            {
+                type: "push",
+                name: "推送",
+                iconClass: "at-icon-bookmark"
+            },
+            {
+                type: "notice",
+                name: "提醒",
+                iconClass: "at-icon-bell"
+            }
+        ];
         return (
             <View className="home-wrap">
                 <ComponentBaseNavigation type="normal" />
@@ -216,29 +228,28 @@ class home extends Component<homeProps, homeState> {
                 </ScrollView>
 
                 <View className="bottom-tab-panel">
-                    <View
-                        className={classnames("tab-item", {
-                            active: this.state.chooseType === "push"
-                        })}
-                        onClick={() => {
-                            this.setState({ chooseType: "push" });
-                        }}
-                    >
-                        <View className="at-icon at-icon-bookmark" />
+                    {tabList.map((item, index) => {
+                        return (
+                            <View
+                                className={classnames("tab-item", {
+                                    active: this.state.chooseType === item.type
+                                })}
+                                onClick={() => {
+                                    this.setState({ chooseType: item.type });
+                                }}
+                                key={index}
+                            >
+                                <View
+                                    className={classnames(
+                                        "at-icon",
+                                        item.iconClass
+                                    )}
+                                />
 
-                        <Text>推送</Text>
-                    </View>
-                    <View
-                        className={classnames("tab-item", {
-                            active: this.state.chooseType === "notice"
-                        })}
-                        onClick={() => {
-                            this.setState({ chooseType: "notice" });
-                        }}
-                    >
-                        <View className="at-icon at-icon-bell" />
-                        <Text>提醒</Text>
-                    </View>
+                                <Text>{item.name}</Text>
+                            </View>
+                        );
+                    })}
                 </View>
             </View>
         );

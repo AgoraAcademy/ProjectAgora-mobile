@@ -1,23 +1,22 @@
 import Taro, { Component, Config } from "@tarojs/taro";
 import { View, Picker } from "@tarojs/components";
 import { AtForm, AtInput, AtButton } from "taro-ui";
-import { connect } from "@tarojs/redux";
+// import { connect } from "@tarojs/redux";
 // import Api from '../../utils/request'
-import Tips from '../../utils/tips'
-import { IdentityProps, IdentityState } from "./identity.interface";
-import "./identity.scss";
+import Tips from "../../utils/tips";
+import { propsInterface, stateInterface } from "./interface";
+import "./activityCard.scss";
 import { MAINHOST } from "../../config";
 import ComponentBaseNavigation from "../../components/ComponentHomeNavigation/componentHomeNavigation";
-import {rolesList,branchsList} from '../../globalData'
+import { rolesList, branchsList } from "../../globalData";
 // import { } from '../../components'
 
-class Identity extends Component<IdentityProps, IdentityState> {
+class ActivityCard extends Component<propsInterface, stateInterface> {
     config: Config = {
-        navigationBarTitleText: "账号"
+        navigationBarTitleText: "活动"
     };
-    constructor(props: IdentityProps) {
+    constructor(props: propsInterface) {
         super(props);
-      
         this.state = {
             familyName: "",
             givenName: "",
@@ -34,7 +33,7 @@ class Identity extends Component<IdentityProps, IdentityState> {
         const token = Taro.getStorageSync("token");
         const iv = Taro.getStorageSync("iv");
         const encryptedData = Taro.getStorageSync("encryptedData");
-        const res=await Taro.request({
+        const res = await Taro.request({
             url: `${MAINHOST}/learner`,
             data: {
                 familyName: this.state.familyName,
@@ -50,7 +49,7 @@ class Identity extends Component<IdentityProps, IdentityState> {
             method: "POST"
         });
         if (res.statusCode === 201) {
-            Tips.toast("注册成功")
+            Tips.toast("注册成功");
         }
     }
     render() {
@@ -58,30 +57,52 @@ class Identity extends Component<IdentityProps, IdentityState> {
             <View className="identity-wrap">
                 {/* <View><Text>未能获取账户信息</Text></View>
                 <View><Text>如果你已注册ProjectAgora账户，请尝试一下登录一次网页端后再尝试</Text></View> */}
-                <ComponentBaseNavigation type="normal"/>
+                <ComponentBaseNavigation type="normal" />
                 <AtForm
                     onSubmit={this.onSubmit.bind(this)}
                     className="formPanel"
                 >
-                    <View className="register-title-panel">新用户注册</View>
+                    <View className="act-panel">
+                        <View className="act-title">一起打篮球</View>
+                        <View className='at-icon at-icon-edit'></View>
+                    </View>
+                    <View className="register-title-panel">
+                        发起活动
+                    </View>
                     <AtInput
                         name="value"
-                        title="姓"
+                        title="活动简介"
                         type="text"
-                        placeholder="姓"
+                        placeholder="活动简介"
                         value={this.state.familyName}
                         onChange={val => {
                             this.setState({ familyName: val.toString() });
                         }}
                     />
+
+                    <View className="my-form-item">
+                        <Picker
+                            mode="date"
+                            onChange={e => {
+                                this.setState({
+                                    birthday: e.detail.value
+                                });
+                            }}
+                        >
+                            <View className="label-item">活动时间</View>
+                            <View className="value-item">
+                                {this.state.birthday || "请选择活动时间"}
+                            </View>
+                        </Picker>
+                    </View>
                     <AtInput
                         name="value"
-                        title="名"
+                        title="活动费用"
                         type="text"
-                        placeholder="名"
-                        value={this.state.givenName}
+                        placeholder="活动费用"
+                        value={this.state.familyName}
                         onChange={val => {
-                            this.setState({ givenName: val.toString() });
+                            this.setState({ familyName: val.toString() });
                         }}
                     />
                     <View className="my-form-item">
@@ -93,9 +114,9 @@ class Identity extends Component<IdentityProps, IdentityState> {
                                 });
                             }}
                         >
-                           <View className="label-item">出生日期</View>
+                            <View className="label-item">截止时间</View>
                             <View className="value-item">
-                                {this.state.birthday||"请选择出生日期"}
+                                {this.state.birthday || "请选择截止时间"}
                             </View>
                         </Picker>
                     </View>
@@ -109,31 +130,25 @@ class Identity extends Component<IdentityProps, IdentityState> {
                                 });
                             }}
                         >
-                            <View className="label-item">角色</View>
+                            <View className="label-item">邀请对象</View>
                             <View className="value-item">
                                 {this.state.role}
                             </View>
                         </Picker>
                     </View>
-                    <View className="my-form-item">
-                        <Picker
-                            mode="selector"
-                            range={this.state.branchsList}
-                            onChange={e => {
-                                this.setState({
-                                    branch: this.state.branchsList[e.detail.value]
-                                });
-                            }}
-                        >
-                            <View className="label-item">校区</View>
-                            <View className="value-item">
-                                {this.state.branch}
-                            </View>
-                        </Picker>
-                    </View>
+                    <AtInput
+                        name="value"
+                        title="附图"
+                        type="text"
+                        placeholder="附图"
+                        value={this.state.familyName}
+                        onChange={val => {
+                            this.setState({ familyName: val.toString() });
+                        }}
+                    />
 
                     <AtButton formType="submit" className="sub-button">
-                        确认添加
+                        确认发起
                     </AtButton>
                 </AtForm>
             </View>
@@ -141,4 +156,4 @@ class Identity extends Component<IdentityProps, IdentityState> {
     }
 }
 
-export default Identity;
+export default ActivityCard;
