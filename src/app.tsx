@@ -44,12 +44,11 @@ class App extends Component {
      */
     config: Config = {
         pages: [
+            'pages/home/home',
             'pages/activityCardDetail/activityCardDetail',
             'pages/noticeCard/noticeCard',
             'pages/activityCard/activityCard',
-            'pages/home/home',
             'pages/index/index',
-           
             'pages/booking/booking',
             'pages/authorize/authorize',
             'pages/identity/identity',

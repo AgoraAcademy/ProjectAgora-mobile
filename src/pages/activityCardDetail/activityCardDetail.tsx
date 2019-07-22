@@ -28,7 +28,12 @@ class activityCardDetail extends Component<propsInterface, stateInterface> {
             isMentor: 0
         };
     }
-    componentDidMount() {}
+    componentDidMount() {
+        const {id,type}=this.$router.params
+        console.log({
+            id,type
+        })
+    }
     async onSubmit() {
         const token = Taro.getStorageSync("token");
         const iv = Taro.getStorageSync("iv");
@@ -51,7 +56,7 @@ class activityCardDetail extends Component<propsInterface, stateInterface> {
             <View className="identity-wrap">
                 {/* <View><Text>未能获取账户信息</Text></View>
                 <View><Text>如果你已注册ProjectAgora账户，请尝试一下登录一次网页端后再尝试</Text></View> */}
-                <ComponentBaseNavigation type="normal" />
+                <ComponentBaseNavigation type="childPage" />
                 <AtForm
                     onSubmit={this.onSubmit.bind(this)}
                     className="formPanel"

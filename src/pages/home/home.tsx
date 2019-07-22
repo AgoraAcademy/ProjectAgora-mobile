@@ -102,7 +102,18 @@ class home extends Component<homeProps, homeState> {
             noticeList
         });
     }
-    join(item) {
+    goDetail(type, item) {
+        Taro.navigateTo({
+            url:
+                "/pages/activityCardDetail/activityCardDetail?type=" +
+                type +
+                "&id=" +
+                item.id
+        });
+    }
+    join(item, event) {
+        // console.log({ event ,item});
+        event.stopPropagation();
         const type =
             this.state.chooseType === "push" ? "pushList" : "noticeList";
         const list = JSON.parse(JSON.stringify(this.state[type]));
@@ -144,6 +155,9 @@ class home extends Component<homeProps, homeState> {
                     className={classnames("li-ele card", {
                         active: item.status
                     })}
+                    onClick={() => {
+                        this.goDetail(this.state.chooseType, item);
+                    }}
                 >
                     <View className="main-panel">
                         <View
@@ -167,14 +181,10 @@ class home extends Component<homeProps, homeState> {
                             <View className="date">{item.date}</View>
                             <View className="desc">{item.desc}</View>
                         </View>
-                        <AtButton
-                            className="sub-button"
-                            onClick={() => {
-                                this.join(item);
-                            }}
-                        >
-                            报名
-                        </AtButton>
+                        <View onClick={this.join.bind(this, item)}>
+                            <AtButton className="sub-button">报名</AtButton>
+                        </View>
+
                         <View className="at-icon at-icon-chevron-right icon-right" />
                     </View>
                     {item.status ? (
