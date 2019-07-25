@@ -7,6 +7,7 @@
 //  */
 // export const ONLINEHOST = 'http://api.juheapi.com'
 export const ONLINEHOST = 'https://projectagora.agoraacademy.cn:18088/v1/miniprogram'
+// export const ONLINEHOST = 'https://116.30.219.164:18088/v1/miniprogram'
 // export const ONLINEHOST = 'http://localhost:8080/v1/miniprogram'
 /** 
  * 测试环境

@@ -4,6 +4,7 @@ import { AtButton } from "taro-ui";
 // import { connect } from '@tarojs/redux'
 // import Api from '../../utils/request'
 // import Tips from '../../utils/tips'
+import { MAINHOST } from "../../config";
 import { homeProps, homeState } from "./home.interface";
 import "./home.scss";
 import ComponentBaseNavigation from "../../components/ComponentHomeNavigation/componentHomeNavigation";
@@ -26,8 +27,25 @@ class home extends Component<homeProps, homeState> {
             noticeList: []
         };
     }
-
+    async getData() {
+        const token = Taro.getStorageSync("token");
+        const iv = Taro.getStorageSync("iv");
+        const encryptedData = Taro.getStorageSync("encryptedData");
+        const res = await Taro.request({
+            url: `${MAINHOST}/event`,
+            data: {
+                iv,
+                encryptedData
+            },
+            header: { token: token },
+            method: "GET"
+        });
+        console.log({
+            res
+        });
+    }
     componentDidMount() {
+        this.getData();
         const pushList = [
             {
                 type: "活动",
@@ -238,7 +256,7 @@ class home extends Component<homeProps, homeState> {
                 </ScrollView>
 
                 <View className="bottom-tab-panel">
-                    {tabList.map((item, index) => {
+                    {tabList.map(item => {
                         return (
                             <View
                                 className={classnames("tab-item", {
@@ -247,7 +265,7 @@ class home extends Component<homeProps, homeState> {
                                 onClick={() => {
                                     this.setState({ chooseType: item.type });
                                 }}
-                                key={index}
+                                key={item.type}
                             >
                                 <View
                                     className={classnames(
