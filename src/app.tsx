@@ -3,22 +3,18 @@ import "@tarojs/async-await";
 import { Provider } from "@tarojs/redux";
 import "./utils/request";
 import Index from "./pages/index";
-import dva from './utils/dva'
-import models from './models'
-import './app.scss'
+import dva from "./utils/dva";
+import models from "./models";
+import "./app.scss";
 // import 'taro-ui/dist/style/index.scss' // 全局引入一次即可
-import './custom-theme.scss'
+import "./custom-theme.scss";
 import { globalData } from "./utils/common";
-import { MAINHOST } from './config'
-import {
-    requestConfig
-} from './config/requestConfig'
-
-
+import { MAINHOST } from "./config";
+import { requestConfig } from "./config/requestConfig";
 
 const dvaApp = dva.createApp({
     initialState: {},
-    models: models,
+    models: models
 });
 const store = dvaApp.getStore();
 
@@ -27,14 +23,13 @@ const store = dvaApp.getStore();
  *
  * @class App
  * @extends {Component}
- * 
+ *
  * 本小程序为ProjectAgora的移动版，脚手架部分请参考
- * 
+ *
  * https://www.jianshu.com/p/71e209987c83
  */
 
 class App extends Component {
-
     /**
      * 指定config的类型声明为: Taro.Config
      *
@@ -44,37 +39,43 @@ class App extends Component {
      */
     config: Config = {
         pages: [
-            'pages/home/home',
-            'pages/activityCardDetail/activityCardDetail',
-            'pages/noticeCard/noticeCard',
-            'pages/activityCard/activityCard',
-            'pages/index/index',
-            'pages/booking/booking',
-            'pages/authorize/authorize',
-            'pages/identity/identity',
-            
+           
+            "pages/home/home",
+            "pages/activityCardDetail/activityCardDetail",
+            "pages/noticeCard/noticeCard",
+            "pages/index/index",
+            "pages/booking/booking",
+            "pages/authorize/authorize",
+            "pages/identity/identity",
+            "pages/community/community",
+            "pages/activityCard/activityCard",
+           
         ],
         window: {
-            backgroundTextStyle: 'light',
-            navigationBarBackgroundColor: '#fff',
-            navigationBarTitleText: 'WeChat',
-            navigationBarTextStyle: 'black',
-            navigationStyle:"custom"
+            backgroundTextStyle: "light",
+            navigationBarBackgroundColor: "#fff",
+            navigationBarTitleText: "WeChat",
+            navigationBarTextStyle: "black",
+            navigationStyle: "custom"
         },
-        "tabBar": {
-            "custom": true,
-            "list": [{
-              "pagePath": "pages/home/home",
-              "text": "我的"
-            }, {
-              "pagePath": "pages/booking/booking",
-              "text": "学习"
-            }, {
-                "pagePath": "pages/identity/identity",
-                "text": "社区"
-              }]
-          },
-    }
+        tabBar: {
+            custom: true,
+            list: [
+                {
+                    pagePath: "pages/home/home",
+                    text: "我的"
+                },
+                {
+                    pagePath: "pages/booking/booking",
+                    text: "学习"
+                },
+                {
+                    pagePath: "pages/community/community",
+                    text: "社区"
+                }
+            ]
+        }
+    };
 
     /**
      *
@@ -103,22 +104,23 @@ class App extends Component {
     //     sys && (globalData.systemInfo = sys);
     // }
 
-    componentDidShow() { }
+    componentDidShow() {}
 
-    componentDidHide() { }
+    componentDidHide() {}
 
-    componentDidCatchError() { }
+    componentDidCatchError() {}
 
-    componentDidMount() {
-    }
+    componentDidMount() {}
 
     // 在 App 类中的 render() 函数没有实际作用
     // 请勿修改此函数
     render() {
-        return (<Provider store={store}>
-            <Index />
-        </Provider>);
+        return (
+            <Provider store={store}>
+                <Index />
+            </Provider>
+        );
     }
 }
 
-Taro.render(<App />, document.getElementById('app'))
+Taro.render(<App />, document.getElementById("app"));

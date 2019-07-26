@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from "@tarojs/taro";
-import { View, Picker, Text } from "@tarojs/components";
-import { AtForm, AtInput, AtButton } from "taro-ui";
+import { View, Text } from "@tarojs/components";
+import { AtForm, AtButton } from "taro-ui";
 // import { connect } from "@tarojs/redux";
 // import Api from '../../utils/request'
 import Tips from "../../utils/tips";
@@ -39,8 +39,28 @@ class activityCardDetail extends Component<propsInterface, stateInterface> {
         const iv = Taro.getStorageSync("iv");
         const encryptedData = Taro.getStorageSync("encryptedData");
         const res = await Taro.request({
-            url: `${MAINHOST}/learner`,
+            url: `${MAINHOST}/event`,
             data: {
+                eventInfo: {
+                    description: "string",
+                    endDate: "string",
+                    endTime: "string",
+                    fee: "string",
+                    location: [{}],
+                    recruitingUntilDate: "string",
+                    recruitingUntilTime: "string",
+                    startDate: "string",
+                    startTime: "string",
+                    title: "string"
+                },
+                initiatorDisplayName: "string",
+                invitee: [
+                    {
+                        rule: "string",
+                        type: "string"
+                    }
+                ],
+                thumbnail: ["string"],
                 iv,
                 encryptedData
             },
@@ -48,14 +68,12 @@ class activityCardDetail extends Component<propsInterface, stateInterface> {
             method: "POST"
         });
         if (res.statusCode === 201) {
-            Tips.toast("注册成功");
+            Tips.toast("发起成功");
         }
     }
     render() {
         return (
             <View className="identity-wrap">
-                {/* <View><Text>未能获取账户信息</Text></View>
-                <View><Text>如果你已注册ProjectAgora账户，请尝试一下登录一次网页端后再尝试</Text></View> */}
                 <ComponentBaseNavigation type="childPage" />
                 <AtForm
                     onSubmit={this.onSubmit.bind(this)}

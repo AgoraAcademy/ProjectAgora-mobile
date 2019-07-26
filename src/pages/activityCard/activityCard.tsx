@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from "@tarojs/taro";
-import { View, Picker } from "@tarojs/components";
+import { View, Picker, Image } from "@tarojs/components";
 import { AtForm, AtInput, AtButton } from "taro-ui";
 // import { connect } from "@tarojs/redux";
 // import Api from '../../utils/request'
@@ -8,8 +8,11 @@ import { propsInterface, stateInterface } from "./interface";
 import "./activityCard.scss";
 import { MAINHOST } from "../../config";
 import ComponentBaseNavigation from "../../components/ComponentHomeNavigation/componentHomeNavigation";
-import { rolesList, branchsList } from "../../globalData";
+import ImageView from "../../components/ImageView/ImageView";
+import produce from "immer";
+
 // import { } from '../../components'
+import { choosePicGetBase64 } from "../../utils/common";
 
 class ActivityCard extends Component<propsInterface, stateInterface> {
     config: Config = {
@@ -18,14 +21,20 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
     constructor(props: propsInterface) {
         super(props);
         this.state = {
-            familyName: "",
-            givenName: "",
-            role: rolesList[0],
-            rolesList: rolesList,
-            birthday: "",
-            branch: branchsList[0],
-            branchsList: branchsList,
-            isMentor: 0
+            description: "",
+            endDate: "",
+            endTime: "",
+            fee: "",
+            location: [],
+            recruitingUntilDate: "",
+            recruitingUntilTime: "",
+            startDate: "",
+            startTime: "",
+            title: "",
+            invitee: [],
+            inviteeList: [],
+            thumbnail: [],
+            files: []
         };
     }
     componentDidMount() {}
@@ -34,14 +43,28 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
         const iv = Taro.getStorageSync("iv");
         const encryptedData = Taro.getStorageSync("encryptedData");
         const res = await Taro.request({
-            url: `${MAINHOST}/learner`,
+            url: `${MAINHOST}/event`,
             data: {
-                familyName: this.state.familyName,
-                givenName: this.state.givenName,
-                role: this.state.role,
-                birthday: this.state.birthday,
-                branch: this.state.branch,
-                isMentor: this.state.branch === "全职教师" ? 1 : 0,
+                eventInfo: {
+                    description: "string",
+                    endDate: "string",
+                    endTime: "string",
+                    fee: "string",
+                    location: [{}],
+                    recruitingUntilDate: "string",
+                    recruitingUntilTime: "string",
+                    startDate: "string",
+                    startTime: "string",
+                    title: "string"
+                },
+                initiatorDisplayName: "string",
+                invitee: [
+                    {
+                        rule: "string",
+                        type: "string"
+                    }
+                ],
+                thumbnail: [],
                 iv,
                 encryptedData
             },
@@ -49,14 +72,38 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
             method: "POST"
         });
         if (res.statusCode === 201) {
-            Tips.toast("注册成功");
+            Tips.toast("发起成功");
         }
+    }
+    fileChange(val) {
+        console.log(val);
+    }
+    async choosePic() {
+        const res = await choosePicGetBase64();
+        // console.log(res);
+        if (this.state.thumbnail.length === 9) {
+            Tips.toast("图片不能超过9张");
+            return;
+        }
+        const arr = produce(this.state.thumbnail, draftState => {
+            draftState.push(res);
+        });
+
+        this.setState({
+            thumbnail: arr
+        });
+    }
+    removePic(index: number) {
+        const arr = produce(this.state.thumbnail, draftState => {
+            draftState.splice(index, 1);
+        });
+        this.setState({
+            thumbnail: arr
+        });
     }
     render() {
         return (
             <View className="identity-wrap">
-                {/* <View><Text>未能获取账户信息</Text></View>
-                <View><Text>如果你已注册ProjectAgora账户，请尝试一下登录一次网页端后再尝试</Text></View> */}
                 <ComponentBaseNavigation type="normal" />
                 <AtForm
                     onSubmit={this.onSubmit.bind(this)}
@@ -64,19 +111,17 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
                 >
                     <View className="act-panel">
                         <View className="act-title">一起打篮球</View>
-                        <View className='at-icon at-icon-edit'></View>
+                        <View className="at-icon at-icon-edit" />
                     </View>
-                    <View className="register-title-panel">
-                        发起活动
-                    </View>
+                    <View className="register-title-panel">发起活动</View>
                     <AtInput
                         name="value"
                         title="活动简介"
                         type="text"
                         placeholder="活动简介"
-                        value={this.state.familyName}
+                        value={this.state.description}
                         onChange={val => {
-                            this.setState({ familyName: val.toString() });
+                            this.setState({ description: String(val) });
                         }}
                     />
 
@@ -85,13 +130,13 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
                             mode="date"
                             onChange={e => {
                                 this.setState({
-                                    birthday: e.detail.value
+                                    startDate: e.detail.value
                                 });
                             }}
                         >
                             <View className="label-item">活动时间</View>
                             <View className="value-item">
-                                {this.state.birthday || "请选择活动时间"}
+                                {this.state.startDate || "请选择活动时间"}
                             </View>
                         </Picker>
                     </View>
@@ -100,9 +145,9 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
                         title="活动费用"
                         type="text"
                         placeholder="活动费用"
-                        value={this.state.familyName}
+                        value={this.state.fee}
                         onChange={val => {
-                            this.setState({ familyName: val.toString() });
+                            this.setState({ fee: String(val) });
                         }}
                     />
                     <View className="my-form-item">
@@ -110,42 +155,56 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
                             mode="date"
                             onChange={e => {
                                 this.setState({
-                                    birthday: e.detail.value
+                                    endDate: e.detail.value
                                 });
                             }}
                         >
                             <View className="label-item">截止时间</View>
                             <View className="value-item">
-                                {this.state.birthday || "请选择截止时间"}
+                                {this.state.endDate || "请选择截止时间"}
                             </View>
                         </Picker>
                     </View>
                     <View className="my-form-item">
                         <Picker
                             mode="selector"
-                            range={this.state.rolesList}
+                            range={this.state.invitee}
                             onChange={e => {
                                 this.setState({
-                                    role: this.state.rolesList[e.detail.value]
+                                    invitee: this.state.inviteeList[
+                                        e.detail.value
+                                    ]
                                 });
                             }}
                         >
                             <View className="label-item">邀请对象</View>
                             <View className="value-item">
-                                {this.state.role}
+                                {this.state.invitee}
                             </View>
                         </Picker>
                     </View>
-                    <AtInput
-                        name="value"
-                        title="附图"
-                        type="text"
-                        placeholder="附图"
-                        value={this.state.familyName}
-                        onChange={val => {
-                            this.setState({ familyName: val.toString() });
-                        }}
-                    />
+
+                    <View className="my-form-item">
+                        <View className="label-item">附图</View>
+                        <View className="value-item">
+                            {this.state.thumbnail.map((item, index) => {
+                                return (
+                                    <ImageView
+                                        pathId={item}
+                                        key={item}
+                                        img-class="preview-image"
+                                        onClick={() => {
+                                            this.removePic(index);
+                                        }}
+                                    />
+                                );
+                            })}
+                            <View
+                                className="at-icon at-icon-add"
+                                onClick={() => this.choosePic()}
+                            />
+                        </View>
+                    </View>
 
                     <AtButton formType="submit" className="sub-button">
                         确认发起

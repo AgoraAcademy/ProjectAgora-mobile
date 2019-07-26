@@ -21,3 +21,14 @@
 .navigation {
     width: 100%;
 }
+
+.back-header{
+    height:100%;
+    display: flex;
+    align-items: center;
+    padding-left:20rpx;
+    .at-icon{
+        height: 30rpx;
+        width:30rpx;
+    }
+}

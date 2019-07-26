@@ -29,13 +29,13 @@ class home extends Component<homeProps, homeState> {
     }
     async getData() {
         const token = Taro.getStorageSync("token");
-        const iv = Taro.getStorageSync("iv");
-        const encryptedData = Taro.getStorageSync("encryptedData");
+        // const iv = Taro.getStorageSync("iv");
+        // const encryptedData = Taro.getStorageSync("encryptedData");
         const res = await Taro.request({
             url: `${MAINHOST}/event`,
             data: {
-                iv,
-                encryptedData
+                // iv,
+                // encryptedData
             },
             header: { token: token },
             method: "GET"

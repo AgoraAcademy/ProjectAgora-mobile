@@ -1,4 +1,3 @@
-
 /**
  * activityCard.state 参数类型
  *
@@ -6,14 +5,20 @@
  * @interface stateInterface
  */
 export interface stateInterface {
-    familyName:string,
-    givenName:string,
-    role:string,
-    birthday:string,
-    branch:string,
-    isMentor:number,
-    rolesList: Array<string>,
-    branchsList: Array<string>,
+    description: string;
+    endDate: string;
+    endTime: string;
+    fee: string;
+    location: Array<any>;
+    recruitingUntilDate: string;
+    recruitingUntilTime: string;
+    startDate: string;
+    startTime: string;
+    title: string;
+    invitee: Array<any>;
+    inviteeList: Array<any>;
+    thumbnail: Array<string>;
+    files: Array<any>;
 }
 
 /**
@@ -23,5 +28,5 @@ export interface stateInterface {
  * @interface propsInterface
  */
 export interface propsInterface {
-    identity:string
+    identity: string;
 }
