@@ -76,7 +76,7 @@ class activityCardDetail extends Component<propsInterface, stateInterface> {
             <View className="identity-wrap">
                 <ComponentBaseNavigation type="childPage" />
                 <AtForm
-                    onSubmit={this.onSubmit.bind(this)}
+                    onSubmit={() => this.onSubmit()}
                     className="formPanel"
                 >
                     <View className="act-panel">

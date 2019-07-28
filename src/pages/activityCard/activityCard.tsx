@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from "@tarojs/taro";
-import { View, Picker, Image } from "@tarojs/components";
+import { View, Picker } from "@tarojs/components";
 import { AtForm, AtInput, AtButton } from "taro-ui";
 // import { connect } from "@tarojs/redux";
 // import Api from '../../utils/request'
@@ -34,45 +34,84 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
             invitee: [],
             inviteeList: [],
             thumbnail: [],
-            files: []
+            files: [],
+            loading: false
         };
+    }
+    onShow() {
+        console.log("onshow");
     }
     componentDidMount() {}
     async onSubmit() {
-        const token = Taro.getStorageSync("token");
-        const iv = Taro.getStorageSync("iv");
-        const encryptedData = Taro.getStorageSync("encryptedData");
-        const res = await Taro.request({
-            url: `${MAINHOST}/event`,
-            data: {
-                eventInfo: {
-                    description: "string",
-                    endDate: "string",
-                    endTime: "string",
-                    fee: "string",
-                    location: [{}],
-                    recruitingUntilDate: "string",
-                    recruitingUntilTime: "string",
-                    startDate: "string",
-                    startTime: "string",
-                    title: "string"
-                },
-                initiatorDisplayName: "string",
-                invitee: [
-                    {
-                        rule: "string",
-                        type: "string"
-                    }
-                ],
-                thumbnail: [],
-                iv,
-                encryptedData
-            },
-            header: { token: token },
-            method: "POST"
+        // const token = Taro.getStorageSync("token");
+        // const iv = Taro.getStorageSync("iv");
+        // const encryptedData = Taro.getStorageSync("encryptedData");
+        this.setState({
+            loading: true
         });
-        if (res.statusCode === 201) {
-            Tips.toast("发起成功");
+        const sendData = {
+            content: {},
+            eventInfo: {
+                description: this.state.description,
+                endDate: this.state.endDate,
+                endTime: this.state.endTime,
+                fee: this.state.fee,
+                location: [{}],
+                recruitingUntilDate: this.state.recruitingUntilDate,
+                recruitingUntilTime: this.state.recruitingUntilTime,
+                startDate: this.state.startDate,
+                startTime: this.state.startTime,
+                title: this.state.title,
+               
+            },
+            // initiatorDisplayName: "initiatorDisplayName",
+            invitee: [
+                {
+                    type: "filters",
+                    rules: [{ scope: "校区", value: "深圳·安格" }]
+                }
+            ],
+            thumbnail: this.state.thumbnail,
+            inviteeItem: 0
+        };
+        console.log(sendData);
+        return;
+        try {
+            const res = await this.$api({
+                url: `${MAINHOST}/event`,
+                data: {
+                    content: {},
+                    eventInfo: {
+                        description: "test",
+                        endDate: "2019-09-09",
+                        endTime: "19:00",
+                        fee: "10",
+                        location: [{}],
+                        recruitingUntilDate: "2019-09-09",
+                        recruitingUntilTime: "19:00",
+                        startDate: "2019-09-09",
+                        startTime: "19:00",
+                        title: "test title"
+                    },
+                    // initiatorDisplayName: "initiatorDisplayName",
+                    invitee: [
+                        {
+                            type: "filters",
+                            rules: [{ scope: "校区", value: "深圳·安格" }]
+                        }
+                    ],
+                    thumbnail: this.state.thumbnail
+                },
+                // header: { token: token },
+                method: "POST"
+            });
+            // this.setState({
+            //     loading: false
+            // });
+        } catch (error) {
+            this.setState({
+                loading: false
+            });
         }
     }
     fileChange(val) {
@@ -104,11 +143,8 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
     render() {
         return (
             <View className="identity-wrap">
-                <ComponentBaseNavigation type="normal" />
-                <AtForm
-                    onSubmit={this.onSubmit.bind(this)}
-                    className="formPanel"
-                >
+                <ComponentBaseNavigation type="childPage" />
+                <AtForm onSubmit={() => this.onSubmit()} className="formPanel">
                     <View className="act-panel">
                         <View className="act-title">一起打篮球</View>
                         <View className="at-icon at-icon-edit" />
@@ -128,6 +164,7 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
                     <View className="my-form-item">
                         <Picker
                             mode="date"
+                            value={this.state.startDate}
                             onChange={e => {
                                 this.setState({
                                     startDate: e.detail.value
@@ -153,6 +190,7 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
                     <View className="my-form-item">
                         <Picker
                             mode="date"
+                            value={this.state.endDate}
                             onChange={e => {
                                 this.setState({
                                     endDate: e.detail.value
@@ -167,11 +205,28 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
                     </View>
                     <View className="my-form-item">
                         <Picker
-                            mode="selector"
-                            range={this.state.invitee}
+                            mode="date"
+                            value={this.state.recruitingUntilDate}
                             onChange={e => {
                                 this.setState({
-                                    invitee: this.state.inviteeList[
+                                    recruitingUntilDate: e.detail.value
+                                });
+                            }}
+                        >
+                            <View className="label-item">招募截止时间</View>
+                            <View className="value-item">
+                                {this.state.recruitingUntilDate || "招募截止时间"}
+                            </View>
+                        </Picker>
+                    </View>
+                    <View className="my-form-item">
+                        <Picker
+                            mode="selector"
+                            value={this.state.inviteeItem}
+                            range={this.state.inviteeList}
+                            onChange={e => {
+                                this.setState({
+                                    inviteeItem: this.state.inviteeList[
                                         e.detail.value
                                     ]
                                 });
@@ -179,7 +234,7 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
                         >
                             <View className="label-item">邀请对象</View>
                             <View className="value-item">
-                                {this.state.invitee}
+                                {this.state.inviteeItem}
                             </View>
                         </Picker>
                     </View>
@@ -206,7 +261,11 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
                         </View>
                     </View>
 
-                    <AtButton formType="submit" className="sub-button">
+                    <AtButton
+                        formType="submit"
+                        className="sub-button"
+                        loading={this.state.loading}
+                    >
                         确认发起
                     </AtButton>
                 </AtForm>

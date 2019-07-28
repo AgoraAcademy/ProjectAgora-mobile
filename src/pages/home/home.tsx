@@ -8,6 +8,8 @@ import { MAINHOST } from "../../config";
 import { homeProps, homeState } from "./home.interface";
 import "./home.scss";
 import ComponentBaseNavigation from "../../components/ComponentHomeNavigation/componentHomeNavigation";
+import ImageView from "../../components/ImageView/ImageView";
+import produce from "immer";
 import classnames from "classnames";
 // import { } from '../../components'
 
@@ -28,68 +30,57 @@ class home extends Component<homeProps, homeState> {
         };
     }
     async getData() {
-        const token = Taro.getStorageSync("token");
-        // const iv = Taro.getStorageSync("iv");
-        // const encryptedData = Taro.getStorageSync("encryptedData");
-        const res = await Taro.request({
-            url: `${MAINHOST}/event`,
-            data: {
-                // iv,
-                // encryptedData
-            },
-            header: { token: token },
-            method: "GET"
+        const res = await this.$api({
+            url: `${MAINHOST}/event`
         });
         console.log({
             res
         });
-    }
-    componentDidMount() {
-        this.getData();
-        const pushList = [
-            {
-                type: "活动",
-                title: "篮球",
-                date: "7月20日",
-                desc: "中银花园",
-                projectStatusText: "招募中",
-                id: 1
-            },
-            {
-                type: "社区",
-                title: "2019秋季放假安排",
-                date: "7月20日",
-                desc: "放假安排描述",
-                projectStatusText: "招募中",
-                id: 2
-            },
-            {
-                type: "项目",
-                title: "安格游戏工作室",
-                date: "7月20日",
-                desc:
-                    "安格游戏工作室安格游戏工作室安格游戏工作室安格游戏工作室安格游戏工作室",
-                projectStatusText: "招募中",
-                id: 3
-            },
-            {
-                type: "社区",
-                title: "2019秋季放假安排",
-                date: "7月20日",
-                desc: "放假安排描述",
-                projectStatusText: "招募中",
-                id: 4
-            },
-            {
-                type: "项目",
-                title: "安格游戏工作室",
-                date: "7月20日",
-                desc:
-                    "安格游戏工作室安格游戏工作室安格游戏工作室安格游戏工作室安格游戏工作室",
-                projectStatusText: "招募中",
-                id: 5
-            }
-        ];
+        const pushList = res;
+        // const pushList = [
+        //     {
+        //         type: "活动",
+        //         title: "篮球",
+        //         date: "7月20日",
+        //         desc: "中银花园",
+        //         projectStatusText: "招募中",
+        //         id: 1
+        //     },
+        //     {
+        //         type: "社区",
+        //         title: "2019秋季放假安排",
+        //         date: "7月20日",
+        //         desc: "放假安排描述",
+        //         projectStatusText: "招募中",
+        //         id: 2
+        //     },
+        //     {
+        //         type: "项目",
+        //         title: "安格游戏工作室",
+        //         date: "7月20日",
+        //         desc:
+        //             "安格游戏工作室安格游戏工作室安格游戏工作室安格游戏工作室安格游戏工作室",
+        //         projectStatusText: "招募中",
+        //         id: 3
+        //     },
+        //     {
+        //         type: "社区",
+        //         title: "2019秋季放假安排",
+        //         date: "7月20日",
+        //         desc: "放假安排描述",
+        //         projectStatusText: "招募中",
+        //         id: 4
+        //     },
+        //     {
+        //         type: "项目",
+        //         title: "安格游戏工作室",
+        //         date: "7月20日",
+        //         desc:
+        //             "安格游戏工作室安格游戏工作室安格游戏工作室安格游戏工作室安格游戏工作室",
+        //         projectStatusText: "招募中",
+        //         id: 5
+        //     }
+        // ];
         const noticeList = [
             {
                 type: "社区",
@@ -110,6 +101,7 @@ class home extends Component<homeProps, homeState> {
         ];
         pushList.forEach(item => {
             item["status"] = false;
+            item["type"] = "活动";
         });
         noticeList.forEach(item => {
             item["status"] = false;
@@ -120,6 +112,14 @@ class home extends Component<homeProps, homeState> {
             noticeList
         });
     }
+    componentDidShow() {
+        this.getData();
+    }
+
+    // componentDidMount() {
+    //     this.getData();
+
+    // }
     goDetail(type, item) {
         Taro.navigateTo({
             url:
@@ -129,17 +129,27 @@ class home extends Component<homeProps, homeState> {
                 item.id
         });
     }
-    join(item, event) {
+    cancel(item, event) {
+        event.stopPropagation();
+        this.toggle(item, event);
+    }
+    async join(item, event) {
+        event.stopPropagation();
+        this.toggle(item, event);
+    }
+    toggle(item, event) {
         // console.log({ event ,item});
         event.stopPropagation();
         const type =
             this.state.chooseType === "push" ? "pushList" : "noticeList";
-        const list = JSON.parse(JSON.stringify(this.state[type]));
-        list.forEach(active => {
-            if (active.id === item.id) {
-                active.status = !item.status;
-            }
+        const list = produce(this.state[type], draftState => {
+            draftState.forEach(active => {
+                if (active.id === item.id) {
+                    active.status = !item.status;
+                }
+            });
         });
+
         if (type === "pushList") {
             this.setState({
                 pushList: list
@@ -185,6 +195,7 @@ class home extends Component<homeProps, homeState> {
                         </View>
                         <View className="left-panel">
                             <View className="avatar" />
+                            {/* <ImageView img-class="avatar" pathId=""></ImageView> */}
                             <View
                                 className="status-button"
                                 style={
@@ -195,11 +206,17 @@ class home extends Component<homeProps, homeState> {
                             </View>
                         </View>
                         <View className="infoPanel">
-                            <View className="title">{item.title}</View>
-                            <View className="date">{item.date}</View>
-                            <View className="desc">{item.desc}</View>
+                            <View className="title">
+                                {item.eventInfo.title}
+                            </View>
+                            <View className="date">
+                                {item.eventInfo.startDate}
+                            </View>
+                            <View className="desc">
+                                {item.eventInfo.description}
+                            </View>
                         </View>
-                        <View onClick={this.join.bind(this, item)}>
+                        <View onClick={this.toggle.bind(this, item)}>
                             <AtButton className="sub-button">报名</AtButton>
                         </View>
 
@@ -207,11 +224,17 @@ class home extends Component<homeProps, homeState> {
                     </View>
                     {item.status ? (
                         <View className="action-panel">
-                            <View className="action-item">
+                            <View
+                                className="action-item"
+                                onClick={this.cancel.bind(this, item)}
+                            >
                                 <View className="at-icon at-icon-close icon-close" />
                                 <Text className="text">取消</Text>
                             </View>
-                            <View className="action-item">
+                            <View
+                                className="action-item"
+                                onClick={this.join.bind(this, item)}
+                            >
                                 <View className="at-icon at-icon-help icon-help" />
                                 <Text className="text">可能参加</Text>
                             </View>

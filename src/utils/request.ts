@@ -182,5 +182,5 @@ export class Request {
 
 // 导出
 const Api = Request.getApiList(requestConfig)
-Component.prototype.$api = Api
+Component.prototype.$api = Request.request.bind(Request)
 export default Api as any

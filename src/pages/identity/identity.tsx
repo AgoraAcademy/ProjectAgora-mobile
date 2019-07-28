@@ -60,7 +60,7 @@ class Identity extends Component<IdentityProps, IdentityState> {
                 <View><Text>如果你已注册ProjectAgora账户，请尝试一下登录一次网页端后再尝试</Text></View> */}
                 <ComponentBaseNavigation type="normal"/>
                 <AtForm
-                    onSubmit={this.onSubmit.bind(this)}
+                    onSubmit={() => this.onSubmit()}
                     className="formPanel"
                 >
                     <View className="register-title-panel">新用户注册</View>
@@ -87,6 +87,7 @@ class Identity extends Component<IdentityProps, IdentityState> {
                     <View className="my-form-item">
                         <Picker
                             mode="date"
+                            value={this.state.birthday}
                             onChange={e => {
                                 this.setState({
                                     birthday: e.detail.value
@@ -102,6 +103,7 @@ class Identity extends Component<IdentityProps, IdentityState> {
                     <View className="my-form-item">
                         <Picker
                             mode="selector"
+                            value={0}
                             range={this.state.rolesList}
                             onChange={e => {
                                 this.setState({
@@ -118,6 +120,7 @@ class Identity extends Component<IdentityProps, IdentityState> {
                     <View className="my-form-item">
                         <Picker
                             mode="selector"
+                            value={0}
                             range={this.state.branchsList}
                             onChange={e => {
                                 this.setState({

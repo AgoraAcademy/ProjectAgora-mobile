@@ -19,6 +19,8 @@ export interface stateInterface {
     inviteeList: Array<any>;
     thumbnail: Array<string>;
     files: Array<any>;
+    loading: boolean;
+    inviteeItem: number
 }
 
 /**

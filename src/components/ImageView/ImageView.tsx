@@ -1,5 +1,5 @@
 import Taro, { Component } from "@tarojs/taro";
-import { Image, View } from "@tarojs/components";
+import { Image } from "@tarojs/components";
 import { StateInterface, PropsInterface } from "./interface";
 import { MAINHOST } from "../../config";
 
@@ -16,6 +16,9 @@ class ComponentHomeNavigation extends Component<
     }
 
     componentDidMount() {
+        if(!this.props.pathId){
+            return
+        }
         const token = Taro.getStorageSync("token");
         const _this = this;
         wx.downloadFile({

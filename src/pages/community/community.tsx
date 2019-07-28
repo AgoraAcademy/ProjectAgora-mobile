@@ -35,6 +35,9 @@ class Community extends Component<CommunityProps,CommunityState > {
         const menuList=[{
             label:"发起活动",
             url:'/pages/activityCard/activityCard'
+        },{
+            label:"授权页",
+            url:'/pages/authorize/authorize'
         }]
         return (
             <View className='community-wrap'>

@@ -39,9 +39,8 @@ class App extends Component {
      */
     config: Config = {
         pages: [
-           
+            
             "pages/home/home",
-            "pages/activityCardDetail/activityCardDetail",
             "pages/noticeCard/noticeCard",
             "pages/index/index",
             "pages/booking/booking",
@@ -49,6 +48,8 @@ class App extends Component {
             "pages/identity/identity",
             "pages/community/community",
             "pages/activityCard/activityCard",
+            "pages/activityCardDetail/activityCardDetail",
+            
            
         ],
         window: {
