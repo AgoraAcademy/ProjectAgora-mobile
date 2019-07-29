@@ -77,10 +77,14 @@ export class Request {
         //  Taro.request 请求
         console.log("before TaroRequest", opts)
         const res = await Taro.request(opts)
-
+        
         if (res.statusCode === 401 || res.statusCode === 400 || res.statusCode === 403) {
             console.log(res)
-            Tips.toast("出错，请联系管理员PP")
+            if(res.statusCode === 401){
+                await this.login() // 重新登录
+            }else{
+                Tips.toast("出错，请联系管理员PP")
+            }
         }
 
         // 是否mock

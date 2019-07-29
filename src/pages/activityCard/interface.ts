@@ -20,7 +20,8 @@ export interface stateInterface {
     thumbnail: Array<string>;
     files: Array<any>;
     loading: boolean;
-    inviteeItem: number
+    inviteeItem: number,
+    editStatus: boolean
 }
 
 /**

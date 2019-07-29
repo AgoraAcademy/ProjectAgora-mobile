@@ -35,7 +35,9 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
             inviteeList: [],
             thumbnail: [],
             files: [],
-            loading: false
+            loading: false,
+            inviteeItem: 0,
+            editStatus: true
         };
     }
     onShow() {
@@ -61,8 +63,7 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
                 recruitingUntilTime: this.state.recruitingUntilTime,
                 startDate: this.state.startDate,
                 startTime: this.state.startTime,
-                title: this.state.title,
-               
+                title: this.state.title
             },
             // initiatorDisplayName: "initiatorDisplayName",
             invitee: [
@@ -140,14 +141,37 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
             thumbnail: arr
         });
     }
+    changeEditStatus() {
+        this.setState({
+            editStatus: !this.state.editStatus
+        });
+    }
     render() {
         return (
             <View className="identity-wrap">
                 <ComponentBaseNavigation type="childPage" />
                 <AtForm onSubmit={() => this.onSubmit()} className="formPanel">
                     <View className="act-panel">
-                        <View className="act-title">一起打篮球</View>
-                        <View className="at-icon at-icon-edit" />
+                        {this.state.editStatus ? (
+                            <AtInput
+                                name="value"
+                                title=""
+                                type="text"
+                                placeholder="活动标题"
+                                value={this.state.title}
+                                onChange={val => {
+                                    this.setState({ title: String(val) });
+                                }}
+                            />
+                        ) : (
+                            <View className="act-title">
+                                {this.state.title}
+                            </View>
+                        )}
+                        <View
+                            className="at-icon at-icon-edit"
+                            onClick={() => this.changeEditStatus()}
+                        />
                     </View>
                     <View className="register-title-panel">发起活动</View>
                     <AtInput
@@ -215,7 +239,8 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
                         >
                             <View className="label-item">招募截止时间</View>
                             <View className="value-item">
-                                {this.state.recruitingUntilDate || "招募截止时间"}
+                                {this.state.recruitingUntilDate ||
+                                    "招募截止时间"}
                             </View>
                         </Picker>
                     </View>
