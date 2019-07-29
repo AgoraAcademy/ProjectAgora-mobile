@@ -129,15 +129,15 @@ class home extends Component<homeProps, homeState> {
                 item.id
         });
     }
-    cancel(item, event) {
+    cancel(item, event: React.MouseEvent) {
         event.stopPropagation();
         this.toggle(item, event);
     }
-    async join(item, event) {
+    async join(item, event: React.MouseEvent) {
         event.stopPropagation();
         this.toggle(item, event);
     }
-    toggle(item, event) {
+    toggle(item, event: React.MouseEvent) {
         // console.log({ event ,item});
         event.stopPropagation();
         const type =
