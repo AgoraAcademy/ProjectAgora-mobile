@@ -56,9 +56,9 @@ class ComponentHomeNavigation extends Component<
         ];
         return (
             <ComponentBaseNavigation>
-                <View className="navigation">
+                <View className="navigation-box">
                     {this.props.type === "normal" ? (
-                        <View>
+                        <View className="sub-box">
                             <AtDrawer
                                 show={this.state.overlayStatus}
                                 mask
@@ -66,8 +66,11 @@ class ComponentHomeNavigation extends Component<
                             >
                                 <Overlay />
                             </AtDrawer>
-                            <View onClick={() => this.showOverlay()}>
-                                侧边栏
+                            <View
+                                onClick={() => this.showOverlay()}
+                                className="icon-menu"
+                            >
+                                <AtIcon value="menu" />
                             </View>
                             <View className="ul">
                                 {routeMap.map(item => {

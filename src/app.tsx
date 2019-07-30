@@ -39,7 +39,6 @@ class App extends Component {
      */
     config: Config = {
         pages: [
-           
             "pages/home/home",
             "pages/noticeCard/noticeCard",
             "pages/index/index",
@@ -48,9 +47,7 @@ class App extends Component {
             "pages/identity/identity",
             "pages/community/community",
             "pages/activityCard/activityCard",
-            "pages/activityCardDetail/activityCardDetail",
-            
-           
+            "pages/activityCardDetail/activityCardDetail"
         ],
         window: {
             backgroundTextStyle: "light",
@@ -111,7 +108,11 @@ class App extends Component {
 
     componentDidCatchError() {}
 
-    componentDidMount() {}
+    componentDidMount() {
+        wx.showShareMenu({
+            withShareTicket: true
+        });
+    }
 
     // 在 App 类中的 render() 函数没有实际作用
     // 请勿修改此函数

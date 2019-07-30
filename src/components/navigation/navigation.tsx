@@ -32,7 +32,7 @@ class ComponentBaseNavigation extends Component<
             color
         } = this.state;
         const barStyle = {
-            paddingTop: `${statusBarHeight || 20}px`,
+            paddingTop: `${statusBarHeight + 30 || 30}px`,
             backgroundColor,
             color
         };
@@ -41,7 +41,7 @@ class ComponentBaseNavigation extends Component<
                 <View className="bar" style={barStyle}>
                     {this.props.children}
                 </View>
-                <View className="placeholder" style={barStyle} />
+                {/* <View className="placeholder" style={barStyle} /> */}
             </View>
         );
     }
