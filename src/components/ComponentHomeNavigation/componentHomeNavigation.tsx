@@ -1,9 +1,10 @@
 import Taro, { Component } from "@tarojs/taro";
 import { View, Text } from "@tarojs/components";
-import { AtIcon } from "taro-ui";
+import { AtIcon, AtDrawer } from "taro-ui";
 import classNames from "classnames";
 import ComponentBaseNavigation from "../navigation/navigation";
 import { StateInterface, PropsInterface } from "./interface";
+import Overlay from "../Overlay";
 import "./style.scss";
 
 class ComponentHomeNavigation extends Component<
@@ -13,7 +14,8 @@ class ComponentHomeNavigation extends Component<
     constructor(props) {
         super(props);
         this.state = {
-            routePath: ""
+            routePath: "",
+            overlayStatus: false
         };
     }
 
@@ -36,6 +38,16 @@ class ComponentHomeNavigation extends Component<
             Taro.navigateBack();
         }
     }
+    showOverlay() {
+        this.setState({
+            overlayStatus: true
+        });
+    }
+    closeOverlay() {
+        this.setState({
+            overlayStatus: false
+        });
+    }
     render() {
         const routeMap = [
             { path: "/pages/home/home", name: "我的" },
@@ -46,22 +58,34 @@ class ComponentHomeNavigation extends Component<
             <ComponentBaseNavigation>
                 <View className="navigation">
                     {this.props.type === "normal" ? (
-                        <View className="ul">
-                            {routeMap.map(item => {
-                                return (
-                                    <View
-                                        className={classNames("li", {
-                                            active: item.path.includes(
-                                                this.state.routePath
-                                            )
-                                        })}
-                                        key={item.path}
-                                        onClick={() => this.jump(item.path)}
-                                    >
-                                        {item.name}
-                                    </View>
-                                );
-                            })}
+                        <View>
+                            <AtDrawer
+                                show={this.state.overlayStatus}
+                                mask
+                                onClose={this.closeOverlay.bind(this)}
+                            >
+                                <Overlay />
+                            </AtDrawer>
+                            <View onClick={() => this.showOverlay()}>
+                                侧边栏
+                            </View>
+                            <View className="ul">
+                                {routeMap.map(item => {
+                                    return (
+                                        <View
+                                            className={classNames("li", {
+                                                active: item.path.includes(
+                                                    this.state.routePath
+                                                )
+                                            })}
+                                            key={item.path}
+                                            onClick={() => this.jump(item.path)}
+                                        >
+                                            {item.name}
+                                        </View>
+                                    );
+                                })}
+                            </View>
                         </View>
                     ) : (
                         <View

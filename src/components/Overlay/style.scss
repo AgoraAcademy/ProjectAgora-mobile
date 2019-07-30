@@ -1,0 +1,21 @@
+@import '../../variable.scss';
+.overlay-box {
+    padding-top: 100rpx;
+}
+.list-item {
+    height: 110rpx;
+    display: flex;
+    align-items: center;
+    padding-left: 20rpx;
+    position: relative;
+    &.active {
+        &:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            height: 100%;
+            width: 4rpx;
+            background: $main;
+        }
+    }
+}
