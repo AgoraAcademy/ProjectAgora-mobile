@@ -32,7 +32,7 @@ class ComponentBaseNavigation extends Component<
             color
         } = this.state;
         const barStyle = {
-            paddingTop: `${statusBarHeight + 30 || 30}px`,
+            paddingTop: `${statusBarHeight + 20 || 20}px`,
             backgroundColor,
             color
         };

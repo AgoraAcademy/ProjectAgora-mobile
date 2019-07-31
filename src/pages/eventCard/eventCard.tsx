@@ -5,7 +5,7 @@ import { AtForm, AtInput, AtButton } from "taro-ui";
 // import Api from '../../utils/request'
 import Tips from "../../utils/tips";
 import { propsInterface, stateInterface } from "./interface";
-import "./activityCard.scss";
+import "./eventCard.scss";
 import { MAINHOST } from "../../config";
 import ComponentBaseNavigation from "../../components/ComponentHomeNavigation/componentHomeNavigation";
 import ImageView from "../../components/ImageView/ImageView";
@@ -14,7 +14,7 @@ import produce from "immer";
 // import { } from '../../components'
 import { choosePicGetBase64 } from "../../utils/common";
 
-class ActivityCard extends Component<propsInterface, stateInterface> {
+class EventCard extends Component<propsInterface, stateInterface> {
     config: Config = {
         navigationBarTitleText: "活动"
     };
@@ -148,7 +148,7 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
     }
     render() {
         return (
-            <View className="identity-wrap">
+            <View className="event-card-wrap">
                 <ComponentBaseNavigation type="childPage" />
                 <AtForm onSubmit={() => this.onSubmit()} className="formPanel">
                     <View className="act-panel">
@@ -299,4 +299,4 @@ class ActivityCard extends Component<propsInterface, stateInterface> {
     }
 }
 
-export default ActivityCard;
+export default EventCard;

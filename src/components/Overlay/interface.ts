@@ -9,7 +9,7 @@ export interface StateInterface {
 }
 
 /**
- * identity.props 参数类型
+ * props 参数类型
  *
  * @export
  * @interface PropsInterface

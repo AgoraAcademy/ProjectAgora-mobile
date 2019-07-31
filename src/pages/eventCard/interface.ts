@@ -1,5 +1,5 @@
 /**
- * activityCard.state 参数类型
+ * state 参数类型
  *
  * @export
  * @interface stateInterface
@@ -25,7 +25,7 @@ export interface stateInterface {
 }
 
 /**
- * activityCard.props 参数类型
+ * props 参数类型
  *
  * @export
  * @interface propsInterface

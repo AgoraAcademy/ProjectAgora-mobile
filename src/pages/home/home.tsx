@@ -31,7 +31,7 @@ class home extends Component<homeProps, homeState> {
     }
     async getData() {
         const res = await this.$api({
-            url: `${MAINHOST}/event`
+            url: `${MAINHOST}/pushMessage`
         });
         console.log({
             res
@@ -123,7 +123,7 @@ class home extends Component<homeProps, homeState> {
     goDetail(type, item) {
         Taro.navigateTo({
             url:
-                "/pages/activityCardDetail/activityCardDetail?type=" +
+                "/pages/eventCardDetail/eventCardDetail?type=" +
                 type +
                 "&id=" +
                 item.id

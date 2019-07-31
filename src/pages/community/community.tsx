@@ -34,7 +34,7 @@ class Community extends Component<CommunityProps,CommunityState > {
     render() {
         const menuList=[{
             label:"发起活动",
-            url:'/pages/activityCard/activityCard'
+            url:'/pages/eventCard/eventCard'
         },{
             label:"授权页",
             url:'/pages/authorize/authorize'

@@ -37,7 +37,7 @@ home-wrap {
 }
 .scrollview{
     // height:400rpx;
-    height:calc(100vh - 260rpx);
+    height:calc(100vh - 200rpx);
     // border: 1px solid red;
 }
 .ul-ele {
@@ -48,7 +48,7 @@ home-wrap {
     position: relative;
     margin-bottom:40rpx;
     &.active {
-        background: $actvity-Panel;
+        background: $event-Panel;
         .tag{
             transform: translateX(-20rpx);
         }

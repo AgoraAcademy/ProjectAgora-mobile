@@ -1,11 +1,12 @@
 import Taro, { Component } from "@tarojs/taro";
-import { View, Text } from "@tarojs/components";
+import { View, Text, Image } from "@tarojs/components";
 import { AtIcon, AtDrawer } from "taro-ui";
 import classNames from "classnames";
 import ComponentBaseNavigation from "../navigation/navigation";
 import { StateInterface, PropsInterface } from "./interface";
 import Overlay from "../Overlay";
 import "./style.scss";
+import logo from '../../assets/logo.png';
 
 class ComponentHomeNavigation extends Component<
     PropsInterface,
@@ -71,6 +72,7 @@ class ComponentHomeNavigation extends Component<
                                 className="icon-menu"
                             >
                                 <AtIcon value="menu" />
+                                <Image src={logo} className="logo"></Image>
                             </View>
                             <View className="ul">
                                 {routeMap.map(item => {

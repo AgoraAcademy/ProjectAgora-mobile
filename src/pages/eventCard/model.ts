@@ -1,9 +1,8 @@
 
 // import Taro from '@tarojs/taro';
-import * as activityCardApi from './service';
 
 export default {
-    namespace: 'activityCard',
+    namespace: 'eventCard',
     state: {
     },
 

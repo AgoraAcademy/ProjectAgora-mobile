@@ -5,13 +5,13 @@ import { AtForm, AtButton } from "taro-ui";
 // import Api from '../../utils/request'
 import Tips from "../../utils/tips";
 import { propsInterface, stateInterface } from "./interface";
-import "./activityCardDetail.scss";
+import "./eventCardDetail.scss";
 import { MAINHOST } from "../../config";
 import ComponentBaseNavigation from "../../components/ComponentHomeNavigation/componentHomeNavigation";
 import { rolesList, branchsList } from "../../globalData";
 // import { } from '../../components'
 
-class activityCardDetail extends Component<propsInterface, stateInterface> {
+class EventCardDetail extends Component<propsInterface, stateInterface> {
     config: Config = {
         navigationBarTitleText: "活动"
     };
@@ -73,7 +73,7 @@ class activityCardDetail extends Component<propsInterface, stateInterface> {
     }
     render() {
         return (
-            <View className="identity-wrap">
+            <View className="event-card-detail-wrap">
                 <ComponentBaseNavigation type="childPage" />
                 <AtForm
                     onSubmit={() => this.onSubmit()}
@@ -132,4 +132,4 @@ class activityCardDetail extends Component<propsInterface, stateInterface> {
     }
 }
 
-export default activityCardDetail;
+export default EventCardDetail;

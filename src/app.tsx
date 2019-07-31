@@ -46,8 +46,8 @@ class App extends Component {
             "pages/authorize/authorize",
             "pages/identity/identity",
             "pages/community/community",
-            "pages/activityCard/activityCard",
-            "pages/activityCardDetail/activityCardDetail"
+            "pages/eventCard/eventCard",
+            "pages/eventCardDetail/eventCardDetail"
         ],
         window: {
             backgroundTextStyle: "light",
