@@ -26,7 +26,8 @@ class home extends Component<homeProps, homeState> {
         this.state = {
             pushList: [],
             chooseType: 'push',
-            noticeList: []
+            noticeList: [],
+            members:[]
         };
     }
     async getData() {
@@ -113,6 +114,7 @@ class home extends Component<homeProps, homeState> {
         });
     }
     componentDidShow() {
+        console.log(this.$router.params)
         this.getData();
     }
 
@@ -170,7 +172,6 @@ class home extends Component<homeProps, homeState> {
             计划: 'yellow'
         }[type];
     }
-
     render() {
         const data =
             this.state.chooseType === 'push'
@@ -269,7 +270,7 @@ class home extends Component<homeProps, homeState> {
         ];
         return (
             <View className='home-wrap'>
-                <ComponentBaseNavigation type='normal' />
+                <ComponentBaseNavigation type='normal-page' />
                 <ScrollView
                     className='scrollview'
                     scrollY

@@ -410,7 +410,7 @@ class Booking extends Component<BookingProps, BookingState> {
         const stepitems = [{ title: '选择区域' }, { title: '选择房间' }, { title: '选择日期' }, { title: '选择时间' }, { title: '预约信息' }]
         return (
             <View className='booking-wrap'>
-                <ComponentBaseNavigation type="normal"/>
+                <ComponentBaseNavigation type="normal-page"/>
                 <View className="stepIndicator">
                     <AtSteps
                         items={stepitems}

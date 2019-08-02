@@ -57,7 +57,7 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
             <View className="notice-card-wrap">
                 {/* <View><Text>未能获取账户信息</Text></View>
                 <View><Text>如果你已注册ProjectAgora账户，请尝试一下登录一次网页端后再尝试</Text></View> */}
-                <ComponentBaseNavigation type="normal" />
+                <ComponentBaseNavigation type="normal-page" />
                 <AtForm
                     onSubmit={() => this.onSubmit()}
                     className="formPanel"

@@ -41,7 +41,7 @@ class Community extends Component<CommunityProps,CommunityState > {
         }]
         return (
             <View className='community-wrap'>
-                <ComponentBaseNavigation type="normal" />
+                <ComponentBaseNavigation type="normal-page" />
                {
                    menuList.map(item=>{
                        return (

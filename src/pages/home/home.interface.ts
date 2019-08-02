@@ -8,6 +8,7 @@ export interface homeState {
     pushList: Array<any>;
     chooseType: string;
     noticeList: Array<any>;
+    members: Array<any>;
 }
 
 /**

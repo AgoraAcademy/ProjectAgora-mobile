@@ -101,7 +101,7 @@ class Index extends Component<IndexProps, IndexState> {
     render() {
         return (
             <View>
-                <ComponentBaseNavigation type="normal"/>
+                <ComponentBaseNavigation type="normal-page"/>
                 <View className="index-wrap">
                     <AtButton
                         type="primary"

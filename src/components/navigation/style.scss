@@ -15,6 +15,7 @@ $navigation-box-shadow: 0 2PX 2PX #222;
   background: transparent;
   width: 100%;
   margin-bottom: 130rpx;
+//   outline: 1px solid red;
   .bar {
     position: fixed;
     top: 0;
@@ -27,11 +28,6 @@ $navigation-box-shadow: 0 2PX 2PX #222;
     height: $navigation-height;
     z-index: 1;
     font-size: $navigation-font-size;
-  }
-
-  .placeholder {
-    display: block;
-    height: $navigation-height;
-    background: transparent;
+    
   }
 }

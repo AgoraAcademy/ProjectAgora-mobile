@@ -39,6 +39,7 @@ class App extends Component {
      */
     config: Config = {
         pages: [
+           
             "pages/home/home",
             "pages/noticeCard/noticeCard",
             "pages/index/index",
@@ -47,7 +48,8 @@ class App extends Component {
             "pages/identity/identity",
             "pages/community/community",
             "pages/eventCard/eventCard",
-            "pages/eventCardDetail/eventCardDetail"
+            "pages/eventCardDetail/eventCardDetail",
+            "pages/membersPicker/index",
         ],
         window: {
             backgroundTextStyle: "light",

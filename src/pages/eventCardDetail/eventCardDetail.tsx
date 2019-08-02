@@ -74,7 +74,7 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
     render() {
         return (
             <View className="event-card-detail-wrap">
-                <ComponentBaseNavigation type="childPage" />
+                <ComponentBaseNavigation type="child-page" />
                 <AtForm
                     onSubmit={() => this.onSubmit()}
                     className="formPanel"

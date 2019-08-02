@@ -4,8 +4,7 @@
  * @interface StateInterface
  */
 export interface StateInterface {
-    routePath: string;
-    overlayStatus: boolean;
+    bg: string;
 }
 
 /**
@@ -15,6 +14,5 @@ export interface StateInterface {
  * @interface PropsInterface
  */
 export interface PropsInterface {
-    type: 'normal-page' | 'child-page' | 'picker-page';
-    back?: Function;
+    text: string;
 }
