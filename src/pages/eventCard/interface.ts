@@ -4,6 +4,7 @@
  * @export
  * @interface stateInterface
  */
+import { IMG_TYPE } from '../../globalData/globalInterface'
 export interface stateInterface {
     description: string;
     endDate: string;
@@ -33,4 +34,14 @@ export interface stateInterface {
  */
 export interface propsInterface {
     identity: string;
+    type: IMG_TYPE
+}
+
+export interface Filter {
+    scope: "校区" | "角色",
+    value: string
+}
+export interface Rule {
+    type: "list" | "filters",
+    content: number[] | Filter[]
 }

@@ -1,25 +1,25 @@
-import Taro, { Component, Config } from '@tarojs/taro';
-import { View, Text, Input, Picker, ScrollView } from '@tarojs/components';
-import { AtTag, AtButton } from 'taro-ui';
-import produce from 'immer';
+import Taro, { Component, Config } from '@tarojs/taro'
+import { View, Text, Input, Picker, ScrollView } from '@tarojs/components'
+import { AtTag, AtButton } from 'taro-ui'
+import produce from 'immer'
 // import { connect } from "@tarojs/redux";
 // import Api from '../../utils/request'
-import Tips from '../../utils/tips';
-import { propsInterface, stateInterface } from './interface';
-import './style.scss';
-import { MAINHOST } from '../../config';
-import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/componentHomeNavigation';
-import Avatar from '../../components/Avatar';
-import { colorList } from '../../globalData';
+import Tips from '../../utils/tips'
+import { propsInterface, stateInterface } from './interface'
+import './style.scss'
+import { MAINHOST } from '../../config'
+import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/componentHomeNavigation'
+import Avatar from '../../components/Avatar'
+import { colorList } from '../../globalData'
 
 // import { } from '../../components'
 
 class NoticeCard extends Component<propsInterface, stateInterface> {
     config: Config = {
         navigationBarTitleText: ''
-    };
+    }
     constructor(props: propsInterface) {
-        super(props);
+        super(props)
         this.state = {
             list: [
                 { id: 1, name: '刘德华', email: 'test@qq.com' },
@@ -38,46 +38,46 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
                 ['社区成员', '全职导师', '所有成员']
             ],
             selectorChecked: []
-        };
+        }
     }
     componentDidMount() {}
     getRandomColor() {
-        return colorList[Math.floor(Math.random() * colorList.length)];
+        return colorList[Math.floor(Math.random() * colorList.length)]
     }
     pickMember(item) {
-        let needChange = false;
+        let needChange = false
         const arr = produce(this.state.choooseList, draft => {
             const flag = draft.some(cell => {
-                return cell.id === item.id;
-            });
+                return cell.id === item.id
+            })
             if (flag) {
             } else {
-                needChange = true;
-                draft.push(item);
+                needChange = true
+                draft.push(item)
             }
-            return draft;
-        });
+            return draft
+        })
         if (needChange) {
             this.setState({
                 choooseList: arr
-            });
+            })
         }
     }
     removeMember(item) {
-        let needChange = false;
+        let needChange = false
         const arr = produce(this.state.choooseList, draft => {
             draft.forEach((cell, index) => {
                 if (cell.id == item.id) {
-                    needChange = true;
-                    draft.splice(index, 1);
+                    needChange = true
+                    draft.splice(index, 1)
                 }
-            });
-            return draft;
-        });
+            })
+            return draft
+        })
         if (needChange) {
             this.setState({
                 choooseList: arr
-            });
+            })
         }
     }
     async getData() {}
@@ -87,42 +87,35 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
                 selectorChecked: e.detail.value // 数组
             },
             () => {
-                this.getData();
+                this.getData()
             }
-        );
+        )
     }
     sub() {
-        const pages = Taro.getCurrentPages();
-        const prevPage = pages[pages.length - 2];
-        console.log({
-            [this.$router.params.key]:  JSON.stringify(this.state.choooseList)
-        })
-        console.log(prevPage.$component,this.state.choooseList)
-        const that=this
+        const pages = Taro.getCurrentPages()
+        const prevPage = pages[pages.length - 2]
+        // console.log({
+        //     [this.$router.params.key]:  JSON.stringify(this.state.choooseList)
+        // })
+        // console.log(prevPage.$component,this.state.choooseList)
+
         Taro.navigateTo({
-            url: '/' + prevPage.route,
+            url:
+                '/' +
+                prevPage.route +
+                '?members=' +
+                JSON.stringify(this.state.choooseList),
             fail: function() {
                 wx.switchTab({
                     url: '/' + prevPage.route
-                });
+                })
             }
-        });
-        prevPage.$component.setState({
-            test: JSON.stringify(that.state.choooseList)
-        },()=>{
-            prevPage.$component.log()
-            prevPage.$component.render()
-            
-        });
-       
-       
+        })
     }
     render() {
         return (
             <View className='members-picker-wrap'>
-                <ComponentBaseNavigation
-                    type='picker-page'
-                />
+                <ComponentBaseNavigation type='picker-page' />
                 <View>
                     <View className='tags-box'>
                         <View className='tags-container'>
@@ -135,7 +128,7 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
                                     >
                                         {item.name}
                                     </View>
-                                );
+                                )
                             })}
                         </View>
                         <Picker
@@ -165,7 +158,7 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
                                         </View>
                                     </View>
                                 </View>
-                            );
+                            )
                         })}
                     </ScrollView>
                     <AtButton className='sub-button' onClick={() => this.sub()}>
@@ -173,8 +166,8 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
                     </AtButton>
                 </View>
             </View>
-        );
+        )
     }
 }
 
-export default NoticeCard;
+export default NoticeCard

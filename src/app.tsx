@@ -1,16 +1,13 @@
-import Taro, { Component, Config } from "@tarojs/taro";
-import "@tarojs/async-await";
-import { Provider } from "@tarojs/redux";
-import "./utils/request";
-import Index from "./pages/index";
-import dva from "./utils/dva";
-import models from "./models";
-import "./app.scss";
+import Taro, { Component, Config } from '@tarojs/taro';
+import '@tarojs/async-await';
+import { Provider } from '@tarojs/redux';
+import './utils/request';
+import Index from './pages/index';
+import dva from './utils/dva';
+import models from './models';
+import './app.scss';
 // import 'taro-ui/dist/style/index.scss' // 全局引入一次即可
-import "./custom-theme.scss";
-import { globalData } from "./utils/common";
-import { MAINHOST } from "./config";
-import { requestConfig } from "./config/requestConfig";
+import './custom-theme.scss';
 
 const dvaApp = dva.createApp({
     initialState: {},
@@ -39,39 +36,38 @@ class App extends Component {
      */
     config: Config = {
         pages: [
-           
-            "pages/home/home",
-            "pages/noticeCard/noticeCard",
-            "pages/index/index",
-            "pages/booking/booking",
-            "pages/authorize/authorize",
-            "pages/identity/identity",
-            "pages/community/community",
-            "pages/eventCard/eventCard",
-            "pages/eventCardDetail/eventCardDetail",
-            "pages/membersPicker/index",
+            'pages/home/home',
+            'pages/noticeCard/noticeCard',
+            'pages/index/index',
+            'pages/booking/booking',
+            'pages/authorize/authorize',
+            'pages/identity/identity',
+            'pages/community/community',
+            'pages/eventCard/eventCard',
+            'pages/eventCardDetail/eventCardDetail',
+            'pages/membersPicker/index'
         ],
         window: {
-            backgroundTextStyle: "light",
-            navigationBarBackgroundColor: "#fff",
-            navigationBarTitleText: "WeChat",
-            navigationBarTextStyle: "black",
-            navigationStyle: "custom"
+            backgroundTextStyle: 'light',
+            navigationBarBackgroundColor: '#fff',
+            navigationBarTitleText: 'WeChat',
+            navigationBarTextStyle: 'black',
+            navigationStyle: 'custom'
         },
         tabBar: {
             custom: true,
             list: [
                 {
-                    pagePath: "pages/home/home",
-                    text: "我的"
+                    pagePath: 'pages/home/home',
+                    text: '我的'
                 },
                 {
-                    pagePath: "pages/booking/booking",
-                    text: "学习"
+                    pagePath: 'pages/booking/booking',
+                    text: '学习'
                 },
                 {
-                    pagePath: "pages/community/community",
-                    text: "社区"
+                    pagePath: 'pages/community/community',
+                    text: '社区'
                 }
             ]
         }
@@ -127,4 +123,4 @@ class App extends Component {
     }
 }
 
-Taro.render(<App />, document.getElementById("app"));
+Taro.render(<App />, document.getElementById('app'));

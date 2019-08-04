@@ -1,36 +1,36 @@
-import Taro, { Component, Config } from '@tarojs/taro';
-import { View, Picker } from '@tarojs/components';
-import { AtForm, AtInput, AtButton } from 'taro-ui';
+import Taro, { Component, Config } from "@tarojs/taro";
+import { View, Picker } from "@tarojs/components";
+import { AtForm, AtInput, AtButton } from "taro-ui";
 // import { connect } from "@tarojs/redux";
 // import Api from '../../utils/request'
-import Tips from '../../utils/tips';
-import { propsInterface, stateInterface } from './interface';
-import './eventCard.scss';
-import { MAINHOST } from '../../config';
-import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/componentHomeNavigation';
-import ImageView from '../../components/ImageView/ImageView';
-import produce from 'immer';
+import Tips from "../../utils/tips";
+import { propsInterface, stateInterface } from "./interface";
+import "./eventCard.scss";
+// import { MAINHOST } from "../../config";
+import ComponentBaseNavigation from "../../components/ComponentHomeNavigation/componentHomeNavigation";
+import ImageView from "../../components/ImageView/ImageView";
+import produce from "immer";
 
 // import { } from '../../components'
-import { choosePicGetBase64 } from '../../utils/common';
+import { choosePicGetBase64 } from "../../utils/common";
 
 class EventCard extends Component<propsInterface, stateInterface> {
     config: Config = {
-        navigationBarTitleText: '活动'
+        navigationBarTitleText: "活动"
     };
     constructor(props: propsInterface) {
         super(props);
         this.state = {
-            description: '',
-            endDate: '',
-            endTime: '',
-            fee: '',
+            description: "",
+            endDate: "",
+            endTime: "",
+            fee: "",
             location: [],
-            recruitingUntilDate: '',
-            recruitingUntilTime: '',
-            startDate: '',
-            startTime: '',
-            title: '',
+            recruitingUntilDate: "",
+            recruitingUntilTime: "",
+            startDate: "",
+            startTime: "",
+            title: "",
             invitee: [],
             inviteeList: [],
             thumbnail: [],
@@ -38,13 +38,16 @@ class EventCard extends Component<propsInterface, stateInterface> {
             loading: false,
             inviteeItem: 0,
             editStatus: true,
-            test: ''
+            test: ""
         };
     }
     onShow() {
-        console.log('onshow');
+        console.log("onshow");
     }
-    componentDidMount() {}
+    componentDidMount() {
+        console.log('did mount')
+        this.getMember()
+    }
     async onSubmit() {
         // const token = Taro.getStorageSync("token");
         // const iv = Taro.getStorageSync("iv");
@@ -69,61 +72,60 @@ class EventCard extends Component<propsInterface, stateInterface> {
             // initiatorDisplayName: "initiatorDisplayName",
             invitee: [
                 {
-                    type: 'filters',
-                    rules: [{ scope: '校区', value: '深圳·安格' }]
+                    type: "filters",
+                    rules: [{ scope: "角色", value: "" }]
                 }
             ],
-            thumbnail: this.state.thumbnail,
-            inviteeItem: 0
+            thumbnail: this.state.thumbnail
         };
         console.log(sendData);
         return;
-        try {
-            const res = await this.$api({
-                url: `${MAINHOST}/event`,
-                data: {
-                    content: {},
-                    eventInfo: {
-                        description: 'test',
-                        endDate: '2019-09-09',
-                        endTime: '19:00',
-                        fee: '10',
-                        location: [{}],
-                        recruitingUntilDate: '2019-09-09',
-                        recruitingUntilTime: '19:00',
-                        startDate: '2019-09-09',
-                        startTime: '19:00',
-                        title: 'test title'
-                    },
-                    // initiatorDisplayName: "initiatorDisplayName",
-                    invitee: [
-                        {
-                            type: 'filters',
-                            rules: [{ scope: '校区', value: '深圳·安格' }]
-                        }
-                    ],
-                    thumbnail: this.state.thumbnail
-                },
-                // header: { token: token },
-                method: 'POST'
-            });
-            // this.setState({
-            //     loading: false
-            // });
-        } catch (error) {
-            this.setState({
-                loading: false
-            });
-        }
+        // try {
+        //     const res = await this.$api({
+        //         url: `${MAINHOST}/event`,
+        //         data: {
+        //             content: {},
+        //             eventInfo: {
+        //                 description: "test",
+        //                 endDate: "2019-09-09",
+        //                 endTime: "19:00",
+        //                 fee: "10",
+        //                 location: [{}],
+        //                 recruitingUntilDate: "2019-09-09",
+        //                 recruitingUntilTime: "19:00",
+        //                 startDate: "2019-09-09",
+        //                 startTime: "19:00",
+        //                 title: "test title"
+        //             },
+        //             // initiatorDisplayName: "initiatorDisplayName",
+        //             invitee: [
+        //                 {
+        //                     type: "filters",
+        //                     rules: [{ scope: "校区", value: "深圳·安格" }]
+        //                 }
+        //             ],
+        //             thumbnail: this.state.thumbnail
+        //         },
+        //         // header: { token: token },
+        //         method: "POST"
+        //     });
+        //     // this.setState({
+        //     //     loading: false
+        //     // });
+        // } catch (error) {
+        //     this.setState({
+        //         loading: false
+        //     });
+        // }
     }
     fileChange(val) {
         console.log(val);
     }
     async choosePic() {
-        const res = await choosePicGetBase64();
+        const res = await choosePicGetBase64({type:'event'});
         // console.log(res);
         if (this.state.thumbnail.length === 9) {
-            Tips.toast('图片不能超过9张');
+            Tips.toast("图片不能超过9张");
             return;
         }
         const arr = produce(this.state.thumbnail, draftState => {
@@ -148,53 +150,58 @@ class EventCard extends Component<propsInterface, stateInterface> {
         });
     }
     goChooseMembersPage() {
-        Taro.navigateTo({ url: '/pages/membersPicker/index?key=' + 'test' });
+        Taro.navigateTo({ url: "/pages/membersPicker/index" });
     }
-    log() {
-        console.log(this.state, 'ttt');
+    getMember() {
+        const members = this.$router.params.members;
+        if (members) {
+            this.setState({
+                test: members
+            });
+        }
     }
     render() {
         return (
-            <View className='event-card-wrap'>
-                <ComponentBaseNavigation type='child-page' />
-                <AtForm onSubmit={() => this.onSubmit()} className='formPanel'>
-                    <View className='act-panel'>
+            <View className="event-card-wrap">
+                <ComponentBaseNavigation type="child-page" />
+                <AtForm onSubmit={() => this.onSubmit()} className="formPanel">
+                    <View className="act-panel">
                         {this.state.editStatus ? (
                             <AtInput
-                                name='value'
-                                title=''
-                                type='text'
-                                placeholder='活动标题'
+                                name="value"
+                                title=""
+                                type="text"
+                                placeholder="活动标题"
                                 value={this.state.title}
                                 onChange={val => {
                                     this.setState({ title: String(val) });
                                 }}
                             />
                         ) : (
-                            <View className='act-title'>
+                            <View className="act-title">
                                 {this.state.title}
                             </View>
                         )}
                         <View
-                            className='at-icon at-icon-edit'
+                            className="at-icon at-icon-edit"
                             onClick={() => this.changeEditStatus()}
                         />
                     </View>
-                    <View className='register-title-panel'>发起活动</View>
+                    <View className="register-title-panel">发起活动</View>
                     <AtInput
-                        name='value'
-                        title='活动简介'
-                        type='text'
-                        placeholder='活动简介'
+                        name="value"
+                        title="活动简介"
+                        type="text"
+                        placeholder="活动简介"
                         value={this.state.description}
                         onChange={val => {
                             this.setState({ description: String(val) });
                         }}
                     />
 
-                    <View className='my-form-item'>
+                    <View className="my-form-item">
                         <Picker
-                            mode='date'
+                            mode="date"
                             value={this.state.startDate}
                             onChange={e => {
                                 this.setState({
@@ -202,25 +209,25 @@ class EventCard extends Component<propsInterface, stateInterface> {
                                 });
                             }}
                         >
-                            <View className='label-item'>活动时间</View>
-                            <View className='value-item'>
-                                {this.state.startDate || '请选择活动时间'}
+                            <View className="label-item">活动时间</View>
+                            <View className="value-item">
+                                {this.state.startDate || "请选择活动时间"}
                             </View>
                         </Picker>
                     </View>
                     <AtInput
-                        name='value'
-                        title='活动费用'
-                        type='text'
-                        placeholder='活动费用'
+                        name="value"
+                        title="活动费用"
+                        type="text"
+                        placeholder="活动费用"
                         value={this.state.fee}
                         onChange={val => {
                             this.setState({ fee: String(val) });
                         }}
                     />
-                    <View className='my-form-item'>
+                    <View className="my-form-item">
                         <Picker
-                            mode='date'
+                            mode="date"
                             value={this.state.endDate}
                             onChange={e => {
                                 this.setState({
@@ -228,15 +235,15 @@ class EventCard extends Component<propsInterface, stateInterface> {
                                 });
                             }}
                         >
-                            <View className='label-item'>截止时间</View>
-                            <View className='value-item'>
-                                {this.state.endDate || '请选择截止时间'}
+                            <View className="label-item">截止时间</View>
+                            <View className="value-item">
+                                {this.state.endDate || "请选择截止时间"}
                             </View>
                         </Picker>
                     </View>
-                    <View className='my-form-item'>
+                    <View className="my-form-item">
                         <Picker
-                            mode='date'
+                            mode="date"
                             value={this.state.recruitingUntilDate}
                             onChange={e => {
                                 this.setState({
@@ -244,33 +251,34 @@ class EventCard extends Component<propsInterface, stateInterface> {
                                 });
                             }}
                         >
-                            <View className='label-item'>招募截止时间</View>
-                            <View className='value-item'>
+                            <View className="label-item">招募截止时间</View>
+                            <View className="value-item">
                                 {this.state.recruitingUntilDate ||
-                                    '招募截止时间'}
+                                    "招募截止时间"}
                             </View>
                         </Picker>
                     </View>
                     <View
-                        className='my-form-item'
+                        className="my-form-item"
                         onClick={() => this.goChooseMembersPage()}
                     >
-                        <View className='label-item'>邀请对象</View>
-                        <View className='value-item'>
+                        <View className="label-item">邀请对象</View>
+                        <View className="value-item">
                             {/* {this.state.inviteeItem} */}
                             {this.state.test}
                         </View>
                     </View>
 
-                    <View className='my-form-item'>
-                        <View className='label-item'>附图</View>
-                        <View className='value-item'>
+                    <View className="my-form-item">
+                        <View className="label-item">附图</View>
+                        <View className="value-item">
                             {this.state.thumbnail.map((item, index) => {
                                 return (
                                     <ImageView
                                         pathId={item}
                                         key={item}
-                                        img-class='preview-image'
+                                        img-class="preview-image"
+                                        type="event"
                                         onClick={() => {
                                             this.removePic(index);
                                         }}
@@ -278,15 +286,15 @@ class EventCard extends Component<propsInterface, stateInterface> {
                                 );
                             })}
                             <View
-                                className='at-icon at-icon-add'
+                                className="at-icon at-icon-add"
                                 onClick={() => this.choosePic()}
                             />
                         </View>
                     </View>
 
                     <AtButton
-                        formType='submit'
-                        className='sub-button'
+                        formType="submit"
+                        className="sub-button"
                         loading={this.state.loading}
                     >
                         确认发起

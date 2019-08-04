@@ -1,11 +1,10 @@
-
 /**
  *
  * @export
  * @interface StateInterface
  */
 export interface StateInterface {
-    imgSrc: string
+    imgSrc: string;
 }
 
 /**
@@ -15,6 +14,7 @@ export interface StateInterface {
  * @interface PropsInterface
  */
 export interface PropsInterface {
-    pathId: string,
-    onClick: Function
+    pathId: string;
+    onClick: Function;
+    type: string;
 }

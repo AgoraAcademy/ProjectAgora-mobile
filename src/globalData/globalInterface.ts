@@ -1,0 +1,1 @@
+export type IMG_TYPE = "event" | "project" | "cource" | "club";

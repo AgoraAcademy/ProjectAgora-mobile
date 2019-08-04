@@ -12,6 +12,8 @@ export const ONLINEHOST = 'https://projectagora.agoraacademy.cn:18088/v1/minipro
 /** 
  * 测试环境
  */
+export const BASE_HOST= 'https://projectagora.agoraacademy.cn:18088/v1'
+
 export const QAHOST = 'http://localhost:8000'
 
 /** 
