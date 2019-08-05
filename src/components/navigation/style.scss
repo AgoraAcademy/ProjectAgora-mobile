@@ -12,9 +12,11 @@ $navigation-box-shadow: 0 2PX 2PX #222;
 
 .navigation {
   position: relative;
-  background: transparent;
+  background: white;
   width: 100%;
   margin-bottom: 130rpx;
+  z-index: 999;
+
 //   outline: 1px solid red;
   .bar {
     position: fixed;

@@ -10,7 +10,7 @@ import './style.scss'
 import { MAINHOST } from '../../config'
 import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/componentHomeNavigation'
 import Avatar from '../../components/Avatar'
-import { colorList } from '../../globalData'
+import { colorList, roleSelectList } from '../../globalData'
 
 // import { } from '../../components'
 
@@ -33,14 +33,18 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
                 { id: 9, name: '孙燕姿', email: 'test@qq.com' }
             ],
             choooseList: [],
-            selector: [
-                ['深圳.安格', '成都.先锋', '所有校区'],
-                ['社区成员', '全职导师', '所有成员']
-            ],
+            selector: roleSelectList,
             selectorChecked: []
         }
     }
-    componentDidMount() {}
+    componentDidMount() {
+        if (this.$router.params.picklist) {
+            const list = JSON.parse(this.$router.params.picklist)
+            this.setState({
+                choooseList: list
+            })
+        }
+    }
     getRandomColor() {
         return colorList[Math.floor(Math.random() * colorList.length)]
     }

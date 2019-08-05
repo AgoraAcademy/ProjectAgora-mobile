@@ -23,7 +23,7 @@ export interface stateInterface {
     loading: boolean;
     inviteeItem: number;
     editStatus: boolean;
-    test: string;
+    membersChoose: Array<any>;
 }
 
 /**
