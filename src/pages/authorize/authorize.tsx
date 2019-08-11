@@ -37,15 +37,20 @@ class Authorize extends Component<AuthorizeProps,AuthorizeState > {
     }
 
     onGetUserInfo = async (userInfo) => {
+        console.log('onuser',userInfo )
+        Taro.setStorageSync("iv", userInfo.detail.iv)
+        Taro.setStorageSync("encryptedData", userInfo.detail.encryptedData)
+        console.log("保存iv")
         await Taro.checkSession({
             success: async () => {
-                await this.props.dispatch({
-                    type: "authorize/onAuthorize",
-                    payload: {
-                        encryptedData: userInfo.detail.encryptedData,
-                        iv: userInfo.detail.iv,
-                    }
-                })
+                console.log('尝试跳转')
+                // await this.props.dispatch({
+                //     type: "authorize/onAuthorize",
+                //     payload: {
+                //         encryptedData: userInfo.detail.encryptedData,
+                //         iv: userInfo.detail.iv,
+                //     }
+                // })
                 const currentUnionid = await Taro.getStorageSync("unionid")
                 if (!currentUnionid) {
                     Taro.navigateTo({url: "/pages/identity/identity"})

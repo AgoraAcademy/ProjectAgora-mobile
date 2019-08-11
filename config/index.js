@@ -26,6 +26,8 @@ const config = {
   },
   copy: {
     patterns: [
+        { from: 'src/components/vant-weapp/vant-dist/wxs', to: 'dist/components/vant-weapp/vant-dist/wxs' },
+        { from: 'src/components/vant-weapp/vant-dist/picker-column/index.wxs', to:  'dist/components/vant-weapp/vant-dist/picker-column/index.wxs' }
     ],
     options: {
     }
@@ -46,7 +48,9 @@ const config = {
         pxtransform: {
           enable: true,
           config: {
-
+            selectorBlackList: [
+                /^.van-.*?$/
+            ]
           }
         },
         url: {

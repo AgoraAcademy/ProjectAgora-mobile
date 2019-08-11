@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Picker } from '@tarojs/components'
+import { View, Picker, Button } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 // import { connect } from "@tarojs/redux";
 // import Api from '../../utils/request'
@@ -9,25 +9,29 @@ import './eventCard.scss'
 import { MAINHOST } from '../../config'
 import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/componentHomeNavigation'
 import ImagePicker from '../../components/imagePicker'
+import DateTimePicker from '../../components/DateTimePicker'
+import MembersPicker from '../../components/MembersPicker'
 
 // import { } from '../../components'
 
 class EventCard extends Component<propsInterface, stateInterface> {
     config: Config = {
-        navigationBarTitleText: '发起活动'
+        navigationBarTitleText: '发起活动',
+        usingComponents: {
+            'van-datetime-picker':
+                '../../components/vant-weapp/vant-dist/datetime-picker/index',
+            'van-popup': '../../components/vant-weapp/vant-dist/popup/index'
+        }
     }
     constructor(props: propsInterface) {
         super(props)
         this.state = {
             description: '',
-            endDate: '',
-            endTime: '',
+            endDateTime: '',
             fee: '',
             location: [],
-            recruitingUntilDate: '',
-            recruitingUntilTime: '',
-            startDate: '',
-            startTime: '',
+            expireDateTime: '',
+            startDateTime: '',
             title: '',
             invitee: [],
             inviteeList: [],
@@ -36,7 +40,8 @@ class EventCard extends Component<propsInterface, stateInterface> {
             loading: false,
             inviteeItem: 0,
             editStatus: true,
-            membersChoose: []
+            membersChoose: [],
+            show: false
         }
     }
     onShow() {
@@ -56,31 +61,59 @@ class EventCard extends Component<propsInterface, stateInterface> {
         this.setState({
             loading: true
         })
+        // const sendData = {
+        //     content: {},
+        //     eventInfo: {
+        //         description: this.state.description,
+        //         endDateTime: this.state.endDateTime,
+        //         fee: this.state.fee,
+        //         location: [{}],
+        //         expireDateTime: this.state.expireDateTime,
+        //         startDateTime: this.state.startDateTime,
+        //         title: this.state.title
+        //     },
+        //     invitee: [
+        //         {
+        //             type: 'list',
+        //             rules: this.state.membersChoose.map(item => item.id)
+        //         }
+        //     ],
+        //     thumbnail: this.state.thumbnail
+        // }
         const sendData = {
-            content: {},
+            content: {
+                logoInfo: {
+                    type: 'string',
+                    url: 'string'
+                },
+                operationInfo: {
+                    operationType: 'string',
+                    operationValue: 'string'
+                },
+                tagInfo: 'string',
+                timeInfo: 'string',
+                title: 'string'
+            },
             eventInfo: {
                 description: this.state.description,
-                endDate: this.state.endDate,
-                endTime: this.state.endTime,
+                endDateTime: this.state.endDateTime,
                 fee: this.state.fee,
-                location: [{}],
-                recruitingUntilDate: this.state.recruitingUntilDate,
-                recruitingUntilTime: this.state.recruitingUntilTime,
-                startDate: this.state.startDate,
-                startTime: this.state.startTime,
+                location: [],
+                expireDateTime: this.state.expireDateTime,
+                startDateTime: this.state.startDateTime,
                 title: this.state.title
             },
-            // initiatorDisplayName: "initiatorDisplayName",
+            // initiatorDisplayName: 'binaryify',
             invitee: [
                 {
-                    type: 'list',
-                    rules: this.state.membersChoose.map(item => item.id)
+                    content:  this.state.membersChoose.map(item => item.id).join(','),
+                    type: 'list'
                 }
             ],
             thumbnail: this.state.thumbnail
         }
         console.log({ sendData })
-        return
+
         try {
             await this.$api({
                 url: `${MAINHOST}/event`,
@@ -134,6 +167,17 @@ class EventCard extends Component<propsInterface, stateInterface> {
         }
         return true
     }
+    componentDidShow() {
+        // console.log(arguments)
+    }
+    dateChange(val) {
+        console.log(val)
+    }
+    test() {
+        this.setState({
+            show: true
+        })
+    }
     render() {
         return (
             <View className='event-card-wrap'>
@@ -174,36 +218,42 @@ class EventCard extends Component<propsInterface, stateInterface> {
                     />
 
                     <View className='my-form-item'>
-                        <Picker
-                            mode='date'
-                            value={this.state.startDate}
-                            onChange={e => {
-                                this.setState({
-                                    startDate: e.detail.value
-                                })
-                            }}
-                        >
-                            <View className='label-item'>活动时间</View>
-                            <View className='value-item'>
-                                {this.state.startDate || '请选择活动时间'}
-                            </View>
-                        </Picker>
+                        <View className='label-item'>活动开始时间</View>
+                        <View className='value-item'>
+                            <DateTimePicker
+                                onchange={val =>
+                                    this.setState({ startDateTime: val })
+                                }
+                                placeholder='请选择活动开始时间'
+                            >
+                            </DateTimePicker>
+                        </View>
                     </View>
+
                     <View className='my-form-item'>
-                        <Picker
-                            mode='time'
-                            value={this.state.startTime}
-                            onChange={e => {
-                                this.setState({
-                                    startTime: e.detail.value
-                                })
-                            }}
-                        >
-                            <View className='label-item'>活动时间</View>
-                            <View className='value-item'>
-                                {this.state.startTime || '请选择活动时间'}
-                            </View>
-                        </Picker>
+                        <View className='label-item'>活动结束时间</View>
+                        <View className='value-item'>
+                            <DateTimePicker
+                                onchange={val =>
+                                    this.setState({ endDateTime: val })
+                                }
+                                placeholder='请选择活动结束时间'
+                            >
+                            </DateTimePicker>
+                        </View>
+                    </View>
+
+                    <View className='my-form-item'>
+                        <View className='label-item'>活动过期时间</View>
+                        <View className='value-item'>
+                            <DateTimePicker
+                                onchange={val =>
+                                    this.setState({ expireDateTime: val })
+                                }
+                                placeholder='请选择活动过期时间'
+                            >
+                            </DateTimePicker>
+                        </View>
                     </View>
                     <AtInput
                         name='value'
@@ -215,82 +265,13 @@ class EventCard extends Component<propsInterface, stateInterface> {
                             this.setState({ fee: String(val) })
                         }}
                     />
-                    <View className='my-form-item'>
-                        <Picker
-                            mode='date'
-                            value={this.state.endDate}
-                            onChange={e => {
-                                this.setState({
-                                    endDate: e.detail.value
-                                })
-                            }}
-                        >
-                            <View className='label-item'>截止时间</View>
-                            <View className='value-item'>
-                                {this.state.endDate || '请选择截止时间'}
-                            </View>
-                        </Picker>
-                    </View>
-                    <View className='my-form-item'>
-                        <Picker
-                            mode='time'
-                            value={this.state.endTime}
-                            onChange={e => {
-                                this.setState({
-                                    endTime: e.detail.value
-                                })
-                            }}
-                        >
-                            <View className='label-item'>活动结束时间</View>
-                            <View className='value-item'>
-                                {this.state.endTime || '请选择活动结束时间'}
-                            </View>
-                        </Picker>
-                    </View>
-                    <View className='my-form-item'>
-                        <Picker
-                            mode='date'
-                            value={this.state.recruitingUntilDate}
-                            onChange={e => {
-                                this.setState({
-                                    recruitingUntilDate: e.detail.value
-                                })
-                            }}
-                        >
-                            <View className='label-item'>招募截止时间</View>
-                            <View className='value-item'>
-                                {this.state.recruitingUntilDate ||
-                                    '招募截止时间'}
-                            </View>
-                        </Picker>
-                    </View>
-                    <View className='my-form-item'>
-                        <Picker
-                            mode='time'
-                            value={this.state.recruitingUntilTime}
-                            onChange={e => {
-                                this.setState({
-                                    recruitingUntilTime: e.detail.value
-                                })
-                            }}
-                        >
-                            <View className='label-item'>招募截止时间</View>
-                            <View className='value-item'>
-                                {this.state.recruitingUntilTime ||
-                                    '招募截止时间'}
-                            </View>
-                        </Picker>
-                    </View>
+
                     <View
                         className='my-form-item'
-                        onClick={() => this.goChooseMembersPage()}
                     >
                         <View className='label-item'>邀请对象</View>
                         <View className='value-item'>
-                            {/* {this.state.inviteeItem} */}
-                            {this.state.membersChoose
-                                .map(item => item.name)
-                                .join(',')}
+                           <MembersPicker onChange={val=>this.setState({membersChoose:val})} ></MembersPicker>
                         </View>
                     </View>
 

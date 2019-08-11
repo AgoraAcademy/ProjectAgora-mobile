@@ -7,14 +7,12 @@
 import { IMG_TYPE } from '../../globalData/globalInterface'
 export interface stateInterface {
     description: string;
-    endDate: string;
-    endTime: string;
+    endDateTime: string;
+   
     fee: string;
     location: Array<any>;
-    recruitingUntilDate: string;
-    recruitingUntilTime: string;
-    startDate: string;
-    startTime: string;
+    expireDateTime: string;
+    startDateTime:string;
     title: string;
     invitee: Array<any>;
     inviteeList: Array<any>;
@@ -24,6 +22,7 @@ export interface stateInterface {
     inviteeItem: number;
     editStatus: boolean;
     membersChoose: Array<any>;
+    show: boolean;
 }
 
 /**

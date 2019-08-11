@@ -1,16 +1,17 @@
-import Taro, { Component, Config } from '@tarojs/taro';
-import { View, Text, ScrollView } from '@tarojs/components';
-import { AtButton } from 'taro-ui';
+import Taro, { Component, Config } from '@tarojs/taro'
+import { View, Text, ScrollView } from '@tarojs/components'
+import { AtButton } from 'taro-ui'
 // import { connect } from '@tarojs/redux'
 // import Api from '../../utils/request'
 // import Tips from '../../utils/tips'
-import { MAINHOST } from '../../config';
-import { homeProps, homeState } from './home.interface';
-import './home.scss';
-import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/componentHomeNavigation';
-import ImageView from '../../components/ImageView/ImageView';
-import produce from 'immer';
-import classnames from 'classnames';
+import { MAINHOST } from '../../config'
+import { homeProps, homeState } from './home.interface'
+import './home.scss'
+import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/componentHomeNavigation'
+import ImageView from '../../components/ImageView/ImageView'
+import produce from 'immer'
+import classnames from 'classnames'
+import Avatar from '../../components/Avatar'
 // import { } from '../../components'
 
 // @connect(({ home }) => ({
@@ -20,24 +21,24 @@ import classnames from 'classnames';
 class home extends Component<homeProps, homeState> {
     config: Config = {
         navigationBarTitleText: ''
-    };
+    }
     constructor(props: homeProps) {
-        super(props);
+        super(props)
         this.state = {
             pushList: [],
             chooseType: 'push',
             noticeList: [],
-            members:[]
-        };
+            members: []
+        }
     }
     async getData() {
         const res = await this.$api({
-            url: `${MAINHOST}/pushMessage`
-        });
+            url: `${MAINHOST}/event`
+        })
         console.log({
             res
-        });
-        const pushList = res;
+        })
+        const pushList = res
         // const pushList = [
         //     {
         //         type: "活动",
@@ -99,23 +100,23 @@ class home extends Component<homeProps, homeState> {
                 projectStatusText: '招募中',
                 id: 2
             }
-        ];
+        ]
         pushList.forEach(item => {
-            item['status'] = false;
-            item['type'] = '活动';
-        });
+            item['status'] = false
+            item['type'] = '活动'
+        })
         noticeList.forEach(item => {
-            item['status'] = false;
-        });
+            item['status'] = false
+        })
 
         this.setState({
             pushList,
             noticeList
-        });
+        })
     }
     componentDidShow() {
         console.log(this.$router.params)
-        this.getData();
+        this.getData()
     }
 
     // componentDidMount() {
@@ -129,37 +130,48 @@ class home extends Component<homeProps, homeState> {
                 type +
                 '&id=' +
                 item.id
-        });
+        })
     }
     cancel(item, event: React.MouseEvent) {
-        event.stopPropagation();
-        this.toggle(item, event);
+        event.stopPropagation()
+        this.toggle(item, event)
     }
     async join(item, event: React.MouseEvent) {
-        event.stopPropagation();
-        this.toggle(item, event);
+        event.stopPropagation()
+        this.toggle(item, event)
+    }
+    async del(item, event: React.MouseEvent) {
+        event.stopPropagation()
+        const res = await this.$api({
+            url: `${MAINHOST}/event/${item.id}`,
+            // data:{
+            //     eventId:item.id
+            // },
+            method:"DELETE"
+        })
+
     }
     toggle(item, event: React.MouseEvent) {
         // console.log({ event ,item});
-        event.stopPropagation();
+        event.stopPropagation()
         const type =
-            this.state.chooseType === 'push' ? 'pushList' : 'noticeList';
+            this.state.chooseType === 'push' ? 'pushList' : 'noticeList'
         const list = produce(this.state[type], draftState => {
             draftState.forEach(active => {
                 if (active.id === item.id) {
-                    active.status = !item.status;
+                    active.status = !item.status
                 }
-            });
-        });
+            })
+        })
 
         if (type === 'pushList') {
             this.setState({
                 pushList: list
-            });
+            })
         } else {
             this.setState({
                 noticeList: list
-            });
+            })
         }
         // do something...
     }
@@ -170,13 +182,13 @@ class home extends Component<homeProps, homeState> {
             项目: 'blue',
             预约: 'orange',
             计划: 'yellow'
-        }[type];
+        }[type]
     }
     render() {
         const data =
             this.state.chooseType === 'push'
                 ? this.state.pushList
-                : this.state.noticeList;
+                : this.state.noticeList
         const listComponent =
             data.length > 0 ? (
                 data.map(item => {
@@ -187,7 +199,7 @@ class home extends Component<homeProps, homeState> {
                                 active: item.status
                             })}
                             onClick={() => {
-                                this.goDetail(this.state.chooseType, item);
+                                this.goDetail(this.state.chooseType, item)
                             }}
                         >
                             <View className='main-panel'>
@@ -200,7 +212,9 @@ class home extends Component<homeProps, homeState> {
                                     {item.type}
                                 </View>
                                 <View className='left-panel'>
-                                    <View className='avatar' />
+                                    <View className='avatar'>
+                                        <Avatar text={item.eventInfo.title} />
+                                    </View>
                                     {/* <ImageView img-class="avatar" pathId=""></ImageView> */}
                                     <View
                                         className='status-button'
@@ -248,14 +262,21 @@ class home extends Component<homeProps, homeState> {
                                         <View className='at-icon at-icon-help icon-help' />
                                         <Text className='text'>可能参加</Text>
                                     </View>
+                                    <View
+                                        className='action-item'
+                                        onClick={this.del.bind(this, item)}
+                                    >
+                                        <View className='at-icon at-icon-help icon-help' />
+                                        <Text className='text'>删除</Text>
+                                    </View>
                                 </View>
                             ) : null}
                         </View>
-                    );
+                    )
                 })
             ) : (
                 <View>暂无数据</View>
-            );
+            )
         const tabList = [
             {
                 type: 'push',
@@ -267,7 +288,7 @@ class home extends Component<homeProps, homeState> {
                 name: '提醒',
                 iconClass: 'at-icon-bell'
             }
-        ];
+        ]
         return (
             <View className='home-wrap'>
                 <ComponentBaseNavigation type='normal-page' />
@@ -299,7 +320,7 @@ class home extends Component<homeProps, homeState> {
                                     active: this.state.chooseType === item.type
                                 })}
                                 onClick={() => {
-                                    this.setState({ chooseType: item.type });
+                                    this.setState({ chooseType: item.type })
                                 }}
                                 key={item.type}
                             >
@@ -312,12 +333,12 @@ class home extends Component<homeProps, homeState> {
 
                                 <Text>{item.name}</Text>
                             </View>
-                        );
+                        )
                     })}
                 </View>
             </View>
-        );
+        )
     }
 }
 
-export default home;
+export default home

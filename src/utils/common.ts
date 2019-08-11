@@ -48,4 +48,51 @@ export function choosePicGetBase64(option: {
         })
     })
 }
+export function formatDate(time) {
+    function _addZore(num) {
+        if (num < 10) {
+            num = '0' + num
+        }
+        return num
+    }
+
+    if (typeof time != 'object') {
+        time = '' + time
+        if (time.length > 12) {
+            time = new Date(parseInt(time))
+        } else {
+            time = new Date(parseInt(time) * 1000)
+        }
+    }
+    var year = time.getFullYear()
+    var month = _addZore(time.getMonth() + 1)
+    var date = _addZore(time.getDate())
+    var hours = _addZore(time.getHours())
+    var minutes = _addZore(time.getMinutes())
+    var seconds = _addZore(time.getSeconds())
+    return {
+        year: year,
+        month: month,
+        date: date,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds,
+        str:
+            year +
+            '年' +
+            month +
+            '月' +
+            date +
+            '日 ' +
+            hours +
+            ':' +
+            minutes +
+            ':' +
+            seconds,
+        dates: year + '-' + month + '-' + date,
+        times:
+            year + '年' + month + '月' + date + '日 ' + hours + ':' + minutes,
+        formatDate: year + '-' + month + '-' + date + 'T' + hours + ':' + minutes + ':' + seconds+"+08:00"
+    }
+}
 export var globalData: any = {} // 全局公共变量

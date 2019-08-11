@@ -22,8 +22,8 @@ export default {
                 Taro.setStorageSync("learnerFullName", result.learnerFullName)
                 Taro.setStorageSync("isAdmin", result.isAdmin)
                 Taro.setStorageSync("unionid", result.unionid)
-                Taro.setStorageSync("iv", payload.iv)
-                Taro.setStorageSync("encryptedData", payload.encryptedData)
+                // Taro.setStorageSync("iv", payload.iv)
+                // Taro.setStorageSync("encryptedData", payload.encryptedData)
             } catch(err){
                 console.log("booking/onAuthorize", err)
             }

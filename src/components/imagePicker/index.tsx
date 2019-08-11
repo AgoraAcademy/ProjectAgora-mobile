@@ -7,7 +7,7 @@ import produce from 'immer'
 import ImageView from '../ImageView/ImageView'
 import './style.scss'
 import { AtIcon } from 'taro-ui'
-class ComponentHomeNavigation extends Component<
+class ImagePicker extends Component<
     PropsInterface,
     StateInterface
 > {
@@ -73,4 +73,4 @@ class ComponentHomeNavigation extends Component<
     }
 }
 
-export default ComponentHomeNavigation
+export default ImagePicker

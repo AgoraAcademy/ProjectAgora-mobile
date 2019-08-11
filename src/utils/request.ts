@@ -92,13 +92,19 @@ export class Request {
             res.statusCode === 400 ||
             res.statusCode === 403
         ) {
+            
             console.log(res)
             if (res.statusCode === 401) {
-                await this.login() // 重新登录
-                return this.request(opts)
+                if(res.data.message==='learner not found'){
+                    Taro.navigateTo({url: "/pages/authorize/authorize"})
+                    return
+                }
+                // await this.login() // 重新登录
+                // return this.request(opts)
             } else {
                 Tips.toast('出错，请联系管理员PP')
             }
+            throw new Error(res.data)
         }
 
         // 是否mock
@@ -155,6 +161,14 @@ export class Request {
         return new Promise(async (resolve, reject) => {
             // 获取code
             const { code } = await Taro.login()
+            console.log({
+                code,
+                test:'login'
+            })
+            if(!code){
+                reject('没有code')
+                return
+            }
             // 请求登录
             const { data } = await Taro.request({
                 url: `${MAINHOST}${requestConfig.loginUrl}`,
@@ -176,11 +190,12 @@ export class Request {
                 reject()
                 return
             }
-
+            console.log('保存token')
             await Taro.setStorageSync('token', data.token)
             await Taro.setStorageSync('learnerFullName', data.learnerFullName)
             await Taro.setStorageSync('unionid', data.unionid)
             await Taro.setStorageSync('isAdmin', data.isAdmin)
+            await Taro.setStorageSync('learnerid', data.learnerid)
             this.isLogining = false
             resolve()
         })
