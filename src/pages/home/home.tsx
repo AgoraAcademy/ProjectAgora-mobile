@@ -3,12 +3,12 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 // import { connect } from '@tarojs/redux'
 // import Api from '../../utils/request'
-// import Tips from '../../utils/tips'
+import Tips from '../../utils/tips'
 import { MAINHOST } from '../../config'
 import { homeProps, homeState } from './home.interface'
 import './home.scss'
 import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/componentHomeNavigation'
-import ImageView from '../../components/ImageView/ImageView'
+// import ImageView from '../../components/ImageView/ImageView'
 import produce from 'immer'
 import classnames from 'classnames'
 import Avatar from '../../components/Avatar'
@@ -39,74 +39,77 @@ class home extends Component<homeProps, homeState> {
             res
         })
         const pushList = res
-        // const pushList = [
-        //     {
-        //         type: "活动",
-        //         title: "篮球",
-        //         date: "7月20日",
-        //         desc: "中银花园",
-        //         projectStatusText: "招募中",
-        //         id: 1
-        //     },
-        //     {
-        //         type: "社区",
-        //         title: "2019秋季放假安排",
-        //         date: "7月20日",
-        //         desc: "放假安排描述",
-        //         projectStatusText: "招募中",
-        //         id: 2
-        //     },
-        //     {
-        //         type: "项目",
-        //         title: "安格游戏工作室",
-        //         date: "7月20日",
-        //         desc:
-        //             "安格游戏工作室安格游戏工作室安格游戏工作室安格游戏工作室安格游戏工作室",
-        //         projectStatusText: "招募中",
-        //         id: 3
-        //     },
-        //     {
-        //         type: "社区",
-        //         title: "2019秋季放假安排",
-        //         date: "7月20日",
-        //         desc: "放假安排描述",
-        //         projectStatusText: "招募中",
-        //         id: 4
-        //     },
-        //     {
-        //         type: "项目",
-        //         title: "安格游戏工作室",
-        //         date: "7月20日",
-        //         desc:
-        //             "安格游戏工作室安格游戏工作室安格游戏工作室安格游戏工作室安格游戏工作室",
-        //         projectStatusText: "招募中",
-        //         id: 5
-        //     }
-        // ];
+
         const noticeList = [
             {
-                type: '社区',
-                title: '2019秋季放假安排',
-                date: '7月20日',
-                desc: '放假安排描述',
-                projectStatusText: '招募中',
-                id: 1
+                eventInfo: {
+                    description: 'test desc',
+                    endDateTime: '2019-08-12T17:22:00+08:00',
+                    expireDateTime: '2019-08-13T17:22:00+08:00',
+                    fee: '12',
+                    location: [],
+                    startDateTime: '2019-08-10T17:22:09+08:00',
+                    title: 'test title'
+                },
+                id: 5,
+                initiatorDisplayName: '\u8096\u6625\u817e',
+                initiatorId: 1,
+                invitee: [
+                    {
+                        content: '',
+                        type: 'list'
+                    }
+                ]
             },
             {
-                type: '活动',
-                title: '篮球',
-                date: '7月20日',
-                desc: '中银花园',
-                projectStatusText: '招募中',
-                id: 2
+                eventInfo: {
+                    description: 'test desc',
+                    endDateTime: '2019-08-12T17:22:00+08:00',
+                    expireDateTime: '2019-08-13T17:22:00+08:00',
+                    fee: '12',
+                    location: [],
+                    startDateTime: '2019-08-10T17:22:09+08:00',
+                    title: 'test title'
+                },
+                id: 6,
+                initiatorDisplayName: '\u8096\u6625\u817e',
+                initiatorId: 1,
+                invitee: [
+                    {
+                        content: '',
+                        type: 'list'
+                    }
+                ]
+            },
+            {
+                eventInfo: {
+                    description: 'test desc',
+                    endDateTime: '2019-08-12T17:22:00+08:00',
+                    expireDateTime: '2019-08-13T17:22:00+08:00',
+                    fee: '12',
+                    location: [],
+                    startDateTime: '2019-08-10T17:22:09+08:00',
+                    title: 'test title'
+                },
+                id: 7,
+                initiatorDisplayName: '\u8096\u6625\u817e',
+                initiatorId: 1,
+                invitee: [
+                    {
+                        content: '',
+                        type: 'list'
+                    }
+                ]
             }
         ]
+
         pushList.forEach(item => {
             item['status'] = false
             item['type'] = '活动'
         })
         noticeList.forEach(item => {
             item['status'] = false
+            item['type'] = '活动'
         })
 
         this.setState({
@@ -132,12 +135,39 @@ class home extends Component<homeProps, homeState> {
                 item.id
         })
     }
-    cancel(item, event: React.MouseEvent) {
+    async cancel(item, event: React.MouseEvent) {
         event.stopPropagation()
-        this.toggle(item, event)
+        event.stopPropagation()
+        if (await this.change('不参加', item)) {
+            Tips.toast('取消成功')
+            Taro.navigateBack()
+        }
+        this.getData()
+    }
+    async change(status, item) {
+        const sendData = {
+            rsvp: status
+        }
+        const id = item.id
+        const res = await this.$api({
+            url: `${MAINHOST}/event/${id}/patch`,
+            data: sendData,
+            method: 'POST'
+        })
+        console.log({
+            res
+        })
+        if (res.message === 'event updated') {
+            return true
+        }
+        return false
     }
     async join(item, event: React.MouseEvent) {
         event.stopPropagation()
+        if (await this.change('参加', item)) {
+            Tips.toast('参加成功')
+        }
+
         this.toggle(item, event)
     }
     async del(item, event: React.MouseEvent) {
@@ -147,10 +177,9 @@ class home extends Component<homeProps, homeState> {
             // data:{
             //     eventId:item.id
             // },
-            method:"DELETE"
+            method: 'DELETE'
         })
         this.getData()
-
     }
     toggle(item, event: React.MouseEvent) {
         // console.log({ event ,item});

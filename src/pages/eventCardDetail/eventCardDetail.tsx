@@ -29,7 +29,7 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
                 initiatorId: 0,
                 invitee: [],
                 rsvp: {
-                    accept:[]
+                    accept: []
                 },
                 thumbnail: []
             }
@@ -40,8 +40,14 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
     }
     joinStatus() {
         let flag = false
+        if (
+            this.state.pageInfo.initiatorId ===
+            +Taro.getStorageSync('learnerId')
+        ) {
+            flag=true
+        }
         this.state.pageInfo.rsvp.accept.forEach(item => {
-            console.log(Taro.getStorageSync('learnerId'))
+            // console.log(Taro.getStorageSync('learnerId'))
             if (item.id && item.id === Taro.getStorageSync('learnerId')) {
                 flag = true
             }
@@ -68,7 +74,7 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
             .map(item => {
                 return item.fullname
             })
-            .filter(n=>n)
+            .filter(n => n)
             .join(',')
     }
     async getData() {
@@ -79,7 +85,6 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
         this.setState({
             pageInfo: res
         })
-        console.log({ res })
     }
     async change(status) {
         const sendData = {
@@ -91,18 +96,39 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
             data: sendData,
             method: 'POST'
         })
-        if (res.statusCode === 201) {
-            Tips.toast(res.msg)
+       
+        if (res.message === 'event updated') {
+            return true
+        }
+        return false
+
+        // if (res.statusCode === 201) {
+        //     Tips.toast(res.msg)
+        // }
+    }
+    async join() {
+        if (await this.change('参加')) {
+            Tips.toast('参加成功')
+            setTimeout(()=>{
+                Taro.navigateBack()
+            },1000)
         }
     }
-    join() {
-        this.change('参加')
+    async maybeJoin() {
+        if (await this.change('待定')) {
+            Tips.toast('设置成功')
+            setTimeout(()=>{
+                Taro.navigateBack()
+            },1000)
+        }
     }
-    maybeJoin() {
-        this.change('可能参加')
-    }
-    cancel() {
-        this.change('不参加')
+    async cancel() {
+        if (await this.change('不参加')) {
+            Tips.toast('取消成功')
+            setTimeout(()=>{
+                Taro.navigateBack()
+            },1000)
+        }
     }
     render() {
         return (

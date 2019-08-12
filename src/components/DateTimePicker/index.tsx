@@ -6,7 +6,8 @@ import { formatDate } from '../../utils/common'
 class DateTimePicker extends Component<PropsInterface, StateInterface> {
     config: Config = {
         usingComponents: {
-            'van-datetime-picker': '../vant-weapp/vant-dist/datetime-picker/index',
+            'van-datetime-picker':
+                '../vant-weapp/vant-dist/datetime-picker/index',
             'van-popup': '../vant-weapp/vant-dist/popup/index'
         }
     }
@@ -21,16 +22,17 @@ class DateTimePicker extends Component<PropsInterface, StateInterface> {
         }
     }
     formatDate(timestamp): string {
+        if(!timestamp) return ''
         return formatDate(timestamp).times
     }
-    input(val) {
-        console.log('input',val)
-        this.props.onchange(formatDate(val.detail).formatDate)
-        this.setState({
-            timeStr: val.detail,
-            time: val.detail
-        })
-    }
+    // input(val) {
+    //     // console.log('input',val)
+    //     // this.props.onchange(formatDate(val.detail).formatDate)
+    //     // this.setState({
+    //     //     timeStr: val.detail,
+    //     //     time: val.detail
+    //     // })
+    // }
     closePopup() {
         this.setState({
             show: false
@@ -38,7 +40,12 @@ class DateTimePicker extends Component<PropsInterface, StateInterface> {
     }
     confirm(val) {
         console.log('confirm')
+        console.log(formatDate(val.detail).formatDate)
         this.props.onchange(formatDate(val.detail).formatDate)
+        this.setState({
+            timeStr: val.detail,
+            time: val.detail
+        })
         this.closePopup()
     }
     componentWillReceiveProps(next) {
@@ -56,7 +63,6 @@ class DateTimePicker extends Component<PropsInterface, StateInterface> {
                 <van-popup position='bottom' show={this.state.show}>
                     <van-datetime-picker
                         type='datetime'
-                        onInput={val => this.input(val)}
                         onConfirm={val => this.confirm(val)}
                         onCancel={() => this.closePopup()}
                         value={this.state.time}

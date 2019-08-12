@@ -15,5 +15,5 @@ export interface StateInterface {
  * @interface PropsInterface
  */
 export interface PropsInterface {
-   
+    closeDrawer?: Function
 }

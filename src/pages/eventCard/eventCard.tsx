@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Picker, Button } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 // import { connect } from "@tarojs/redux";
 // import Api from '../../utils/request'
@@ -55,31 +55,11 @@ class EventCard extends Component<propsInterface, stateInterface> {
         if (!this.checkForm()) {
             return
         }
-        // const token = Taro.getStorageSync("token");
-        // const iv = Taro.getStorageSync("iv");
-        // const encryptedData = Taro.getStorageSync("encryptedData");
+       
         this.setState({
             loading: true
         })
-        // const sendData = {
-        //     content: {},
-        //     eventInfo: {
-        //         description: this.state.description,
-        //         endDateTime: this.state.endDateTime,
-        //         fee: this.state.fee,
-        //         location: [{}],
-        //         expireDateTime: this.state.expireDateTime,
-        //         startDateTime: this.state.startDateTime,
-        //         title: this.state.title
-        //     },
-        //     invitee: [
-        //         {
-        //             type: 'list',
-        //             rules: this.state.membersChoose.map(item => item.id)
-        //         }
-        //     ],
-        //     thumbnail: this.state.thumbnail
-        // }
+       
         const sendData = {
             content: {
                 logoInfo: {
@@ -165,6 +145,27 @@ class EventCard extends Component<propsInterface, stateInterface> {
             Tips.toast('请输入标题')
             return false
         }
+        if (!this.state.description) {
+            Tips.toast('请输入描述')
+            return false
+        } 
+        if (!this.state.startDateTime) {
+            Tips.toast('请选择活动开始时间')
+            return false
+        }
+        if (!this.state.endDateTime) {
+            Tips.toast('请选择活动结束时间')
+            return false
+        }
+        if (!this.state.expireDateTime) {
+            Tips.toast('请选择活动过期时间')
+            return false
+        }
+
+        if (!this.state.fee) {
+            Tips.toast('请输入活动费用')
+            return false
+        }
         return true
     }
     componentDidShow() {
@@ -172,11 +173,6 @@ class EventCard extends Component<propsInterface, stateInterface> {
     }
     dateChange(val) {
         console.log(val)
-    }
-    test() {
-        this.setState({
-            show: true
-        })
     }
     render() {
         return (
