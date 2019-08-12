@@ -21,13 +21,16 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
             pageInfo: {
                 eventInfo: {
                     description: '',
-                    endDateTime: ''
+                    endDateTime: '',
+                    title: ''
                 },
                 id: 0,
                 initiatorDisplayName: '',
                 initiatorId: 0,
                 invitee: [],
-                rsvp: {},
+                rsvp: {
+                    accept:[]
+                },
                 thumbnail: []
             }
         }
@@ -36,27 +39,36 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
         this.getData()
     }
     joinStatus() {
-        const item = this.state.pageInfo.rsvp[Taro.getStorageSync('learnerid')]
-        return item ? item.status === '参加' : false
+        let flag = false
+        this.state.pageInfo.rsvp.accept.forEach(item => {
+            console.log(Taro.getStorageSync('learnerId'))
+            if (item.id && item.id === Taro.getStorageSync('learnerId')) {
+                flag = true
+            }
+        })
+        return flag
     }
     formatDate(str) {
+        if (!str) return
         const result = str
             .split('+08:00')
             .shift()
             .split('T')
             .join(' ')
-            .replace('-', '/')
+            .replace(/-/g, '/')
         return result
     }
     joinList() {
-        let arr: Array<any> = []
-        for (let key in this.state.pageInfo.rsvp) {
-            arr.push(this.state.pageInfo.rsvp[key])
-        }
-        return arr
+        // let arr: Array<any> = []
+        const acceptList = this.state.pageInfo.rsvp.accept
+        // for (let key in acceptList) {
+        //     arr.push(acceptList[key])
+        // }
+        return acceptList
             .map(item => {
                 return item.fullname
             })
+            .filter(n=>n)
             .join(',')
     }
     async getData() {
@@ -156,12 +168,14 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
                         <View className='value-item'>{this.joinList()}</View>
                     </View>
 
-                    <AtButton
-                        className='sub-button'
-                        onClick={() => this.join()}
-                    >
-                        确认报名
-                    </AtButton>
+                    {this.joinStatus() ? null : (
+                        <AtButton
+                            className='sub-button'
+                            onClick={() => this.join()}
+                        >
+                            确认报名
+                        </AtButton>
+                    )}
 
                     <View className='action-panel'>
                         <View

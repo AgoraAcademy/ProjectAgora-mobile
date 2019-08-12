@@ -149,6 +149,7 @@ class home extends Component<homeProps, homeState> {
             // },
             method:"DELETE"
         })
+        this.getData()
 
     }
     toggle(item, event: React.MouseEvent) {

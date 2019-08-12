@@ -195,7 +195,7 @@ export class Request {
             await Taro.setStorageSync('learnerFullName', data.learnerFullName)
             await Taro.setStorageSync('unionid', data.unionid)
             await Taro.setStorageSync('isAdmin', data.isAdmin)
-            await Taro.setStorageSync('learnerid', data.learnerid)
+            await Taro.setStorageSync('learnerId', data.learnerId)
             this.isLogining = false
             resolve()
         })
