@@ -11,8 +11,7 @@ import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/co
 import ImagePicker from '../../components/imagePicker'
 import DateTimePicker from '../../components/DateTimePicker'
 import MembersPicker from '../../components/MembersPicker'
-
-// import { } from '../../components'
+const numReg=/(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/
 
 class EventCard extends Component<propsInterface, stateInterface> {
     config: Config = {
@@ -161,9 +160,21 @@ class EventCard extends Component<propsInterface, stateInterface> {
             Tips.toast('请选择活动过期时间')
             return false
         }
-
+        if (this.state.startDateTime>this.state.endDateTime) {
+            Tips.toast('活动结束时间不能小于开始时间')
+            return false
+        }
+        if (this.state.startDateTime>this.state.expireDateTime) {
+            Tips.toast('活动过期时间不能小于开始时间')
+            return false
+        }
         if (!this.state.fee) {
             Tips.toast('请输入活动费用')
+            return false
+        }
+       
+        if(!numReg.test(this.state.fee)){
+            Tips.toast('请输入合法的金额')
             return false
         }
         return true

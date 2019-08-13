@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from "@tarojs/taro";
 import { View, Picker } from "@tarojs/components";
 import { AtForm, AtInput, AtButton } from "taro-ui";
-import { connect } from "@tarojs/redux";
+// import { connect } from "@tarojs/redux";
 // import Api from '../../utils/request'
 import Tips from '../../utils/tips'
 import { IdentityProps, IdentityState } from "./identity.interface";
@@ -51,6 +51,10 @@ class Identity extends Component<IdentityProps, IdentityState> {
         });
         if (res.statusCode === 201) {
             Tips.toast("注册成功")
+            await this.$login()
+            Taro.switchTab({
+                url:"/pages/home/home"
+            })
         }
     }
     render() {

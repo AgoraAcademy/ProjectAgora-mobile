@@ -236,4 +236,5 @@ export class Request {
 // 导出
 const Api = Request.getApiList(requestConfig)
 Component.prototype.$api = Request.request.bind(Request)
+Component.prototype.$login = Request.login.bind(Request)
 export default Api as any

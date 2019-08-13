@@ -12,11 +12,6 @@ import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/co
 import produce from 'immer'
 import classnames from 'classnames'
 import Avatar from '../../components/Avatar'
-// import { } from '../../components'
-
-// @connect(({ home }) => ({
-//     ...home,
-// }))
 
 class home extends Component<homeProps, homeState> {
     config: Config = {
@@ -49,7 +44,7 @@ class home extends Component<homeProps, homeState> {
                     fee: '12',
                     location: [],
                     startDateTime: '2019-08-10T17:22:09+08:00',
-                    title: 'test title'
+                    title: '假数据'
                 },
                 id: 5,
                 initiatorDisplayName: '\u8096\u6625\u817e',
@@ -69,7 +64,7 @@ class home extends Component<homeProps, homeState> {
                     fee: '12',
                     location: [],
                     startDateTime: '2019-08-10T17:22:09+08:00',
-                    title: 'test title'
+                    title: '假数据'
                 },
                 id: 6,
                 initiatorDisplayName: '\u8096\u6625\u817e',
@@ -89,7 +84,7 @@ class home extends Component<homeProps, homeState> {
                     fee: '12',
                     location: [],
                     startDateTime: '2019-08-10T17:22:09+08:00',
-                    title: 'test title'
+                    title: '假数据'
                 },
                 id: 7,
                 initiatorDisplayName: '\u8096\u6625\u817e',
@@ -292,20 +287,23 @@ class home extends Component<homeProps, homeState> {
                                         <View className='at-icon at-icon-help icon-help' />
                                         <Text className='text'>可能参加</Text>
                                     </View>
-                                    <View
-                                        className='action-item'
-                                        onClick={this.del.bind(this, item)}
-                                    >
-                                        <View className='at-icon at-icon-help icon-help' />
-                                        <Text className='text'>删除</Text>
-                                    </View>
+                                    {item.initiatorId ===
+                                    +Taro.getStorageSync('learnerId') ? (
+                                        <View
+                                            className='action-item'
+                                            onClick={this.del.bind(this, item)}
+                                        >
+                                            <View className='at-icon at-icon-help icon-help' />
+                                            <Text className='text'>删除</Text>
+                                        </View>
+                                    ) : null}
                                 </View>
                             ) : null}
                         </View>
                     )
                 })
             ) : (
-                <View>暂无数据</View>
+                <View className="no-data">暂无数据</View>
             )
         const tabList = [
             {
