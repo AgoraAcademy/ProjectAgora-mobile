@@ -44,7 +44,7 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
             this.state.pageInfo.initiatorId ===
             +Taro.getStorageSync('learnerId')
         ) {
-            flag=true
+            flag = true
         }
         this.state.pageInfo.rsvp.accept.forEach(item => {
             // console.log(Taro.getStorageSync('learnerId'))
@@ -96,7 +96,7 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
             data: sendData,
             method: 'POST'
         })
-       
+
         if (res.message === 'event updated') {
             return true
         }
@@ -109,25 +109,25 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
     async join() {
         if (await this.change('参加')) {
             Tips.toast('参加成功')
-            setTimeout(()=>{
+            setTimeout(() => {
                 Taro.navigateBack()
-            },1000)
+            }, 1000)
         }
     }
     async maybeJoin() {
         if (await this.change('待定')) {
             Tips.toast('设置成功')
-            setTimeout(()=>{
+            setTimeout(() => {
                 Taro.navigateBack()
-            },1000)
+            }, 1000)
         }
     }
     async cancel() {
         if (await this.change('不参加')) {
             Tips.toast('取消成功')
-            setTimeout(()=>{
+            setTimeout(() => {
                 Taro.navigateBack()
-            },1000)
+            }, 1000)
         }
     }
     render() {
@@ -195,30 +195,31 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
                     </View>
 
                     {this.joinStatus() ? null : (
-                        <AtButton
-                            className='sub-button'
-                            onClick={() => this.join()}
-                        >
-                            确认报名
-                        </AtButton>
+                        <View>
+                            <AtButton
+                                className='sub-button'
+                                onClick={() => this.join()}
+                            >
+                                确认报名
+                            </AtButton>
+                            <View className='action-panel'>
+                                <View
+                                    className='action-item'
+                                    onClick={() => this.cancel()}
+                                >
+                                    <View className='at-icon at-icon-close icon-close' />
+                                    <Text className='text'>取消</Text>
+                                </View>
+                                <View
+                                    className='action-item'
+                                    onClick={() => this.maybeJoin()}
+                                >
+                                    <View className='at-icon at-icon-help icon-help' />
+                                    <Text className='text'>可能参加</Text>
+                                </View>
+                            </View>
+                        </View>
                     )}
-
-                    <View className='action-panel'>
-                        <View
-                            className='action-item'
-                            onClick={() => this.cancel()}
-                        >
-                            <View className='at-icon at-icon-close icon-close' />
-                            <Text className='text'>取消</Text>
-                        </View>
-                        <View
-                            className='action-item'
-                            onClick={() => this.maybeJoin()}
-                        >
-                            <View className='at-icon at-icon-help icon-help' />
-                            <Text className='text'>可能参加</Text>
-                        </View>
-                    </View>
                 </AtForm>
             </View>
         )
