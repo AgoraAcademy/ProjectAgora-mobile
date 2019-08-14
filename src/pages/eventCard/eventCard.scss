@@ -12,21 +12,36 @@
     height: 60rpx;
     width: 370rpx;
     line-height: 60rpx;
-    margin-top: 90rpx;
+    margin-top: 60rpx;
 }
-.register-title-panel{
+.sub-button.red{
+    background: $main;
+    margin-top:30rpx;
+}
+.register-title-panel {
     background: $actvity;
 }
-.act-panel{
+.act-panel {
     text-align: center;
-    margin-bottom:20rpx;
-    .act-title{
-        font-size:36rpx;
-        color:#505050;
+    margin-bottom: 20rpx;
+    .act-title {
+        font-size: 36rpx;
+        color: #505050;
         text-align: center;
         display: inline-block;
     }
 }
 .at-input {
     display: inline-block;
+}
+textarea {
+    width: 150px;
+    display: inline-block;
+    height: 100%;
+    box-sizing: border-box;
+    transform: translateY(15rpx);
+}
+
+input{
+    transform: translateY(15rpx);
 }

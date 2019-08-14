@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text, ScrollView } from '@tarojs/components'
+import { View, Text, ScrollView, Block } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 // import { connect } from '@tarojs/redux'
 // import Api from '../../utils/request'
@@ -122,13 +122,26 @@ class home extends Component<homeProps, homeState> {
 
     // }
     goDetail(type, item) {
-        Taro.navigateTo({
-            url:
-                '/pages/eventCardDetail/eventCardDetail?type=' +
-                type +
-                '&id=' +
-                item.id
+        console.log({
+            item
         })
+        if(item.initiatorId===+Taro.getStorageSync('learnerId')){
+            console.log("自己的")
+            Taro.navigateTo({
+                url:
+                    '/pages/eventCard/eventCard?type=edit&id=' +
+                    item.id
+            })
+        }else{
+            Taro.navigateTo({
+                url:
+                    '/pages/eventCardDetail/eventCardDetail?type=' +
+                    type +
+                    '&id=' +
+                    item.id
+            })
+        }
+        
     }
     async cancel(item, event: React.MouseEvent) {
         event.stopPropagation()
@@ -263,15 +276,30 @@ class home extends Component<homeProps, homeState> {
                                         {item.eventInfo.description}
                                     </View>
                                 </View>
-                                <View onClick={this.toggle.bind(this, item)}>
-                                    <AtButton className='sub-button'>
-                                        报名
-                                    </AtButton>
-                                </View>
+                                {item.initiatorId ===
+                                +Taro.getStorageSync('learnerId') ? (
+                                    <View
+                                        onClick={this.del.bind(this, item)}
+                                    >
+                                        <AtButton className='sub-button'>
+                                            删除
+                                        </AtButton>
+                                    </View>
+                                ) : (
+                                    <View
+                                        onClick={this.toggle.bind(this, item)}
+                                    >
+                                        <AtButton className='sub-button'>
+                                            报名
+                                        </AtButton>
+                                    </View>
+                                )}
 
                                 <View className='at-icon at-icon-chevron-right icon-right' />
                             </View>
-                            {item.status ? (
+                            {item.status &&
+                            item.initiatorId !==
+                                +Taro.getStorageSync('learnerId') ? (
                                 <View className='action-panel'>
                                     <View
                                         className='action-item'
@@ -287,23 +315,13 @@ class home extends Component<homeProps, homeState> {
                                         <View className='at-icon at-icon-help icon-help' />
                                         <Text className='text'>可能参加</Text>
                                     </View>
-                                    {item.initiatorId ===
-                                    +Taro.getStorageSync('learnerId') ? (
-                                        <View
-                                            className='action-item'
-                                            onClick={this.del.bind(this, item)}
-                                        >
-                                            <View className='at-icon at-icon-help icon-help' />
-                                            <Text className='text'>删除</Text>
-                                        </View>
-                                    ) : null}
                                 </View>
                             ) : null}
                         </View>
                     )
                 })
             ) : (
-                <View className="no-data">暂无数据</View>
+                <View className='no-data'>暂无数据</View>
             )
         const tabList = [
             {

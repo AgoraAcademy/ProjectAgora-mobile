@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 
 import { StateInterface, PropsInterface } from './interface'
-import { formatDate } from '../../utils/common'
+import { formatDate, formatDateFromStr } from '../../utils/common'
 class DateTimePicker extends Component<PropsInterface, StateInterface> {
     config: Config = {
         usingComponents: {
@@ -16,13 +16,12 @@ class DateTimePicker extends Component<PropsInterface, StateInterface> {
         super(props)
         this.state = {
             show: false,
-            timeStr: '',
             time: '',
             minTime: new Date().getTime()
         }
     }
     formatDate(timestamp): string {
-        if(!timestamp) return ''
+        if (!timestamp) return ''
         return formatDate(timestamp).times
     }
     // input(val) {
@@ -43,12 +42,17 @@ class DateTimePicker extends Component<PropsInterface, StateInterface> {
         console.log(formatDate(val.detail).formatDate)
         this.props.onchange(formatDate(val.detail).formatDate)
         this.setState({
-            timeStr: val.detail,
             time: val.detail
         })
         this.closePopup()
     }
     componentWillReceiveProps(next) {
+        if (next.initTime) {
+            console.log('ues')
+            this.setState({
+                time: formatDateFromStr(next.initTime).timestamp
+            })
+        }
         this.setState({
             show: next.show
         })

@@ -4,6 +4,7 @@ import { AtForm, AtButton } from 'taro-ui'
 // import { connect } from "@tarojs/redux";
 // import Api from '../../utils/request'
 import Tips from '../../utils/tips'
+import { formatDateFromStr } from '../../utils/common'
 import { propsInterface, stateInterface } from './interface'
 import './eventCardDetail.scss'
 import { MAINHOST } from '../../config'
@@ -54,16 +55,6 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
         })
         return flag
     }
-    formatDate(str) {
-        if (!str) return
-        const result = str
-            .split('+08:00')
-            .shift()
-            .split('T')
-            .join(' ')
-            .replace(/-/g, '/')
-        return result
-    }
     joinList() {
         // let arr: Array<any> = []
         const acceptList = this.state.pageInfo.rsvp.accept
@@ -85,6 +76,9 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
         this.setState({
             pageInfo: res
         })
+    }
+    formatDate(str) {
+        return formatDateFromStr(str).text
     }
     async change(status) {
         const sendData = {
@@ -129,6 +123,18 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
                 Taro.navigateBack()
             }, 1000)
         }
+    }
+    async del() {
+        const { id } = this.$router.params
+        const res = await this.$api({
+            url: `${MAINHOST}/event/${id}`,
+            method: 'DELETE'
+        })
+
+        Tips.toast('删除成功')
+        setTimeout(() => {
+            Taro.navigateBack()
+        }, 1000)
     }
     render() {
         return (
@@ -193,7 +199,17 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
                         <View className='label-item'>已报名</View>
                         <View className='value-item'>{this.joinList()}</View>
                     </View>
-
+                    {this.state.pageInfo.initiatorId ===
+                    +Taro.getStorageSync('learnerId') ? (
+                        <View>
+                            <AtButton
+                                className='sub-button red'
+                                onClick={() => this.del()}
+                            >
+                                删除
+                            </AtButton>
+                        </View>
+                    ) : null}
                     {this.joinStatus() ? null : (
                         <View>
                             <AtButton

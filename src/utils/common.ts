@@ -69,7 +69,8 @@ export function formatDate(time) {
     var date = _addZore(time.getDate())
     var hours = _addZore(time.getHours())
     var minutes = _addZore(time.getMinutes())
-    var seconds = _addZore(time.getSeconds())
+    // var seconds = _addZore(time.getSeconds())
+    var seconds = '00'
     return {
         year: year,
         month: month,
@@ -92,7 +93,34 @@ export function formatDate(time) {
         dates: year + '-' + month + '-' + date,
         times:
             year + '年' + month + '月' + date + '日 ' + hours + ':' + minutes,
-        formatDate: year + '-' + month + '-' + date + 'T' + hours + ':' + minutes + ':' + seconds+"+08:00"
+        formatDate:
+            year +
+            '-' +
+            month +
+            '-' +
+            date +
+            'T' +
+            hours +
+            ':' +
+            minutes +
+            ':' +
+            seconds +
+            '+08:00'
+    }
+}
+
+export function formatDateFromStr(str) {
+    if (!str) return { text: '', timestamp: 0 }
+    const result = str
+        .split('+08:00')
+        .shift()
+        .split('T')
+        .join(' ')
+        .replace(/-/g, '/')
+        .slice(0, -3)
+    return {
+        text: result,
+        timestamp: Date.parse(result)
     }
 }
 export var globalData: any = {} // 全局公共变量

@@ -4,10 +4,9 @@
  * @interface StateInterface
  */
 export interface StateInterface {
-    show: boolean,
-    time:any
-    timeStr:string
-    minTime:number
+    show: boolean
+    time: any
+    minTime: number
 }
 
 /**
@@ -18,6 +17,7 @@ export interface StateInterface {
  */
 export interface PropsInterface {
     onchange: Function
-    placeholder?:string
+    placeholder?: string
+    initTime?: string
     // show: boolean
 }
