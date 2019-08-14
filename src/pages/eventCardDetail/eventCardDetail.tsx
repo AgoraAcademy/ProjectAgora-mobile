@@ -1,16 +1,13 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtForm, AtButton } from 'taro-ui'
-// import { connect } from "@tarojs/redux";
-// import Api from '../../utils/request'
 import Tips from '../../utils/tips'
 import { formatDateFromStr } from '../../utils/common'
 import { propsInterface, stateInterface } from './interface'
 import './eventCardDetail.scss'
 import { MAINHOST } from '../../config'
 import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/componentHomeNavigation'
-// import { rolesList, branchsList } from '../../globalData'
-// import { } from '../../components'
+
 
 class EventCardDetail extends Component<propsInterface, stateInterface> {
     config: Config = {
@@ -33,13 +30,14 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
                     accept: []
                 },
                 thumbnail: []
-            }
+            },
+            joinStatus: true
         }
     }
     componentDidMount() {
         this.getData()
     }
-    joinStatus() {
+    getJoinStatus() {
         let flag = false
         if (
             this.state.pageInfo.initiatorId ===
@@ -48,19 +46,16 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
             flag = true
         }
         this.state.pageInfo.rsvp.accept.forEach(item => {
-            // console.log(Taro.getStorageSync('learnerId'))
             if (item.id && item.id === Taro.getStorageSync('learnerId')) {
                 flag = true
             }
         })
-        return flag
+        this.setState({
+            joinStatus: flag
+        })
     }
     joinList() {
-        // let arr: Array<any> = []
         const acceptList = this.state.pageInfo.rsvp.accept
-        // for (let key in acceptList) {
-        //     arr.push(acceptList[key])
-        // }
         return acceptList
             .map(item => {
                 return item.fullname
@@ -73,9 +68,14 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
         const res = await this.$api({
             url: `${MAINHOST}/event/${id}`
         })
-        this.setState({
-            pageInfo: res
-        })
+        this.setState(
+            {
+                pageInfo: res
+            },
+            () => {
+                this.getJoinStatus()
+            }
+        )
     }
     formatDate(str) {
         return formatDateFromStr(str).text
@@ -85,20 +85,16 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
             rsvp: status
         }
         const { id } = this.$router.params
-        const res = await this.$api({
-            url: `${MAINHOST}/event/${id}/patch`,
-            data: sendData,
-            method: 'POST'
-        })
-
-        if (res.message === 'event updated') {
+        try {
+            await this.$api({
+                url: `${MAINHOST}/event/${id}/patch`,
+                data: sendData,
+                method: 'POST'
+            })
             return true
+        } catch (error) {
+            return false
         }
-        return false
-
-        // if (res.statusCode === 201) {
-        //     Tips.toast(res.msg)
-        // }
     }
     async join() {
         if (await this.change('参加')) {
@@ -126,15 +122,18 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
     }
     async del() {
         const { id } = this.$router.params
-        const res = await this.$api({
-            url: `${MAINHOST}/event/${id}`,
-            method: 'DELETE'
-        })
-
-        Tips.toast('删除成功')
-        setTimeout(() => {
-            Taro.navigateBack()
-        }, 1000)
+        try {
+            await this.$api({
+                url: `${MAINHOST}/event/${id}`,
+                method: 'DELETE'
+            })
+            Tips.toast('删除成功')
+            setTimeout(() => {
+                Taro.navigateBack()
+            }, 1000)
+        } catch (error) {
+            Tips.toast('删除失败')
+        }
     }
     render() {
         return (
@@ -210,7 +209,7 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
                             </AtButton>
                         </View>
                     ) : null}
-                    {this.joinStatus() ? null : (
+                    {this.joinStatus ? null : (
                         <View>
                             <AtButton
                                 className='sub-button'

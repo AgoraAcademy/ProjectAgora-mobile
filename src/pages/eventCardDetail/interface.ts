@@ -1,4 +1,3 @@
-
 /**
  * state 参数类型
  *
@@ -6,7 +5,8 @@
  * @interface stateInterface
  */
 export interface stateInterface {
-    pageInfo:any
+    pageInfo: any
+    joinStatus: boolean
 }
 
 /**
@@ -16,5 +16,5 @@ export interface stateInterface {
  * @interface propsInterface
  */
 export interface propsInterface {
-    identity:string
+    identity: string
 }

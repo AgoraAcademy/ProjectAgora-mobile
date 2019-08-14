@@ -1,8 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Textarea, Input } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
-// import { connect } from "@tarojs/redux";
-// import Api from '../../utils/request'
 import Tips from '../../utils/tips'
 import { propsInterface, stateInterface } from './interface'
 import './eventCard.scss'
@@ -81,7 +79,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
             loading: true
         })
 
-        let sendData:any = {
+        let sendData: any = {
             content: {
                 logoInfo: {
                     type: 'string',
@@ -115,7 +113,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
             ],
             thumbnail: this.state.thumbnail
         }
-        if( this.$router.params.type === 'edit'){
+        if (this.$router.params.type === 'edit') {
             sendData = {
                 endDateTime: this.state.endDateTime,
                 expireDateTime: this.state.expireDateTime,
@@ -124,7 +122,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
                 startDateTime: this.state.startDateTime,
                 thumbnail: this.state.thumbnail,
                 title: this.state.title,
-                description: this.state.description,
+                description: this.state.description
             }
         }
         console.log({ sendData })
@@ -203,10 +201,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
             Tips.toast('请选择活动结束时间')
             return false
         }
-        // if (!this.state.expireDateTime) {
-        //     Tips.toast('请选择活动过期时间')
-        //     return false
-        // }
+       
         if (this.state.startDateTime > this.state.endDateTime) {
             Tips.toast('活动结束时间不能小于开始时间')
             return false
@@ -218,10 +213,6 @@ class EventCard extends Component<propsInterface, stateInterface> {
             Tips.toast('活动截止时间不能小于开始时间')
             return false
         }
-        // if (!this.state.fee) {
-        //     Tips.toast('请输入活动费用')
-        //     return false
-        // }
 
         if (this.state.fee && !numReg.test(this.state.fee)) {
             Tips.toast('请输入合法的金额')
@@ -229,23 +220,21 @@ class EventCard extends Component<propsInterface, stateInterface> {
         }
         return true
     }
-    componentDidShow() {
-        // console.log(arguments)
-    }
     dateChange(val) {
         console.log(val)
     }
     async del() {
         const { id } = this.$router.params
-        const res = await this.$api({
-            url: `${MAINHOST}/event/${id}`,
-            method: 'DELETE'
-        })
-
-        Tips.toast('删除成功')
-        setTimeout(() => {
-            Taro.navigateBack()
-        }, 1000)
+        try {
+            await this.$api({
+                url: `${MAINHOST}/event/${id}`,
+                method: 'DELETE'
+            })
+            Tips.toast('删除成功')
+            setTimeout(() => {
+                Taro.navigateBack()
+            }, 1000)
+        } catch (err) {}
     }
     render() {
         return (

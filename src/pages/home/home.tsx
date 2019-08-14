@@ -1,14 +1,11 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text, ScrollView, Block } from '@tarojs/components'
+import { View, Text, ScrollView } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
-// import { connect } from '@tarojs/redux'
-// import Api from '../../utils/request'
 import Tips from '../../utils/tips'
 import { MAINHOST } from '../../config'
 import { homeProps, homeState } from './home.interface'
 import './home.scss'
 import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/componentHomeNavigation'
-// import ImageView from '../../components/ImageView/ImageView'
 import produce from 'immer'
 import classnames from 'classnames'
 import Avatar from '../../components/Avatar'
@@ -278,13 +275,14 @@ class home extends Component<homeProps, homeState> {
                                 </View>
                                 {item.initiatorId ===
                                 +Taro.getStorageSync('learnerId') ? (
-                                    <View
-                                        onClick={this.del.bind(this, item)}
-                                    >
-                                        <AtButton className='sub-button'>
-                                            删除
-                                        </AtButton>
-                                    </View>
+                                    // <View
+                                    //     onClick={this.del.bind(this, item)}
+                                    // >
+                                    //     <AtButton className='sub-button'>
+                                    //         删除
+                                    //     </AtButton>
+                                    // </View>
+                                    null
                                 ) : (
                                     <View
                                         onClick={this.toggle.bind(this, item)}
