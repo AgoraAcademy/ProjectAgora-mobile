@@ -8,7 +8,7 @@ export const formatTime = time => {
     )}.${pad(time.getMilliseconds(), 3)}`
 }
 
-export function choosePicGetBase64(option: {
+export function choosePicGetUrl(option: {
     type: IMG_TYPE
 }): Promise<string> {
     const token = Taro.getStorageSync('token')

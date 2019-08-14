@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { StateInterface, PropsInterface } from './interface'
-import { choosePicGetBase64 } from '../../utils/common'
+import { choosePicGetUrl } from '../../utils/common'
 import Tips from '../../utils/tips'
 import produce from 'immer'
 import ImageView from '../ImageView/ImageView'
@@ -27,7 +27,7 @@ class ImagePicker extends Component<
         }
     }
     async choosePic() {
-        const res = await choosePicGetBase64({ type: 'event' })
+        const res = await choosePicGetUrl({ type: 'event' })
         // console.log(res);
         if (this.state.thumbnail.length === 9) {
             Tips.toast('图片不能超过9张')

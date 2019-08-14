@@ -73,7 +73,6 @@ class EventCard extends Component<propsInterface, stateInterface> {
         })
     }
     async submit() {
-        console.log(this.state.description)
         if (!this.checkForm()) {
             return
         }
@@ -82,7 +81,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
             loading: true
         })
 
-        const sendData = {
+        let sendData:any = {
             content: {
                 logoInfo: {
                     type: 'string',
@@ -115,6 +114,18 @@ class EventCard extends Component<propsInterface, stateInterface> {
                 }
             ],
             thumbnail: this.state.thumbnail
+        }
+        if( this.$router.params.type === 'edit'){
+            sendData = {
+                endDateTime: this.state.endDateTime,
+                expireDateTime: this.state.expireDateTime,
+                fee: this.state.fee,
+                invitee: this.state.membersChoose,
+                startDateTime: this.state.startDateTime,
+                thumbnail: this.state.thumbnail,
+                title: this.state.title,
+                description: this.state.description,
+            }
         }
         console.log({ sendData })
 
