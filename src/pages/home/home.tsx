@@ -122,14 +122,11 @@ class home extends Component<homeProps, homeState> {
         console.log({
             item
         })
-        if(item.initiatorId===+Taro.getStorageSync('learnerId')){
-            console.log("自己的")
+        if (item.initiatorId === +Taro.getStorageSync('learnerId')) {
             Taro.navigateTo({
-                url:
-                    '/pages/eventCard/eventCard?type=edit&id=' +
-                    item.id
+                url: '/pages/eventCard/eventCard?type=edit&id=' + item.id
             })
-        }else{
+        } else {
             Taro.navigateTo({
                 url:
                     '/pages/eventCardDetail/eventCardDetail?type=' +
@@ -138,7 +135,6 @@ class home extends Component<homeProps, homeState> {
                     item.id
             })
         }
-        
     }
     async cancel(item, event: React.MouseEvent) {
         event.stopPropagation()
@@ -177,14 +173,17 @@ class home extends Component<homeProps, homeState> {
     }
     async del(item, event: React.MouseEvent) {
         event.stopPropagation()
-        const res = await this.$api({
-            url: `${MAINHOST}/event/${item.id}`,
-            // data:{
-            //     eventId:item.id
-            // },
-            method: 'DELETE'
-        })
-        this.getData()
+        try {
+            await this.$api({
+                url: `${MAINHOST}/event/${item.id}`,
+                // data:{
+                //     eventId:item.id
+                // },
+                method: 'DELETE'
+            })
+        } catch (err) {
+            this.getData()
+        }
     }
     toggle(item, event: React.MouseEvent) {
         // console.log({ event ,item});
@@ -210,6 +209,14 @@ class home extends Component<homeProps, homeState> {
         }
         // do something...
     }
+    hadJoin(rsvp) {
+        if (!rsvp || !rsvp.accept) {
+            return false
+        }
+        return rsvp.accept.some(item => {
+            item.id === +Taro.getStorageSync('learnerId')
+        })
+    }
     getBg(type) {
         return {
             活动: 'green',
@@ -231,7 +238,7 @@ class home extends Component<homeProps, homeState> {
                         <View
                             key={item.id}
                             className={classnames('li-ele card', {
-                                active: item.status
+                                active: this.hadJoin(item.rsvp)
                             })}
                             onClick={() => {
                                 this.goDetail(this.state.chooseType, item)
@@ -274,19 +281,18 @@ class home extends Component<homeProps, homeState> {
                                     </View>
                                 </View>
                                 {item.initiatorId ===
-                                +Taro.getStorageSync('learnerId') ? (
-                                    // <View
-                                    //     onClick={this.del.bind(this, item)}
-                                    // >
-                                    //     <AtButton className='sub-button'>
-                                    //         删除
-                                    //     </AtButton>
-                                    // </View>
-                                    null
-                                ) : (
+                                +Taro.getStorageSync(
+                                    'learnerId'
+                                ) ? null : this.hadJoin(item.rsvp) ? (
                                     <View
                                         onClick={this.toggle.bind(this, item)}
                                     >
+                                        <AtButton className='sub-button'>
+                                            已报名
+                                        </AtButton>
+                                    </View>
+                                ) : (
+                                    <View onClick={this.join.bind(this, item)}>
                                         <AtButton className='sub-button'>
                                             报名
                                         </AtButton>
