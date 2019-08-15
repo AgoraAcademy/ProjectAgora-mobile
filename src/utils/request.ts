@@ -95,6 +95,10 @@ export class Request {
             
             console.log(res)
             if (res.statusCode === 401) {
+                if(Taro.getStorageSync('learnerId')){
+                    await this.login()
+                    return this.request(opts)
+                }
                 if(res.data.message==='learner not found'){
                     Taro.navigateTo({url: "/pages/authorize/authorize"})
                     return
