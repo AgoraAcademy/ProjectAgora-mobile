@@ -1,4 +1,4 @@
-/** 
+/**
  * 线上环境
  */
 
@@ -6,22 +6,25 @@
 //  * 网址：https://www.juhe.cn/
 //  */
 // export const ONLINEHOST = 'http://api.juheapi.com'
-export const ONLINEHOST = 'https://projectagora.agoraacademy.cn:18088/v1/miniprogram'
+
 // export const ONLINEHOST = 'https://116.30.219.164:18088/v1/miniprogram'
 // export const ONLINEHOST = 'http://localhost:8080/v1/miniprogram'
-/** 
+/**
  * 测试环境
  */
-export const BASE_HOST= 'https://projectagora.agoraacademy.cn:18088/v1'
+
+export const BASE_HOST = 'https://projectagora-server-dev.xianfengedu.cn/v1'
+
+export const ONLINEHOST = BASE_HOST + '/miniprogram'
 
 export const QAHOST = 'http://localhost:8000'
 
-/** 
+/**
  * 线上mock
  */
 export const MOCKHOST = 'http://xxx/mock'
 
-/** 
+/**
  * 是否mock
  */
 export const ISMOCK = false
@@ -35,7 +38,7 @@ export const MAINHOST = ONLINEHOST
  * 全局的分享信息 不用每一个都去写
  */
 export const SHAREINFO = {
-  'title': '分享标题',
-  'path': '路径',
-  'imageUrl': '图片'
+    title: '分享标题',
+    path: '路径',
+    imageUrl: '图片'
 }
