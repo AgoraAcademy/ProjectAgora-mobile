@@ -150,26 +150,23 @@ class home extends Component<homeProps, homeState> {
             rsvp: status
         }
         const id = item.id
-        const res = await this.$api({
-            url: `${MAINHOST}/event/${id}/patch`,
-            data: sendData,
-            method: 'POST'
-        })
-        console.log({
-            res
-        })
-        if (res.message === 'event updated') {
+        try {
+            await this.$api({
+                url: `${MAINHOST}/event/${id}/patch`,
+                data: sendData,
+                method: 'POST'
+            })
             return true
+        } catch (error) {
+            return false
         }
-        return false
     }
     async join(item, event: React.MouseEvent) {
         event.stopPropagation()
         if (await this.change('参加', item)) {
             Tips.toast('参加成功')
         }
-
-        this.toggle(item, event)
+        this.getData()
     }
     async del(item, event: React.MouseEvent) {
         event.stopPropagation()

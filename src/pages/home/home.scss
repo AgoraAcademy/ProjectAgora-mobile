@@ -169,12 +169,13 @@ home-wrap {
         top: 50rpx;
         background: $main;
         color: white;
-        width: 100rpx;
+        min-width: 100rpx;
         $height: 70rpx;
         height: $height;
         line-height: normal;
         border-radius: 10rpx;
         display: flex;
+        padding:0 10rpx;
         justify-content: center;
         align-items: center;
         border:none;
