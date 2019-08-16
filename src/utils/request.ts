@@ -86,29 +86,14 @@ export class Request {
         //  Taro.request 请求
         console.log('before TaroRequest', opts)
         const res = await Taro.request(opts)
-
-        if (
-            res.statusCode === 401 ||
-            res.statusCode === 400 ||
-            res.statusCode === 403
-        ) {
-            
-            console.log(res)
-            if (res.statusCode === 401) {
-                if(Taro.getStorageSync('learnerId')){
-                    await this.login()
-                    return this.request(opts)
-                }
-                if(res.data.message==='learner not found'){
-                    Taro.navigateTo({url: "/pages/authorize/authorize"})
-                    return
-                }
-                // await this.login() // 重新登录
-                // return this.request(opts)
-            } else {
-                Tips.toast('出错，请联系管理员PP')
+        const code = res.data.code
+        if (code === 1001) {
+            if (Taro.getStorageSync('learnerId')) {
+                await this.login()
+                return this.request(opts)
             }
-            throw new Error(res.data)
+            Taro.navigateTo({ url: '/pages/authorize/authorize' })
+            return
         }
 
         // 是否mock
@@ -124,7 +109,7 @@ export class Request {
 
         // 请求成功
         // if (res.data && res.data.code === 0 || res.data.succ === 0) { return res.data }
-        if (res.data) {
+        if (code===0) {
             return res.data
         }
 
@@ -167,9 +152,9 @@ export class Request {
             const { code } = await Taro.login()
             console.log({
                 code,
-                test:'login'
+                test: 'login'
             })
-            if(!code){
+            if (!code) {
                 reject('没有code')
                 return
             }

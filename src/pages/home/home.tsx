@@ -25,7 +25,7 @@ class home extends Component<homeProps, homeState> {
     }
     async getData() {
         const res = await this.$api({
-            url: `${MAINHOST}/event`
+            url: `${MAINHOST}/pushMessage`
         })
         console.log({
             res

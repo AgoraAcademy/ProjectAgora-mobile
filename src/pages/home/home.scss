@@ -81,9 +81,6 @@ home-wrap {
             .at-icon{
                 font-size:40rpx;
             }
-            .text{
-                
-            }
         }
     }
     .green {
@@ -120,13 +117,13 @@ home-wrap {
         justify-content: center;
         align-items: center;
         margin-left: 30rpx;
-        .avatar {
-            // $size: 104rpx;
-            // width: $size;
-            // height: $size;
-            // // background: $main;
-            // border-radius: 50%;
-        }
+        // .avatar {
+        //     $size: 104rpx;
+        //     width: $size;
+        //     height: $size;
+        //     // background: $main;
+        //     border-radius: 50%;
+        // }
         .status-button {
             background: white;
             color: $project;
@@ -166,7 +163,8 @@ home-wrap {
     .sub-button {
         position: absolute;
         right: 60rpx;
-        top: 50rpx;
+        top: 50%;
+        transform: translateY(-50%);
         background: $main;
         color: white;
         min-width: 100rpx;
@@ -184,7 +182,8 @@ home-wrap {
     .icon-right {
         position: absolute;
         right: 0rpx;
-        top: 70rpx;
+        top: 50%;
+        transform: translateY(-50%);
         color: #646464;
     }
 }

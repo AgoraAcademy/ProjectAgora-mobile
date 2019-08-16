@@ -104,13 +104,16 @@ class EventCard extends Component<propsInterface, stateInterface> {
             },
             // initiatorDisplayName: 'binaryify',
             invitee: [
-                {
-                    content: this.state.membersChoose
-                        .map(item => item.id)
-                        .join(','),
-                    type: 'list'
-                }
-            ],
+                this.state.membersChoose.length > 0
+                    ? {
+                          content: this.state.membersChoose.map(
+                              item => item.id
+                          ),
+                          // .join(','),
+                          type: 'list'
+                      }
+                    : null
+            ].filter(item => item),
             thumbnail: this.state.thumbnail
         }
         if (this.$router.params.type === 'edit') {
@@ -201,7 +204,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
             Tips.toast('请选择活动结束时间')
             return false
         }
-       
+
         if (this.state.startDateTime > this.state.endDateTime) {
             Tips.toast('活动结束时间不能小于开始时间')
             return false
