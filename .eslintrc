@@ -2,7 +2,15 @@
   "extends": ["taro"],
   "rules": {
     "no-unused-vars": ["error", { "varsIgnorePattern": "Taro" }],
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }]
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] ,}],
+    "eqeqeq": 2,
+    "key-spacing": [2, {
+			"beforeColon": false,
+			"afterColon": true
+    }],
+    "block-spacing": 2,
+    "comma-spacing": 2,
+    "object-curly-spacing":["error", "always", { "objectsInObjects": true }]
   },
   "parser": "babel-eslint",
   "plugins": ["typescript"]

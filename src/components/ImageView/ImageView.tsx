@@ -21,7 +21,7 @@ class ComponentHomeNavigation extends Component<
         }
         const token = Taro.getStorageSync('token')
         const _this = this
-        wx.downloadFile({
+        Taro.downloadFile({
             url:
                 MAINHOST +
                 '/utilities/picture?uid=' +
@@ -40,9 +40,9 @@ class ComponentHomeNavigation extends Component<
         if (this.state.imgSrc) {
             return (
                 <Image
-                    src={this.state.imgSrc}
-                    className='img-class'
-                    onClick={() => this.props.onClick()}
+                  src={this.state.imgSrc}
+                  className='img-class'
+                  onClick={() => this.props.onClick()}
                 />
             )
         }

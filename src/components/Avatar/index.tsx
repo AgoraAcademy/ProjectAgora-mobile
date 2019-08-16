@@ -3,6 +3,7 @@ import { View } from '@tarojs/components';
 import { StateInterface, PropsInterface } from './interface';
 import './style.scss';
 import { colorList } from '../../globalData';
+
 class ComponentHomeNavigation extends Component<
     PropsInterface,
     StateInterface

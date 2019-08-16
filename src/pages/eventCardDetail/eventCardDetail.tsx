@@ -1,4 +1,4 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtForm, AtButton } from 'taro-ui'
 import Tips from '../../utils/tips'
@@ -8,11 +8,7 @@ import './eventCardDetail.scss'
 import { MAINHOST } from '../../config'
 import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/componentHomeNavigation'
 
-
 class EventCardDetail extends Component<propsInterface, stateInterface> {
-    config: Config = {
-        navigationBarTitleText: '活动'
-    }
     constructor(props: propsInterface) {
         super(props)
         this.state = {
@@ -70,7 +66,7 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
         })
         this.setState(
             {
-                pageInfo: res
+                pageInfo: res.data
             },
             () => {
                 this.getJoinStatus()
@@ -202,32 +198,32 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
                     +Taro.getStorageSync('learnerId') ? (
                         <View>
                             <AtButton
-                                className='sub-button red'
-                                onClick={() => this.del()}
+                              className='sub-button red'
+                              onClick={() => this.del()}
                             >
                                 删除
                             </AtButton>
                         </View>
                     ) : null}
-                    {this.joinStatus ? null : (
+                    {this.state.joinStatus ? null : (
                         <View>
                             <AtButton
-                                className='sub-button'
-                                onClick={() => this.join()}
+                              className='sub-button'
+                              onClick={() => this.join()}
                             >
                                 确认报名
                             </AtButton>
                             <View className='action-panel'>
                                 <View
-                                    className='action-item'
-                                    onClick={() => this.cancel()}
+                                  className='action-item'
+                                  onClick={() => this.cancel()}
                                 >
                                     <View className='at-icon at-icon-close icon-close' />
                                     <Text className='text'>取消</Text>
                                 </View>
                                 <View
-                                    className='action-item'
-                                    onClick={() => this.maybeJoin()}
+                                  className='action-item'
+                                  onClick={() => this.maybeJoin()}
                                 >
                                     <View className='at-icon at-icon-help icon-help' />
                                     <Text className='text'>可能参加</Text>

@@ -1,13 +1,13 @@
-import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text, Input, Picker, ScrollView } from '@tarojs/components'
-import { AtTag, AtButton } from 'taro-ui'
-import produce from 'immer'
+import Taro, { Component } from '@tarojs/taro'
+import { View, Picker, ScrollView } from '@tarojs/components'
+import {  AtButton } from 'taro-ui'
+import { produce } from 'immer'
 // import { connect } from "@tarojs/redux";
 // import Api from '../../utils/request'
-import Tips from '../../utils/tips'
+// import Tips from '../../utils/tips'
 import { propsInterface, stateInterface } from './interface'
 import './style.scss'
-import { MAINHOST } from '../../config'
+// import { MAINHOST } from '../../config'
 // import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/componentHomeNavigation'
 import Avatar from '../../components/Avatar'
 import { colorList, roleSelectList } from '../../globalData'
@@ -15,11 +15,6 @@ import { colorList, roleSelectList } from '../../globalData'
 // import { } from '../../components'
 
 class NoticeCard extends Component<propsInterface, stateInterface> {
-    config: Config = {
-        usingComponents: {
-            'van-popup': '../vant-weapp/vant-dist/popup/index'
-        }
-    }
     constructor(props: propsInterface) {
         super(props)
         this.state = {
@@ -115,18 +110,18 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
                     {this.state.choooseList.map(item => item.email).join(',') ||
                         '请选择成员'}
                 </View>
-                <van-popup position='bottom' show={this.state.show} onclick-overlay={()=>{this.closePopup()}}>
+                <van-popup position='bottom' show={this.state.show} onclick-overlay={()=>{ this.closePopup() }}>
                     <View className='picker-container'>
                         <View className='tags-box'>
                             <View className='tags-container'>
                                 {this.state.choooseList.map(item => {
                                     return (
                                         <View
-                                            className='tag'
-                                            onClick={() =>
+                                          className='tag'
+                                          onClick={() =>
                                                 this.removeMember(item)
                                             }
-                                            key={item.id}
+                                          key={item.id}
                                         >
                                             {item.name}
                                         </View>
@@ -134,10 +129,10 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
                                 })}
                             </View>
                             <Picker
-                                value={this.state.selectorChecked}
-                                mode='multiSelector'
-                                range={this.state.selector}
-                                onChange={this.onChange}
+                              value={this.state.selectorChecked}
+                              mode='multiSelector'
+                              range={this.state.selector}
+                              onChange={this.onChange}
                             >
                                 <View className='picker-button'>添加群组</View>
                             </Picker>
@@ -146,9 +141,9 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
                             {this.state.list.map(item => {
                                 return (
                                     <View
-                                        className='li-item'
-                                        key={item.id}
-                                        onClick={() => this.pickMember(item)}
+                                      className='li-item'
+                                      key={item.id}
+                                      onClick={() => this.pickMember(item)}
                                     >
                                         <Avatar text={item.name} />
                                         <View className='right-info'>
@@ -165,8 +160,8 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
                         </ScrollView>
                         <View className='sub-button-container'>
                             <AtButton
-                                onClick={() => this.sub()}
-                                className='sub-button'
+                              onClick={() => this.sub()}
+                              className='sub-button'
                             >
                                 确认添加
                             </AtButton>

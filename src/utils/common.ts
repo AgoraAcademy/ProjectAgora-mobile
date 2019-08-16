@@ -19,7 +19,7 @@ export function choosePicGetUrl(option: {
             sizeType: ['compressed'],
             sourceType: ['album'],
             success: function(res) {
-                wx.uploadFile({
+                Taro.uploadFile({
                     url:
                         MAINHOST +
                         '/utilities/picture?pictureType=' +
@@ -56,7 +56,7 @@ export function formatDate(time) {
         return num
     }
 
-    if (typeof time != 'object') {
+    if (typeof time !== 'object') {
         time = '' + time
         if (time.length > 12) {
             time = new Date(parseInt(time))
@@ -123,4 +123,4 @@ export function formatDateFromStr(str) {
         timestamp: Date.parse(result)
     }
 }
-export var globalData: any = {} // 全局公共变量
+export const globalData: any = {} // 全局公共变量

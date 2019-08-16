@@ -1,19 +1,17 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
+import classnames from 'classnames'
 import { AtButton } from 'taro-ui'
+import { produce } from 'immer'
 import Tips from '../../utils/tips'
 import { MAINHOST } from '../../config'
 import { homeProps, homeState } from './home.interface'
 import './home.scss'
 import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/componentHomeNavigation'
-import produce from 'immer'
-import classnames from 'classnames'
+
 import Avatar from '../../components/Avatar'
 
 class home extends Component<homeProps, homeState> {
-    config: Config = {
-        navigationBarTitleText: ''
-    }
     constructor(props: homeProps) {
         super(props)
         this.state = {
@@ -30,7 +28,7 @@ class home extends Component<homeProps, homeState> {
         console.log({
             res
         })
-        const pushList = res
+        const pushList = res.data
 
         const noticeList = [
             {
@@ -233,17 +231,17 @@ class home extends Component<homeProps, homeState> {
                 data.map(item => {
                     return (
                         <View
-                            key={item.id}
-                            className={classnames('li-ele card', {
+                          key={item.id}
+                          className={classnames('li-ele card', {
                                 active: this.hadJoin(item.rsvp)
                             })}
-                            onClick={() => {
+                          onClick={() => {
                                 this.goDetail(this.state.chooseType, item)
                             }}
                         >
                             <View className='main-panel'>
                                 <View
-                                    className={classnames(
+                                  className={classnames(
                                         'tag',
                                         this.getBg(item.type)
                                     )}
@@ -256,8 +254,8 @@ class home extends Component<homeProps, homeState> {
                                     </View>
                                     {/* <ImageView img-class="avatar" pathId=""></ImageView> */}
                                     <View
-                                        className='status-button'
-                                        style={
+                                      className='status-button'
+                                      style={
                                             item.type === '项目'
                                                 ? ''
                                                 : 'display:none'
@@ -278,52 +276,52 @@ class home extends Component<homeProps, homeState> {
                                     </View>
                                 </View>
                                 {item.initiatorId ===
-                                +Taro.getStorageSync(
-                                    'learnerId'
-                                ) ? null : this.hadJoin(item.rsvp) ? (
-                                    <View
-                                        onClick={this.toggle.bind(this, item)}
-                                    >
-                                        <AtButton className='sub-button'>
-                                            已报名
+                                    +Taro.getStorageSync(
+                                        'learnerId'
+                                    ) ? null : this.hadJoin(item.rsvp) ? (
+                                        <View
+                                          onClick={this.toggle.bind(this, item)}
+                                        >
+                                            <AtButton className='sub-button'>
+                                                已报名
                                         </AtButton>
-                                    </View>
-                                ) : (
-                                    <View onClick={this.join.bind(this, item)}>
-                                        <AtButton className='sub-button'>
-                                            报名
+                                        </View>
+                                    ) : (
+                                            <View onClick={this.join.bind(this, item)}>
+                                                <AtButton className='sub-button'>
+                                                    报名
                                         </AtButton>
-                                    </View>
-                                )}
+                                            </View>
+                                        )}
 
                                 <View className='at-icon at-icon-chevron-right icon-right' />
                             </View>
                             {item.status &&
-                            item.initiatorId !==
+                                item.initiatorId !==
                                 +Taro.getStorageSync('learnerId') ? (
-                                <View className='action-panel'>
-                                    <View
-                                        className='action-item'
-                                        onClick={this.cancel.bind(this, item)}
-                                    >
-                                        <View className='at-icon at-icon-close icon-close' />
-                                        <Text className='text'>取消</Text>
+                                    <View className='action-panel'>
+                                        <View
+                                          className='action-item'
+                                          onClick={this.cancel.bind(this, item)}
+                                        >
+                                            <View className='at-icon at-icon-close icon-close' />
+                                            <Text className='text'>取消</Text>
+                                        </View>
+                                        <View
+                                          className='action-item'
+                                          onClick={this.join.bind(this, item)}
+                                        >
+                                            <View className='at-icon at-icon-help icon-help' />
+                                            <Text className='text'>可能参加</Text>
+                                        </View>
                                     </View>
-                                    <View
-                                        className='action-item'
-                                        onClick={this.join.bind(this, item)}
-                                    >
-                                        <View className='at-icon at-icon-help icon-help' />
-                                        <Text className='text'>可能参加</Text>
-                                    </View>
-                                </View>
-                            ) : null}
+                                ) : null}
                         </View>
                     )
                 })
             ) : (
-                <View className='no-data'>暂无数据</View>
-            )
+                    <View className='no-data'>暂无数据</View>
+                )
         const tabList = [
             {
                 type: 'push',
@@ -340,9 +338,9 @@ class home extends Component<homeProps, homeState> {
             <View className='home-wrap'>
                 <ComponentBaseNavigation type='normal-page' />
                 <ScrollView
-                    className='scrollview'
-                    scrollY
-                    style={
+                  className='scrollview'
+                  scrollY
+                  style={
                         this.state.chooseType === 'push' ? '' : 'display:none'
                     }
                 >
@@ -350,9 +348,9 @@ class home extends Component<homeProps, homeState> {
                 </ScrollView>
 
                 <ScrollView
-                    className='scrollview'
-                    scrollY
-                    style={
+                  className='scrollview'
+                  scrollY
+                  style={
                         this.state.chooseType === 'notice' ? '' : 'display:none'
                     }
                 >
@@ -363,16 +361,16 @@ class home extends Component<homeProps, homeState> {
                     {tabList.map(item => {
                         return (
                             <View
-                                className={classnames('tab-item', {
+                              className={classnames('tab-item', {
                                     active: this.state.chooseType === item.type
                                 })}
-                                onClick={() => {
+                              onClick={() => {
                                     this.setState({ chooseType: item.type })
                                 }}
-                                key={item.type}
+                              key={item.type}
                             >
                                 <View
-                                    className={classnames(
+                                  className={classnames(
                                         'at-icon',
                                         item.iconClass
                                     )}

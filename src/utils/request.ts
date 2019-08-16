@@ -17,11 +17,11 @@ declare type Methods =
 declare type Headers = { [key: string]: string }
 declare type Datas = { method: Methods; [key: string]: any }
 interface Options {
-    url: string
-    host?: string
-    method?: Methods
-    data?: Datas
-    header?: Headers
+    url: string;
+    host?: string;
+    method?: Methods;
+    data?: Datas;
+    header?: Headers;
 }
 
 export class Request {
@@ -159,10 +159,12 @@ export class Request {
                 return
             }
             // 请求登录
-            const { data } = await Taro.request({
+            const res = await Taro.request({
                 url: `${MAINHOST}${requestConfig.loginUrl}`,
                 data: { js_code: code }
             })
+            
+            const data=res.data.data
             console.log('onLogining.data', data)
             if (data.unionid! === '') {
                 Taro.navigateTo({ url: '/pages/authorize/authorize' })
@@ -176,7 +178,7 @@ export class Request {
             )
 
             if (!data.token) {
-                reject()
+                reject('no token')
                 return
             }
             console.log('保存token')

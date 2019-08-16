@@ -1,6 +1,6 @@
 
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Button } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 // import Api from '../../utils/request'
 // import Tips from '../../utils/tips'
@@ -18,7 +18,7 @@ import ComponentBaseNavigation from "../../components/ComponentHomeNavigation/co
     ...authorize,
 }))
 
-class Authorize extends Component<AuthorizeProps,AuthorizeState > {
+class Authorize extends Component<AuthorizeProps, AuthorizeState > {
     config:Config = {
         navigationBarTitleText: '授权页面'
     }
@@ -29,7 +29,7 @@ class Authorize extends Component<AuthorizeProps,AuthorizeState > {
 
     async ping() {
         await this.props.dispatch({
-            type:'authorize/ping'
+            type: 'authorize/ping'
         })
     }
 
@@ -37,7 +37,7 @@ class Authorize extends Component<AuthorizeProps,AuthorizeState > {
     }
 
     onGetUserInfo = async (userInfo) => {
-        console.log('onuser',userInfo )
+        console.log('onuser', userInfo )
         Taro.setStorageSync("iv", userInfo.detail.iv)
         Taro.setStorageSync("encryptedData", userInfo.detail.encryptedData)
         console.log("保存iv")
@@ -53,9 +53,9 @@ class Authorize extends Component<AuthorizeProps,AuthorizeState > {
                 // })
                 const currentUnionid = await Taro.getStorageSync("unionid")
                 if (!currentUnionid) {
-                    Taro.navigateTo({url: "/pages/identity/identity"})
+                    Taro.navigateTo({ url: "/pages/identity/identity" })
                 } else {
-                    Taro.redirectTo({url: "/pages/index/index"})
+                    Taro.redirectTo({ url: "/pages/index/index" })
                 }
             },
             fail: async () => {
@@ -76,9 +76,9 @@ class Authorize extends Component<AuthorizeProps,AuthorizeState > {
                 })
                 const currentUnionid = await Taro.getStorageSync("unionid")
                 if (!currentUnionid) {
-                    Taro.navigateTo({url: "/pages/identity/identity"})
+                    Taro.navigateTo({ url: "/pages/identity/identity" })
                 } else {
-                    Taro.redirectTo({url: "/pages/index/index"})
+                    Taro.redirectTo({ url: "/pages/index/index" })
                 }
             }
         })
@@ -87,10 +87,10 @@ class Authorize extends Component<AuthorizeProps,AuthorizeState > {
     render() {
         return (
             <View className='authorize-wrap'>
-                <ComponentBaseNavigation type="child-page"/>
-                <AtButton customStyle={{display: Taro.getStorageSync("isAdmin") ? "block": "none"}} onClick={() => console.log(Taro.getStorageSync('token'))}>获取session_key</AtButton>
-                <AtButton type="primary" openType="getUserInfo" onGetUserInfo={this.onGetUserInfo}>授权</AtButton>
-                <AtButton customStyle={{display: Taro.getStorageSync("isAdmin") ? "block": "none"}} onClick={() => console.log(Taro.getUserInfo().then((res) => console.log(res)))}>获取userInfo</AtButton>
+                <ComponentBaseNavigation type='child-page' />
+                <AtButton customStyle={{ display: Taro.getStorageSync("isAdmin") ? "block": "none" }} onClick={() => console.log(Taro.getStorageSync('token'))}>获取session_key</AtButton>
+                <AtButton type='primary' openType='getUserInfo' onGetUserInfo={this.onGetUserInfo}>授权</AtButton>
+                <AtButton customStyle={{ display: Taro.getStorageSync("isAdmin") ? "block": "none" }} onClick={() => console.log(Taro.getUserInfo().then((res) => console.log(res)))}>获取userInfo</AtButton>
             </View>
         )
     }

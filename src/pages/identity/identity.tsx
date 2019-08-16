@@ -8,13 +8,10 @@ import { IdentityProps, IdentityState } from "./identity.interface";
 import "./identity.scss";
 import { MAINHOST } from "../../config";
 import ComponentBaseNavigation from "../../components/ComponentHomeNavigation/componentHomeNavigation";
-import {rolesList,branchsList} from '../../globalData'
+import { rolesList, branchsList } from '../../globalData'
 // import { } from '../../components'
 
 class Identity extends Component<IdentityProps, IdentityState> {
-    config: Config = {
-        navigationBarTitleText: "账号"
-    };
     constructor(props: IdentityProps) {
         super(props);
       
@@ -25,8 +22,7 @@ class Identity extends Component<IdentityProps, IdentityState> {
             rolesList: rolesList,
             birthday: "",
             branch: branchsList[0],
-            branchsList: branchsList,
-            isMentor: 0
+            branchsList: branchsList
         };
     }
     componentDidMount() {}
@@ -53,93 +49,93 @@ class Identity extends Component<IdentityProps, IdentityState> {
             Tips.toast("注册成功")
             await this.$login()
             Taro.switchTab({
-                url:"/pages/home/home"
+                url: "/pages/home/home"
             })
         }
     }
     render() {
         return (
-            <View className="identity-wrap">
+            <View className='identity-wrap'>
                 {/* <View><Text>未能获取账户信息</Text></View>
                 <View><Text>如果你已注册ProjectAgora账户，请尝试一下登录一次网页端后再尝试</Text></View> */}
-                <ComponentBaseNavigation type="child-page"/>
+                <ComponentBaseNavigation type='child-page' />
                 <AtForm
-                    onSubmit={() => this.onSubmit()}
-                    className="formPanel"
+                  onSubmit={() => this.onSubmit()}
+                  className='formPanel'
                 >
-                    <View className="register-title-panel">新用户注册</View>
+                    <View className='register-title-panel'>新用户注册</View>
                     <AtInput
-                        name="value"
-                        title="姓"
-                        type="text"
-                        placeholder="姓"
-                        value={this.state.familyName}
-                        onChange={val => {
+                      name='value'
+                      title='姓'
+                      type='text'
+                      placeholder='姓'
+                      value={this.state.familyName}
+                      onChange={val => {
                             this.setState({ familyName: val.toString() });
                         }}
                     />
                     <AtInput
-                        name="value"
-                        title="名"
-                        type="text"
-                        placeholder="名"
-                        value={this.state.givenName}
-                        onChange={val => {
+                      name='value'
+                      title='名'
+                      type='text'
+                      placeholder='名'
+                      value={this.state.givenName}
+                      onChange={val => {
                             this.setState({ givenName: val.toString() });
                         }}
                     />
-                    <View className="my-form-item">
+                    <View className='my-form-item'>
                         <Picker
-                            mode="date"
-                            value={this.state.birthday}
-                            onChange={e => {
+                          mode='date'
+                          value={this.state.birthday}
+                          onChange={e => {
                                 this.setState({
                                     birthday: e.detail.value
                                 });
                             }}
                         >
-                           <View className="label-item">出生日期</View>
-                            <View className="value-item">
+                           <View className='label-item'>出生日期</View>
+                            <View className='value-item'>
                                 {this.state.birthday||"请选择出生日期"}
                             </View>
                         </Picker>
                     </View>
-                    <View className="my-form-item">
+                    <View className='my-form-item'>
                         <Picker
-                            mode="selector"
-                            value={0}
-                            range={this.state.rolesList}
-                            onChange={e => {
+                          mode='selector'
+                          value={0}
+                          range={this.state.rolesList}
+                          onChange={e => {
                                 this.setState({
                                     role: this.state.rolesList[e.detail.value]
                                 });
                             }}
                         >
-                            <View className="label-item">角色</View>
-                            <View className="value-item">
+                            <View className='label-item'>角色</View>
+                            <View className='value-item'>
                                 {this.state.role}
                             </View>
                         </Picker>
                     </View>
-                    <View className="my-form-item">
+                    <View className='my-form-item'>
                         <Picker
-                            mode="selector"
-                            value={0}
-                            range={this.state.branchsList}
-                            onChange={e => {
+                          mode='selector'
+                          value={0}
+                          range={this.state.branchsList}
+                          onChange={e => {
                                 this.setState({
                                     branch: this.state.branchsList[e.detail.value]
                                 });
                             }}
                         >
-                            <View className="label-item">校区</View>
-                            <View className="value-item">
+                            <View className='label-item'>校区</View>
+                            <View className='value-item'>
                                 {this.state.branch}
                             </View>
                         </Picker>
                     </View>
 
-                    <AtButton formType="submit" className="sub-button">
+                    <AtButton formType='submit' className='sub-button'>
                         确认添加
                     </AtButton>
                 </AtForm>
