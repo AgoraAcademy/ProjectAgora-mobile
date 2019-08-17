@@ -64,15 +64,15 @@ class ComponentHomeNavigation extends Component<
                             'normal-page': (
                                 <View className='sub-box'>
                                     <AtDrawer
-                                        show={this.state.overlayStatus}
-                                        mask
-                                        onClose={this.closeOverlay.bind(this)}
+                                      show={this.state.overlayStatus}
+                                      mask
+                                      onClose={this.closeOverlay.bind(this)}
                                     >
-                                        <Overlay closeDrawer={()=>this.setState({overlayStatus:false})}/>
+                                        <Overlay closeDrawer={()=>this.setState({ overlayStatus: false })} />
                                     </AtDrawer>
                                     <View
-                                        onClick={() => this.showOverlay()}
-                                        className='icon-menu'
+                                      onClick={() => this.showOverlay()}
+                                      className='icon-menu'
                                     >
                                         <AtIcon value='menu' />
                                         <Image src={logo} className='logo' />
@@ -81,7 +81,7 @@ class ComponentHomeNavigation extends Component<
                                         {routeMap.map(item => {
                                             return (
                                                 <View
-                                                    className={classNames(
+                                                  className={classNames(
                                                         'li',
                                                         {
                                                             active: item.path.includes(
@@ -90,8 +90,8 @@ class ComponentHomeNavigation extends Component<
                                                             )
                                                         }
                                                     )}
-                                                    key={item.path}
-                                                    onClick={() =>
+                                                  key={item.path}
+                                                  onClick={() =>
                                                         this.jump(item.path)
                                                     }
                                                 >
@@ -104,8 +104,8 @@ class ComponentHomeNavigation extends Component<
                             ),
                             'child-page': (
                                 <View
-                                    className='back-header'
-                                    onClick={() => {
+                                  className='back-header'
+                                  onClick={() => {
                                         this.back();
                                     }}
                                 >
@@ -115,11 +115,9 @@ class ComponentHomeNavigation extends Component<
                             ),
                             'picker-page': (
                                 <View
-                                    className='back-header'
-                                    onClick={() => {
-                                        this.props.back
-                                            ? this.props.back()
-                                            : this.back();
+                                  className='back-header'
+                                  onClick={() => {
+                                        this.back();
                                     }}
                                 >
                                     <AtIcon value='chevron-left' size='20' />

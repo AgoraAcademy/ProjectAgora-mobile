@@ -1,5 +1,5 @@
 
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 // import { connect } from '@tarojs/redux'
 // import Api from '../../utils/request'
@@ -13,10 +13,7 @@ import ComponentBaseNavigation from "../../components/ComponentHomeNavigation/co
 //     ...community,
 // }))
 
-class Community extends Component<CommunityProps,CommunityState > {
-    config:Config = {
-        navigationBarTitleText: '标题'
-    }
+class Community extends Component<CommunityProps, CommunityState > {
     constructor(props: CommunityProps) {
         super(props)
         this.state = {}
@@ -33,12 +30,12 @@ class Community extends Component<CommunityProps,CommunityState > {
 
     render() {
         const menuList=[{
-            label:"授权页",
-            url:'/pages/authorize/authorize'
+            label: "授权页",
+            url: '/pages/authorize/authorize'
         }]
         return (
             <View className='community-wrap'>
-                <ComponentBaseNavigation type="normal-page" />
+                <ComponentBaseNavigation type='normal-page' />
                {
                    menuList.map(item=>{
                        return (

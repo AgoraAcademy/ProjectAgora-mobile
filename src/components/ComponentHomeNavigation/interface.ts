@@ -16,5 +16,4 @@ export interface StateInterface {
  */
 export interface PropsInterface {
     type: 'normal-page' | 'child-page' | 'picker-page';
-    back?: Function;
 }

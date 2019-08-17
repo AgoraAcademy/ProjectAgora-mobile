@@ -2,10 +2,11 @@ import Taro, { Component } from "@tarojs/taro";
 import { View } from "@tarojs/components";
 import "./style.scss";
 import { StateInterface, PropsInterface } from "./navigation.interface";
+
 class ComponentBaseNavigation extends Component<
     PropsInterface,
     StateInterface
-> {
+    > {
     constructor() {
         super();
         this.state = {
@@ -14,17 +15,17 @@ class ComponentBaseNavigation extends Component<
             statusBarHeight: 0
         };
     }
-    handleClick() {}
+
 
     componentDidMount() {
         Taro.getSystemInfo().then(res => {
-            // this.setState({
-            //     systemInfo:''
-            // });
-
-            console.log({ res });
+            this.setState({
+                statusBarHeight: res.statusBarHeight
+            })
+            // console.log({ res });
         });
     }
+    handleClick() { }
     render() {
         const {
             statusBarHeight,
@@ -32,13 +33,15 @@ class ComponentBaseNavigation extends Component<
             color
         } = this.state;
         const barStyle = {
-            paddingTop: `${statusBarHeight + 20 || 20}px`,
+            paddingTop: `${statusBarHeight}px`,
             backgroundColor,
             color
         };
+       
+        console.log(statusBarHeight)
         return (
-            <View className="navigation">
-                <View className="bar" style={barStyle}>
+            <View className='navigation' style={{ height: 2*statusBarHeight+'px' }}>
+                <View className='bar' style={barStyle}>
                     {this.props.children}
                 </View>
                 {/* <View className="placeholder" style={barStyle} /> */}

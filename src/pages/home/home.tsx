@@ -18,8 +18,18 @@ class home extends Component<homeProps, homeState> {
             pushList: [],
             chooseType: 'push',
             noticeList: [],
-            members: []
+            members: [],
+            statusBarHeight: 0
+
         }
+    }
+    componentDidMount() {
+        Taro.getSystemInfo().then(res => {
+            this.setState({
+                statusBarHeight: res.statusBarHeight
+            })
+        });
+
     }
     async getData() {
         const res = await this.$api({
@@ -112,10 +122,7 @@ class home extends Component<homeProps, homeState> {
         this.getData()
     }
 
-    // componentDidMount() {
-    //     this.getData();
 
-    // }
     goDetail(type, item) {
         console.log({
             item
@@ -334,6 +341,8 @@ class home extends Component<homeProps, homeState> {
                 iconClass: 'at-icon-bell'
             }
         ]
+
+
         return (
             <View className='home-wrap'>
                 <ComponentBaseNavigation type='normal-page' />
@@ -341,7 +350,7 @@ class home extends Component<homeProps, homeState> {
                   className='scrollview'
                   scrollY
                   style={
-                        this.state.chooseType === 'push' ? '' : 'display:none'
+                        this.state.chooseType === 'push' ? 'height:calc(100vh - ' + "164rpx" + " - " + this.state.statusBarHeight*2 + "px" + ')' : 'display:none;'
                     }
                 >
                     <View className='ul-ele'>{listComponent}</View>
@@ -351,7 +360,7 @@ class home extends Component<homeProps, homeState> {
                   className='scrollview'
                   scrollY
                   style={
-                        this.state.chooseType === 'notice' ? '' : 'display:none'
+                    this.state.chooseType === 'notice' ? 'height:calc(100vh - ' + "164rpx" + " - " + this.state.statusBarHeight*2 + "px" + ')' : 'display:none;'
                     }
                 >
                     <View className='ul-ele'>{listComponent}</View>

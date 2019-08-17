@@ -9,6 +9,7 @@ export interface homeState {
     chooseType: string;
     noticeList: Array<any>;
     members: Array<any>;
+    statusBarHeight: number
 }
 
 /**
