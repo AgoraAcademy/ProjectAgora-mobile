@@ -3,14 +3,9 @@ import { View } from '@tarojs/components'
 
 import { StateInterface, PropsInterface } from './interface'
 import { formatDate, formatDateFromStr } from '../../utils/common'
+
 class DateTimePicker extends Component<PropsInterface, StateInterface> {
-    config: Config = {
-        usingComponents: {
-            'van-datetime-picker':
-                '../vant-weapp/vant-dist/datetime-picker/index',
-            'van-popup': '../vant-weapp/vant-dist/popup/index'
-        }
-    }
+    
 
     constructor(props) {
         super(props)
@@ -18,6 +13,24 @@ class DateTimePicker extends Component<PropsInterface, StateInterface> {
             show: false,
             time: '',
             minTime: new Date().getTime()
+        }
+    }
+    componentWillReceiveProps(next) {
+        if (next.initTime) {
+            console.log('ues')
+            this.setState({
+                time: formatDateFromStr(next.initTime).timestamp
+            })
+        }
+        this.setState({
+            show: next.show
+        })
+    }
+    config: Config = {
+        usingComponents: {
+            'van-datetime-picker':
+                '../vant-weapp/vant-dist/datetime-picker/index',
+            'van-popup': '../vant-weapp/vant-dist/popup/index'
         }
     }
     formatDate(timestamp): string {
@@ -46,17 +59,7 @@ class DateTimePicker extends Component<PropsInterface, StateInterface> {
         })
         this.closePopup()
     }
-    componentWillReceiveProps(next) {
-        if (next.initTime) {
-            console.log('ues')
-            this.setState({
-                time: formatDateFromStr(next.initTime).timestamp
-            })
-        }
-        this.setState({
-            show: next.show
-        })
-    }
+   
     render() {
         return (
             <View>
@@ -66,11 +69,11 @@ class DateTimePicker extends Component<PropsInterface, StateInterface> {
                 </View>
                 <van-popup position='bottom' show={this.state.show}>
                     <van-datetime-picker
-                        type='datetime'
-                        onConfirm={val => this.confirm(val)}
-                        onCancel={() => this.closePopup()}
-                        value={this.state.time}
-                        min-date={this.state.minTime}
+                      type='datetime'
+                      onConfirm={val => this.confirm(val)}
+                      onCancel={() => this.closePopup()}
+                      value={this.state.time}
+                      min-date={this.state.minTime}
                     />
                 </van-popup>
             </View>

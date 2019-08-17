@@ -36,7 +36,7 @@ class App extends Component {
      */
     config: Config = {
         pages: [
-           
+            'pages/eventCard/eventCard',
             'pages/home/home',
             'pages/noticeCard/noticeCard',
             'pages/index/index',
@@ -44,7 +44,7 @@ class App extends Component {
             'pages/authorize/authorize',
             'pages/identity/identity',
             'pages/community/community',
-            'pages/eventCard/eventCard',
+            
             'pages/eventCardDetail/eventCardDetail',
            
         ],

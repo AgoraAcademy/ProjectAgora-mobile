@@ -38,6 +38,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
             this.getData()
         }
     }
+   
     onShow() {
         console.log('onshow')
     }

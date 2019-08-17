@@ -1,4 +1,4 @@
-import Taro, { Component } from '@tarojs/taro'
+import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Picker, ScrollView } from '@tarojs/components'
 import {  AtButton } from 'taro-ui'
 import { produce } from 'immer'
@@ -41,6 +41,12 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
             this.setState({
                 choooseList: list
             })
+        }
+    }
+    config: Config = {
+        navigationBarTitleText: '发起活动',
+        usingComponents: {
+            'van-popup': '../../components/vant-weapp/vant-dist/popup/index'
         }
     }
     getRandomColor() {
