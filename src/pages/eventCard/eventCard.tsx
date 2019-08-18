@@ -9,6 +9,7 @@ import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/co
 import ImagePicker from '../../components/imagePicker'
 import DateTimePicker from '../../components/DateTimePicker'
 import MembersPicker from '../../components/MembersPicker'
+import { formatDateFromStr } from '../../utils/common'
 
 const numReg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/
 
@@ -29,7 +30,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
             initiatorId: null
         }
     }
-   
+
     componentDidMount() {
         console.log('did mount')
         this.getMember()
@@ -38,7 +39,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
             this.getData()
         }
     }
-   
+
     onShow() {
         console.log('onshow')
     }
@@ -55,8 +56,8 @@ class EventCard extends Component<propsInterface, stateInterface> {
             expireDateTime: data.eventInfo.expireDateTime,
             title: data.eventInfo.title,
             thumbnail: data.thumbnail,
-            membersChoose: data.invitee,
-            initiatorId: data.initiatorId
+            membersChoose: data.invitee[0].content.map(item=>({ id: item })),
+            initiatorId: data.initiatorId,
         })
     }
     async submit() {
@@ -67,20 +68,38 @@ class EventCard extends Component<propsInterface, stateInterface> {
         this.setState({
             loading: true
         })
-
+        let invitee = [
+            this.state.membersChoose.length > 0
+                ? {
+                    content: this.state.membersChoose.map(
+                        item => item.id
+                    ).concat(35),
+                    // .join(','),
+                    type: 'list'
+                }
+                : {
+                    content: {
+                        scope: "校区",
+                        value: "所有成员"
+                    },
+                    // .join(','),
+                    type: 'filter'
+                }
+        ].filter(item => item)
         let sendData: any = {
             content: {
                 logoInfo: {
                     type: 'string',
                     url: 'string'
                 },
+                description: this.state.description,
                 operationInfo: {
                     operationType: 'string',
                     operationValue: 'string'
                 },
-                tagInfo: 'string',
-                timeInfo: 'string',
-                title: 'string'
+                tagInfo: '活动',
+                timeInfo: formatDateFromStr(this.state.startDateTime).timestamp + "-" + formatDateFromStr(this.state.endDateTime).timestamp,
+                title: this.state.title
             },
             eventInfo: {
                 description: this.state.description,
@@ -92,17 +111,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
                 title: this.state.title
             },
             // initiatorDisplayName: 'binaryify',
-            invitee: [
-                this.state.membersChoose.length > 0
-                    ? {
-                        content: this.state.membersChoose.map(
-                            item => item.id
-                        ),
-                        // .join(','),
-                        type: 'list'
-                    }
-                    : null
-            ].filter(item => item),
+            invitee: invitee,
             thumbnail: this.state.thumbnail
         }
         if (this.$router.params.type === 'edit') {
@@ -110,7 +119,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
                 endDateTime: this.state.endDateTime,
                 expireDateTime: this.state.expireDateTime,
                 fee: this.state.fee,
-                invitee: this.state.membersChoose,
+                invitee: invitee,
                 startDateTime: this.state.startDateTime,
                 thumbnail: this.state.thumbnail,
                 title: this.state.title,
@@ -153,13 +162,6 @@ class EventCard extends Component<propsInterface, stateInterface> {
     changeEditStatus() {
         this.setState({
             editStatus: !this.state.editStatus
-        })
-    }
-    goChooseMembersPage() {
-        Taro.navigateTo({
-            url:
-                '/pages/membersPicker/index?picklist=' +
-                JSON.stringify(this.state.membersChoose)
         })
     }
     getMember() {
@@ -328,6 +330,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
                         <View className='label-item'>邀请对象</View>
                         <View className='value-item'>
                             <MembersPicker
+                              idList={this.state.membersChoose}
                               onChange={val =>
                                     this.setState({ membersChoose: val })
                                 }

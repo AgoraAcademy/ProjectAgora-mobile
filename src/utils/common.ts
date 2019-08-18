@@ -3,7 +3,7 @@ import { MAINHOST } from '../config'
 import { IMG_TYPE } from '../globalData/globalInterface'
 /** 时间格式的转换 */
 export const formatTime = time => {
-    ;`${pad(time.getHours())}:${pad(time.getMinutes())}:${pad(
+    ; `${pad(time.getHours())}:${pad(time.getMinutes())}:${pad(
         time.getSeconds()
     )}.${pad(time.getMilliseconds(), 3)}`
 }
@@ -18,7 +18,7 @@ export function choosePicGetUrl(option: {
             count: 1,
             sizeType: ['compressed'],
             sourceType: ['album'],
-            success: function(res) {
+            success: function (res) {
                 Taro.uploadFile({
                     url:
                         MAINHOST +
@@ -31,18 +31,18 @@ export function choosePicGetUrl(option: {
                         token: token
                     },
 
-                    success: function(result) {
+                    success: function (result) {
                         var resultData = JSON.parse(result.data)
                         console.log(resultData.url)
                         resolve(resultData.url)
                     },
-                    fail: function(e) {
+                    fail: function (e) {
                         console.log(e)
                         reject(e)
                     }
                 })
             },
-            fail: function(err) {
+            fail: function (err) {
                 reject(err)
             }
         })
@@ -93,6 +93,8 @@ export function formatDate(time) {
         dates: year + '-' + month + '-' + date,
         times:
             year + '年' + month + '月' + date + '日 ' + hours + ':' + minutes,
+        simpleTimes:
+           month + '月' + date + '日' + hours + ':' + minutes,
         formatDate:
             year +
             '-' +
@@ -118,9 +120,11 @@ export function formatDateFromStr(str) {
         .join(' ')
         .replace(/-/g, '/')
         .slice(0, -3)
+    const date = formatDate(Date.parse(result))
     return {
         text: result,
-        timestamp: Date.parse(result)
+        timestamp: Date.parse(result),
+        simpleText: date.month + "月" + date.date + "日 " + date.hours + ":" + date.minutes
     }
 }
 export const globalData: any = {} // 全局公共变量

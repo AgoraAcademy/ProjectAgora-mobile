@@ -10,6 +10,7 @@ export interface stateInterface {
     selector: Array<any>;
     selectorChecked: string[] | number[] | Object[];
     show: boolean;
+   
 }
 
 /**
@@ -19,5 +20,6 @@ export interface stateInterface {
  * @interface propsInterface
  */
 export interface propsInterface {
-    onChange: Function
+    onChange: Function;
+    idList: Array<any>;
 }

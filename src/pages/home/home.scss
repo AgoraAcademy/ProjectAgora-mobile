@@ -1,7 +1,9 @@
 @import '../../variable.scss';
-home-wrap {
+.home-wrap {
     width: 100%;
-    min-height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+
    
 }
 .no-data{
@@ -39,11 +41,14 @@ home-wrap {
         }
     }
 }
-.scrollview{
-    // height:400rpx;
-    // height:calc(100vh - 340rpx);
+// .scrollview{
+//     padding-top:10rpx;
+//     // height:400rpx;
+//     // height:calc(100vh - 340rpx);
+// }
+.ul-ele{
+    padding-top:10rpx;
 }
-
 .li-ele {
     position: relative;
     margin-bottom:40rpx;
@@ -147,7 +152,7 @@ home-wrap {
         font-size: 36rpx;
     }
     .date {
-        font-size: 24rpx;
+        font-size: 20rpx;
         color: #646464;
     }
     .desc {
@@ -158,9 +163,10 @@ home-wrap {
     }
     .sub-button {
         position: absolute;
-        right: 60rpx;
-        top: 50%;
-        transform: translateY(-50%);
+        right: 40rpx;
+        top: 30rpx;
+        // transform: translateY(-50%);
+
         background: $main;
         color: white;
         min-width: 100rpx;
@@ -178,8 +184,7 @@ home-wrap {
     .icon-right {
         position: absolute;
         right: 0rpx;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 50rpx;
         color: #646464;
     }
 }

@@ -11,9 +11,9 @@ export interface stateInterface {
     role:string,
     birthday:string,
     branch:string,
-    isMentor:number,
-    rolesList: Array<string>,
-    branchsList: Array<string>,
+    // isMentor:number,
+    // rolesList: Array<string>,
+    // branchsList: Array<string>,
 }
 
 /**

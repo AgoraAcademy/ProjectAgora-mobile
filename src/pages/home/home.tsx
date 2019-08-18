@@ -8,8 +8,8 @@ import { MAINHOST } from '../../config'
 import { homeProps, homeState } from './home.interface'
 import './home.scss'
 import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/componentHomeNavigation'
-
 import Avatar from '../../components/Avatar'
+import { formatDate } from '../../utils/common'
 
 class home extends Component<homeProps, homeState> {
     constructor(props: homeProps) {
@@ -127,7 +127,7 @@ class home extends Component<homeProps, homeState> {
         console.log({
             item
         })
-        if (item.initiatorId === +Taro.getStorageSync('learnerId')) {
+        if (item.senderId === +Taro.getStorageSync('learnerId')) {
             Taro.navigateTo({
                 url: '/pages/eventCard/eventCard?type=edit&id=' + item.id
             })
@@ -170,8 +170,9 @@ class home extends Component<homeProps, homeState> {
         event.stopPropagation()
         if (await this.change('参加', item)) {
             Tips.toast('参加成功')
+            this.getData()
         }
-        this.getData()
+        
     }
     async del(item, event: React.MouseEvent) {
         event.stopPropagation()
@@ -183,8 +184,9 @@ class home extends Component<homeProps, homeState> {
                 // },
                 method: 'DELETE'
             })
-        } catch (err) {
             this.getData()
+        } catch (err) {
+           
         }
     }
     toggle(item, event: React.MouseEvent) {
@@ -236,6 +238,9 @@ class home extends Component<homeProps, homeState> {
         const listComponent =
             data.length > 0 ? (
                 data.map(item => {
+                    const time=item.content.timeInfo.split('-')
+                    const startTime=formatDate(time[0]).simpleTimes
+                    const endTime=formatDate(time[1]).simpleTimes
                     return (
                         <View
                           key={item.id}
@@ -257,7 +262,7 @@ class home extends Component<homeProps, homeState> {
                                 </View>
                                 <View className='left-panel'>
                                     <View className='avatar'>
-                                        <Avatar text={item.eventInfo.title} />
+                                        <Avatar text={item.content.title} />
                                     </View>
                                     {/* <ImageView img-class="avatar" pathId=""></ImageView> */}
                                     <View
@@ -273,13 +278,13 @@ class home extends Component<homeProps, homeState> {
                                 </View>
                                 <View className='infoPanel'>
                                     <View className='title'>
-                                        {item.eventInfo.title}
+                                        {item.content.title}
                                     </View>
                                     <View className='date'>
-                                        {item.eventInfo.startDate}
+                                        {startTime+"-"+endTime}
                                     </View>
                                     <View className='desc'>
-                                        {item.eventInfo.description}
+                                        {item.content.description}
                                     </View>
                                 </View>
                                 {item.initiatorId ===

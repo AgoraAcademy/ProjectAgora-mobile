@@ -54,7 +54,7 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
         const acceptList = this.state.pageInfo.rsvp.accept
         return acceptList
             .map(item => {
-                return item.fullname
+                return item.familyName+item.givenName
             })
             .filter(n => n)
             .join(',')

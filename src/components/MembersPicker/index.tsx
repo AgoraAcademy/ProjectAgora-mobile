@@ -1,13 +1,13 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Picker, ScrollView } from '@tarojs/components'
-import {  AtButton } from 'taro-ui'
+import { AtButton } from 'taro-ui'
 import { produce } from 'immer'
 // import { connect } from "@tarojs/redux";
 // import Api from '../../utils/request'
 // import Tips from '../../utils/tips'
 import { propsInterface, stateInterface } from './interface'
 import './style.scss'
-// import { MAINHOST } from '../../config'
+import { MAINHOST } from '../../config'
 // import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/componentHomeNavigation'
 import Avatar from '../../components/Avatar'
 import { colorList, roleSelectList } from '../../globalData'
@@ -18,36 +18,48 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
     constructor(props: propsInterface) {
         super(props)
         this.state = {
-            list: [
-                { id: 1, name: '刘德华', email: 'test@qq.com' },
-                { id: 2, name: '周润发', email: 'test@qq.com' },
-                { id: 3, name: '孙燕姿', email: 'test@qq.com' },
-                { id: 4, name: '刘德华', email: 'test@qq.com' },
-                { id: 5, name: '周润发', email: 'test@qq.com' },
-                { id: 6, name: '孙燕姿', email: 'test@qq.com' },
-                { id: 7, name: '刘德华', email: 'test@qq.com' },
-                { id: 8, name: '周润发', email: 'test@qq.com' },
-                { id: 9, name: '孙燕姿', email: 'test@qq.com' }
-            ],
+            list: [],
             choooseList: [],
             selector: roleSelectList,
             selectorChecked: [],
             show: false
         }
     }
-    componentDidMount() {
-        if (this.$router.params.picklist) {
-            const list = JSON.parse(this.$router.params.picklist)
-            this.setState({
-                choooseList: list
-            })
+    async componentDidMount() {
+        await this.getData()
+        if (this.props.idList) {
+          this.trans(this.props.idList)
         }
+    }
+
+    componentWillReceiveProps(next) {
+        if (next.idList) {
+           this.trans(next.idList)
+        }
+        this.setState({
+            show: next.show
+        })
     }
     config: Config = {
         navigationBarTitleText: '发起活动',
         usingComponents: {
             'van-popup': '../../components/vant-weapp/vant-dist/popup/index'
         }
+    }
+    trans(idList) {
+        console.log('id trans', idList)
+        let arr: Array<any> = []
+        idList.forEach(item => {
+            this.state.list.forEach(cell => {
+                if (cell.id === item.id) {
+                    arr.push(cell)
+                }
+            })
+        })
+        console.log({ arr })
+        this.setState({
+            choooseList: arr
+        })
     }
     getRandomColor() {
         return colorList[Math.floor(Math.random() * colorList.length)]
@@ -75,7 +87,7 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
         let needChange = false
         const arr = produce(this.state.choooseList, draft => {
             draft.forEach((cell, index) => {
-                if (cell.id == item.id) {
+                if (cell.id === item.id) {
                     needChange = true
                     draft.splice(index, 1)
                 }
@@ -88,7 +100,15 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
             })
         }
     }
-    async getData() {}
+    async getData() {
+        const res = await this.$api({
+            url: `${MAINHOST}/learner`
+        })
+        console.log(res.data, '000')
+        this.setState({
+            list: res.data
+        })
+    }
     onChange(e) {
         this.setState(
             {
@@ -108,15 +128,15 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
         this.props.onChange(this.state.choooseList)
         this.closePopup()
     }
-    
+
     render() {
         return (
             <View className='members-picker-wrap'>
                 <View onClick={() => this.setState({ show: true })}>
-                    {this.state.choooseList.map(item => item.email).join(',') ||
+                    {this.state.choooseList.map(item => item.familyName + item.givenName).join(',') ||
                         '请选择成员'}
                 </View>
-                <van-popup position='bottom' show={this.state.show} onclick-overlay={()=>{ this.closePopup() }}>
+                <van-popup position='bottom' show={this.state.show} onclick-overlay={() => { this.closePopup() }}>
                     <View className='picker-container'>
                         <View className='tags-box'>
                             <View className='tags-container'>
@@ -129,7 +149,7 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
                                             }
                                           key={item.id}
                                         >
-                                            {item.name}
+                                            {item.familyName + item.givenName}
                                         </View>
                                     )
                                 })}
@@ -151,14 +171,14 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
                                       key={item.id}
                                       onClick={() => this.pickMember(item)}
                                     >
-                                        <Avatar text={item.name} />
+                                        <Avatar text={item.familyName + item.givenName} />
                                         <View className='right-info'>
                                             <View className='name'>
-                                                {item.name}
+                                                {item.familyName + item.givenName}
                                             </View>
-                                            <View className='email'>
+                                            {/* <View className='email'>
                                                 {item.email}
-                                            </View>
+                                            </View> */}
                                         </View>
                                     </View>
                                 )

@@ -12,23 +12,24 @@ import { rolesList, branchsList } from "../../globalData";
 // import { } from '../../components'
 
 class NoticeCard extends Component<propsInterface, stateInterface> {
-    config: Config = {
-        navigationBarTitleText: "活动"
-    };
+   
     constructor(props: propsInterface) {
         super(props);
         this.state = {
             familyName: "",
             givenName: "",
             role: rolesList[0],
-            rolesList: rolesList,
+            // rolesList: rolesList,
             birthday: "",
             branch: branchsList[0],
-            branchsList: branchsList,
-            isMentor: 0
+            // branchsList: branchsList,
+            // isMentor: 0
         };
     }
     componentDidMount() {}
+    config: Config = {
+        navigationBarTitleText: "活动"
+    };
     async onSubmit() {
         const token = Taro.getStorageSync("token");
         const iv = Taro.getStorageSync("iv");
@@ -54,80 +55,80 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
     }
     render() {
         return (
-            <View className="notice-card-wrap">
+            <View className='notice-card-wrap'>
                 {/* <View><Text>未能获取账户信息</Text></View>
                 <View><Text>如果你已注册ProjectAgora账户，请尝试一下登录一次网页端后再尝试</Text></View> */}
-                <ComponentBaseNavigation type="normal-page" />
+                <ComponentBaseNavigation type='normal-page' />
                 <AtForm
-                    onSubmit={() => this.onSubmit()}
-                    className="formPanel"
+                  onSubmit={() => this.onSubmit()}
+                  className='formPanel'
                 >
-                 <View className="top-panel">
-                    <View className="avatar"></View>
+                 <View className='top-panel'>
+                    <View className='avatar'></View>
                  </View>
-                    <View className="register-title-panel">
+                    <View className='register-title-panel'>
                         发起通知
                     </View>
                     <AtInput
-                        name="value"
-                        title="通知标题"
-                        type="text"
-                        placeholder="通知标题"
-                        value={this.state.familyName}
-                        onChange={val => {
+                      name='value'
+                      title='通知标题'
+                      type='text'
+                      placeholder='通知标题'
+                      value={this.state.familyName}
+                      onChange={val => {
                             this.setState({ familyName: val.toString() });
                         }}
                     />
                     <AtInput
-                        name="value"
-                        title="通知对象"
-                        type="text"
-                        placeholder="通知对象"
-                        value={this.state.familyName}
-                        onChange={val => {
+                      name='value'
+                      title='通知对象'
+                      type='text'
+                      placeholder='通知对象'
+                      value={this.state.familyName}
+                      onChange={val => {
                             this.setState({ familyName: val.toString() });
                         }}
                     />
 
-                    <View className="my-form-item">
+                    <View className='my-form-item'>
                         <Picker
-                            mode="date"
-                            value={this.state.birthday}
-                            onChange={e => {
+                          mode='date'
+                          value={this.state.birthday}
+                          onChange={e => {
                                 this.setState({
                                     birthday: e.detail.value
                                 });
                             }}
                         >
-                            <View className="label-item">有效期至</View>
-                            <View className="value-item">
+                            <View className='label-item'>有效期至</View>
+                            <View className='value-item'>
                                 {this.state.birthday || "请选择有效期"}
                             </View>
                         </Picker>
                     </View>
                     <AtInput
-                        name="value"
-                        title="内容"
-                        type="text"
-                        placeholder="内容"
-                        value={this.state.familyName}
-                        onChange={val => {
+                      name='value'
+                      title='内容'
+                      type='text'
+                      placeholder='内容'
+                      value={this.state.familyName}
+                      onChange={val => {
                             this.setState({ familyName: val.toString() });
                         }}
                     />
                    <AtInput
-                        name="value"
-                        title="附图"
-                        type="text"
-                        placeholder="附图"
-                        value={this.state.familyName}
-                        onChange={val => {
+                     name='value'
+                     title='附图'
+                     type='text'
+                     placeholder='附图'
+                     value={this.state.familyName}
+                     onChange={val => {
                             this.setState({ familyName: val.toString() });
                         }}
-                    />
+                   />
                   
 
-                    <AtButton formType="submit" className="sub-button">
+                    <AtButton formType='submit' className='sub-button'>
                         确认发起
                     </AtButton>
                 </AtForm>
