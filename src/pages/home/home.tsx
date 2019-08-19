@@ -20,7 +20,6 @@ class home extends Component<homeProps, homeState> {
             noticeList: [],
             members: [],
             statusBarHeight: 0
-
         }
     }
     componentDidMount() {
@@ -28,8 +27,7 @@ class home extends Component<homeProps, homeState> {
             this.setState({
                 statusBarHeight: res.statusBarHeight
             })
-        });
-
+        })
     }
     async getData() {
         const res = await this.$api({
@@ -122,7 +120,6 @@ class home extends Component<homeProps, homeState> {
         this.getData()
     }
 
-
     goDetail(type, item) {
         console.log({
             item
@@ -172,7 +169,6 @@ class home extends Component<homeProps, homeState> {
             Tips.toast('参加成功')
             this.getData()
         }
-        
     }
     async del(item, event: React.MouseEvent) {
         event.stopPropagation()
@@ -185,9 +181,7 @@ class home extends Component<homeProps, homeState> {
                 method: 'DELETE'
             })
             this.getData()
-        } catch (err) {
-           
-        }
+        } catch (err) {}
     }
     toggle(item, event: React.MouseEvent) {
         // console.log({ event ,item});
@@ -238,22 +232,22 @@ class home extends Component<homeProps, homeState> {
         const listComponent =
             data.length > 0 ? (
                 data.map(item => {
-                    const time=item.content.timeInfo.split('-')
-                    const startTime=formatDate(time[0]).simpleTimes
-                    const endTime=formatDate(time[1]).simpleTimes
+                    const time = item.content.timeInfo.split('-')
+                    const startTime = formatDate(time[0]).simpleTimes
+                    const endTime = formatDate(time[1]).simpleTimes
                     return (
                         <View
-                          key={item.id}
-                          className={classnames('li-ele card', {
+                            key={item.id}
+                            className={classnames('li-ele card', {
                                 active: this.hadJoin(item.rsvp)
                             })}
-                          onClick={() => {
+                            onClick={() => {
                                 this.goDetail(this.state.chooseType, item)
                             }}
                         >
                             <View className='main-panel'>
                                 <View
-                                  className={classnames(
+                                    className={classnames(
                                         'tag',
                                         this.getBg(item.type)
                                     )}
@@ -266,8 +260,8 @@ class home extends Component<homeProps, homeState> {
                                     </View>
                                     {/* <ImageView img-class="avatar" pathId=""></ImageView> */}
                                     <View
-                                      className='status-button'
-                                      style={
+                                        className='status-button'
+                                        style={
                                             item.type === '项目'
                                                 ? ''
                                                 : 'display:none'
@@ -281,59 +275,59 @@ class home extends Component<homeProps, homeState> {
                                         {item.content.title}
                                     </View>
                                     <View className='date'>
-                                        {startTime+"-"+endTime}
+                                        {startTime + '-' + endTime}
                                     </View>
                                     <View className='desc'>
                                         {item.content.description}
                                     </View>
                                 </View>
                                 {item.initiatorId ===
-                                    +Taro.getStorageSync(
-                                        'learnerId'
-                                    ) ? null : this.hadJoin(item.rsvp) ? (
-                                        <View
-                                          onClick={this.toggle.bind(this, item)}
-                                        >
-                                            <AtButton className='sub-button'>
-                                                已报名
+                                +Taro.getStorageSync(
+                                    'learnerId'
+                                ) ? null : this.hadJoin(item.rsvp) ? (
+                                    <View
+                                        onClick={this.toggle.bind(this, item)}
+                                    >
+                                        <AtButton className='sub-button'>
+                                            已报名
                                         </AtButton>
-                                        </View>
-                                    ) : (
-                                            <View onClick={this.join.bind(this, item)}>
-                                                <AtButton className='sub-button'>
-                                                    报名
+                                    </View>
+                                ) : (
+                                    <View onClick={this.join.bind(this, item)}>
+                                        <AtButton className='sub-button'>
+                                            报名
                                         </AtButton>
-                                            </View>
-                                        )}
+                                    </View>
+                                )}
 
                                 <View className='at-icon at-icon-chevron-right icon-right' />
                             </View>
                             {item.status &&
-                                item.initiatorId !==
+                            item.initiatorId !==
                                 +Taro.getStorageSync('learnerId') ? (
-                                    <View className='action-panel'>
-                                        <View
-                                          className='action-item'
-                                          onClick={this.cancel.bind(this, item)}
-                                        >
-                                            <View className='at-icon at-icon-close icon-close' />
-                                            <Text className='text'>取消</Text>
-                                        </View>
-                                        <View
-                                          className='action-item'
-                                          onClick={this.join.bind(this, item)}
-                                        >
-                                            <View className='at-icon at-icon-help icon-help' />
-                                            <Text className='text'>可能参加</Text>
-                                        </View>
+                                <View className='action-panel'>
+                                    <View
+                                        className='action-item'
+                                        onClick={this.cancel.bind(this, item)}
+                                    >
+                                        <View className='at-icon at-icon-close icon-close' />
+                                        <Text className='text'>取消</Text>
                                     </View>
-                                ) : null}
+                                    <View
+                                        className='action-item'
+                                        onClick={this.join.bind(this, item)}
+                                    >
+                                        <View className='at-icon at-icon-help icon-help' />
+                                        <Text className='text'>可能参加</Text>
+                                    </View>
+                                </View>
+                            ) : null}
                         </View>
                     )
                 })
             ) : (
-                    <View className='no-data'>暂无数据</View>
-                )
+                <View className='no-data'>暂无数据</View>
+            )
         const tabList = [
             {
                 type: 'push',
@@ -352,20 +346,36 @@ class home extends Component<homeProps, homeState> {
             <View className='home-wrap'>
                 <ComponentBaseNavigation type='normal-page' />
                 <ScrollView
-                  className='scrollview'
-                  scrollY
-                  style={
-                        this.state.chooseType === 'push' ? 'height:calc(100vh - ' + "164rpx" + " - " + this.state.statusBarHeight*2 + "px" + ')' : 'display:none;'
+                    className='scrollview'
+                    scrollY
+                    style={
+                        this.state.chooseType === 'push'
+                            ? 'height:calc(100vh - ' +
+                              '164rpx' +
+                              ' - ' +
+                              this.state.statusBarHeight  +
+                              'px' +
+                              ' - 88rpx'+
+                              ')'
+                            : 'display:none;'
                     }
                 >
                     <View className='ul-ele'>{listComponent}</View>
                 </ScrollView>
 
                 <ScrollView
-                  className='scrollview'
-                  scrollY
-                  style={
-                    this.state.chooseType === 'notice' ? 'height:calc(100vh - ' + "164rpx" + " - " + this.state.statusBarHeight*2 + "px" + ')' : 'display:none;'
+                    className='scrollview'
+                    scrollY
+                    style={
+                        this.state.chooseType === 'notice'
+                            ? 'height:calc(100vh - ' +
+                            '164rpx' +
+                            ' - ' +
+                            this.state.statusBarHeight  +
+                            'px' +
+                            ' - 88rpx'+
+                            ')'
+                          : 'display:none;'
                     }
                 >
                     <View className='ul-ele'>{listComponent}</View>
@@ -375,16 +385,16 @@ class home extends Component<homeProps, homeState> {
                     {tabList.map(item => {
                         return (
                             <View
-                              className={classnames('tab-item', {
+                                className={classnames('tab-item', {
                                     active: this.state.chooseType === item.type
                                 })}
-                              onClick={() => {
+                                onClick={() => {
                                     this.setState({ chooseType: item.type })
                                 }}
-                              key={item.type}
+                                key={item.type}
                             >
                                 <View
-                                  className={classnames(
+                                    className={classnames(
                                         'at-icon',
                                         item.iconClass
                                     )}

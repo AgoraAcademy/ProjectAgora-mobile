@@ -24,6 +24,7 @@ export interface stateInterface {
     membersChoose: Array<any>;
     // show: boolean;
     initiatorId: number | null;
+    open: boolean;
 }
 
 /**

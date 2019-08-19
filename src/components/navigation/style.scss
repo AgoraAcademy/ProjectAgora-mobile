@@ -18,8 +18,9 @@ $navigation-box-shadow: 0 2PX 2PX #222;
   z-index: 999;
 
 //   outline: 1px solid red;
+  overflow: hidden;
   .bar {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     display: flex;
@@ -27,9 +28,10 @@ $navigation-box-shadow: 0 2PX 2PX #222;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: $navigation-height;
+    // height: $navigation-height;
     z-index: 1;
     font-size: $navigation-font-size;
+    box-sizing: border-box;
     
   }
 }

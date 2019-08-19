@@ -41,17 +41,15 @@
         }
     }
 }
-// .scrollview{
-//     padding-top:10rpx;
-//     // height:400rpx;
-//     // height:calc(100vh - 340rpx);
-// }
+
 .ul-ele{
-    padding-top:10rpx;
+    padding-top:1rpx;
+    box-sizing: border-box;
 }
 .li-ele {
     position: relative;
     margin-bottom:40rpx;
+    // outline: 1px solid red;
     &.active {
         background: $event-Panel;
         .tag{

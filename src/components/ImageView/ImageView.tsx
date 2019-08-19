@@ -33,6 +33,9 @@ class ComponentHomeNavigation extends Component<
                 _this.setState({
                     imgSrc: res.tempFilePath
                 })
+            },
+            fail(err){
+                console.log(err)
             }
         })
     }

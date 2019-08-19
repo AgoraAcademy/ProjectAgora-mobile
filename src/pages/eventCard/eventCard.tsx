@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Textarea, Input } from '@tarojs/components'
-import { AtForm, AtInput, AtButton } from 'taro-ui'
+import { AtForm, AtInput, AtButton, AtAccordion } from 'taro-ui'
 import Tips from '../../utils/tips'
 import { propsInterface, stateInterface } from './interface'
 import './eventCard.scss'
@@ -27,7 +27,8 @@ class EventCard extends Component<propsInterface, stateInterface> {
             loading: false,
             editStatus: true,
             membersChoose: [],
-            initiatorId: null
+            initiatorId: null,
+            open: false
         }
     }
 
@@ -56,8 +57,8 @@ class EventCard extends Component<propsInterface, stateInterface> {
             expireDateTime: data.eventInfo.expireDateTime,
             title: data.eventInfo.title,
             thumbnail: data.thumbnail,
-            membersChoose: data.invitee[0].content.map(item=>({ id: item })),
-            initiatorId: data.initiatorId,
+            membersChoose: data.invitee[0].content.map(item => ({ id: item })),
+            initiatorId: data.initiatorId
         })
     }
     async submit() {
@@ -71,20 +72,20 @@ class EventCard extends Component<propsInterface, stateInterface> {
         let invitee = [
             this.state.membersChoose.length > 0
                 ? {
-                    content: this.state.membersChoose.map(
-                        item => item.id
-                    ).concat(35),
-                    // .join(','),
-                    type: 'list'
-                }
+                      content: this.state.membersChoose
+                          .map(item => item.id)
+                          .concat(35),
+                      // .join(','),
+                      type: 'list'
+                  }
                 : {
-                    content: {
-                        scope: "校区",
-                        value: "所有成员"
-                    },
-                    // .join(','),
-                    type: 'filter'
-                }
+                      content: {
+                          scope: '校区',
+                          value: '所有成员'
+                      },
+                      // .join(','),
+                      type: 'filter'
+                  }
         ].filter(item => item)
         let sendData: any = {
             content: {
@@ -98,7 +99,10 @@ class EventCard extends Component<propsInterface, stateInterface> {
                     operationValue: 'string'
                 },
                 tagInfo: '活动',
-                timeInfo: formatDateFromStr(this.state.startDateTime).timestamp + "-" + formatDateFromStr(this.state.endDateTime).timestamp,
+                timeInfo:
+                    formatDateFromStr(this.state.startDateTime).timestamp +
+                    '-' +
+                    formatDateFromStr(this.state.endDateTime).timestamp,
                 title: this.state.title
             },
             eventInfo: {
@@ -228,7 +232,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
             setTimeout(() => {
                 Taro.navigateBack()
             }, 1000)
-        } catch (err) { }
+        } catch (err) {}
     }
     render() {
         return (
@@ -238,23 +242,23 @@ class EventCard extends Component<propsInterface, stateInterface> {
                     <View className='act-panel'>
                         {this.state.editStatus ? (
                             <AtInput
-                              name='value'
-                              title=''
-                              type='text'
-                              placeholder='活动标题'
-                              value={this.state.title}
-                              onChange={val => {
+                                name='value'
+                                title=''
+                                type='text'
+                                placeholder='活动标题'
+                                value={this.state.title}
+                                onChange={val => {
                                     this.setState({ title: String(val) })
                                 }}
                             />
                         ) : (
-                                <View className='act-title'>
-                                    {this.state.title}
-                                </View>
-                            )}
+                            <View className='act-title'>
+                                {this.state.title}
+                            </View>
+                        )}
                         <View
-                          className='at-icon at-icon-edit'
-                          onClick={() => this.changeEditStatus()}
+                            className='at-icon at-icon-edit'
+                            onClick={() => this.changeEditStatus()}
                         />
                     </View>
                     <View className='register-title-panel'>发起活动</View>
@@ -263,9 +267,9 @@ class EventCard extends Component<propsInterface, stateInterface> {
                         <View className='label-item'>活动简介</View>
                         <View className='value-item'>
                             <Textarea
-                              placeholder='活动简介'
-                              value={this.state.description}
-                              onInput={val => {
+                                placeholder='活动简介'
+                                value={this.state.description}
+                                onInput={val => {
                                     this.setState({
                                         description: String(val.detail.value)
                                     })
@@ -277,95 +281,102 @@ class EventCard extends Component<propsInterface, stateInterface> {
                         <View className='label-item'>开始时间</View>
                         <View className='value-item'>
                             <DateTimePicker
-                              onchange={val =>
+                                onchange={val =>
                                     this.setState({ startDateTime: val })
                                 }
-                              initTime={this.state.startDateTime}
-                              placeholder='请选择活动开始时间'
+                                initTime={this.state.startDateTime}
+                                placeholder='请选择活动开始时间'
                             />
                         </View>
                     </View>
-
                     <View className='my-form-item'>
                         <View className='label-item'>结束时间</View>
                         <View className='value-item'>
                             <DateTimePicker
-                              onchange={val =>
+                                onchange={val =>
                                     this.setState({ endDateTime: val })
                                 }
-                              initTime={this.state.endDateTime}
-                              placeholder='请选择活动结束时间'
+                                initTime={this.state.endDateTime}
+                                placeholder='请选择活动结束时间'
                             />
                         </View>
                     </View>
 
-                    <View className='my-form-item'>
-                        <View className='label-item'>截止时间</View>
-                        <View className='value-item'>
-                            <DateTimePicker
-                              onchange={val =>
-                                    this.setState({ expireDateTime: val })
-                                }
-                              initTime={this.state.expireDateTime}
-                              placeholder='请选择活动截止时间'
-                            />
+                    <AtAccordion
+                        open={this.state.open}
+                        onClick={() =>
+                            this.setState({ open: !this.state.open })
+                        }
+                        isAnimation={false}
+                        title='可选填'
+                    >
+                        <View className='my-form-item'>
+                            <View className='label-item'>截止时间</View>
+                            <View className='value-item'>
+                                <DateTimePicker
+                                    onchange={val =>
+                                        this.setState({ expireDateTime: val })
+                                    }
+                                    initTime={this.state.expireDateTime}
+                                    placeholder='请选择活动截止时间'
+                                />
+                            </View>
                         </View>
-                    </View>
 
-                    <View className='my-form-item'>
-                        <View className='label-item'>活动费用</View>
-                        <View className='value-item'>
-                            <Input
-                              type='text'
-                              placeholder='活动费用'
-                              value={this.state.fee}
-                              onInput={ev => {
-                                    this.setState({ fee: ev.detail.value })
-                                }}
-                            />
+                        <View className='my-form-item'>
+                            <View className='label-item'>活动费用</View>
+                            <View className='value-item'>
+                                <Input
+                                    type='text'
+                                    placeholder='活动费用'
+                                    value={this.state.fee}
+                                    onInput={ev => {
+                                        this.setState({ fee: ev.detail.value })
+                                    }}
+                                />
+                            </View>
                         </View>
-                    </View>
 
-                    <View className='my-form-item'>
-                        <View className='label-item'>邀请对象</View>
-                        <View className='value-item'>
-                            <MembersPicker
-                              idList={this.state.membersChoose}
-                              onChange={val =>
-                                    this.setState({ membersChoose: val })
-                                }
-                            />
+                        <View className='my-form-item'>
+                            <View className='label-item'>邀请对象</View>
+                            <View className='value-item'>
+                                <MembersPicker
+                                    idList={this.state.membersChoose}
+                                    onChange={val =>
+                                        this.setState({ membersChoose: val })
+                                    }
+                                />
+                            </View>
                         </View>
-                    </View>
-
+                    </AtAccordion>
                     <View className='my-form-item'>
                         <View className='label-item'>附图</View>
                         <View className='value-item'>
                             <ImagePicker
-                              onChange={list => this.imagePickerChange(list)}
+                                onChange={list => this.imagePickerChange(list)}
                             />
                         </View>
                     </View>
 
                     <AtButton
-                      onClick={() => this.submit()}
-                      className='sub-button'
-                      loading={this.state.loading}
+                        onClick={() => this.submit()}
+                        className='sub-button'
+                        loading={this.state.loading}
                     >
                         {this.$router.params.type === 'edit'
                             ? '保存'
                             : '确认发起'}
                     </AtButton>
                     {this.state.initiatorId ===
-                        +Taro.getStorageSync('learnerId') ? (
-                            <AtButton
-                              onClick={() => this.del()}
-                              className='sub-button red'
-                              loading={this.state.loading}
-                            >
-                                删除
+                    +Taro.getStorageSync('learnerId') ? (
+                        <AtButton
+                            onClick={() => this.del()}
+                            className='sub-button red'
+                            loading={this.state.loading}
+                        >
+                            删除
                         </AtButton>
-                        ) : null}
+                    ) : null}
                 </AtForm>
             </View>
         )

@@ -52,6 +52,9 @@ class ImagePicker extends Component<
         this.props.onChange(arr)
     }
     render() {
+        console.log({
+            thum:this.state.thumbnail
+        })
         return (
             <View>
                 {this.state.thumbnail.map((item, index) => {

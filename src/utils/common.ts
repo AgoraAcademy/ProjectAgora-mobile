@@ -32,9 +32,17 @@ export function choosePicGetUrl(option: {
                     },
 
                     success: function (result) {
+                        console.log({
+                            result
+                        })
+                        
                         var resultData = JSON.parse(result.data)
-                        console.log(resultData.url)
-                        resolve(resultData.url)
+                        console.log({
+                            resultData,
+                            url:resultData.data.url
+                        })
+                        resolve(resultData.data.url)
+                        
                     },
                     fail: function (e) {
                         console.log(e)
