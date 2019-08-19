@@ -1,4 +1,4 @@
-import Taro, { Component } from '@tarojs/taro'
+import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import classnames from 'classnames'
 import { AtButton } from 'taro-ui'
@@ -29,7 +29,11 @@ class home extends Component<homeProps, homeState> {
             })
         })
     }
+    config: Config = {
+        disableScroll: true
+    }
     async getData() {
+       try {
         const res = await this.$api({
             url: `${MAINHOST}/pushMessage`
         })
@@ -40,80 +44,89 @@ class home extends Component<homeProps, homeState> {
 
         const noticeList = [
             {
-                eventInfo: {
-                    description: 'test desc',
-                    endDateTime: '2019-08-12T17:22:00+08:00',
-                    expireDateTime: '2019-08-13T17:22:00+08:00',
-                    fee: '12',
-                    location: [],
-                    startDateTime: '2019-08-10T17:22:09+08:00',
+                content: {
+                    description: '12',
+                    logoInfo: {
+                        type: 'string',
+                        url: 'string'
+                    },
+                    operationInfo: {
+                        operationType: 'string',
+                        operationValue: 'string'
+                    },
+                    tagInfo: '\u6d3b\u52a8',
+                    timeInfo: '1566111600000-1566111600000',
                     title: '假数据'
                 },
-                id: 5,
-                initiatorDisplayName: '\u8096\u6625\u817e',
-                initiatorId: 1,
-                invitee: [
+                entityId: 18,
+                expireDateTime: '2019-08-18T07:00:00+08:00',
+                id: 18,
+                messageType: 'Event',
+                modifiedDateTime: '2019-08-18T20:26:47+08:00',
+                recipients: [
                     {
-                        content: '',
+                        content: [1, 35],
                         type: 'list'
                     }
-                ]
+                ],
+                rsvp: {
+                    accept: [],
+                    decline: [],
+                    tentative: []
+                },
+                senderId: 35,
+                sentDateTime: '2019-08-18T15:00:14+08:00'
             },
             {
-                eventInfo: {
-                    description: 'test desc',
-                    endDateTime: '2019-08-12T17:22:00+08:00',
-                    expireDateTime: '2019-08-13T17:22:00+08:00',
-                    fee: '12',
-                    location: [],
-                    startDateTime: '2019-08-10T17:22:09+08:00',
+                content: {
+                    description: '12',
+                    logoInfo: {
+                        type: 'string',
+                        url: 'string'
+                    },
+                    operationInfo: {
+                        operationType: 'string',
+                        operationValue: 'string'
+                    },
+                    tagInfo: '\u6d3b\u52a8',
+                    timeInfo: '1566111600000-1566111600000',
                     title: '假数据'
                 },
-                id: 6,
-                initiatorDisplayName: '\u8096\u6625\u817e',
-                initiatorId: 1,
-                invitee: [
+                entityId: 18,
+                expireDateTime: '2019-08-18T07:00:00+08:00',
+                id: 18,
+                messageType: 'Event',
+                modifiedDateTime: '2019-08-18T20:26:47+08:00',
+                recipients: [
                     {
-                        content: '',
+                        content: [1, 35],
                         type: 'list'
                     }
-                ]
-            },
-            {
-                eventInfo: {
-                    description: 'test desc',
-                    endDateTime: '2019-08-12T17:22:00+08:00',
-                    expireDateTime: '2019-08-13T17:22:00+08:00',
-                    fee: '12',
-                    location: [],
-                    startDateTime: '2019-08-10T17:22:09+08:00',
-                    title: '假数据'
+                ],
+                rsvp: {
+                    accept: [],
+                    decline: [],
+                    tentative: []
                 },
-                id: 7,
-                initiatorDisplayName: '\u8096\u6625\u817e',
-                initiatorId: 1,
-                invitee: [
-                    {
-                        content: '',
-                        type: 'list'
-                    }
-                ]
+                senderId: 35,
+                sentDateTime: '2019-08-18T15:00:14+08:00'
             }
         ]
 
         pushList.forEach(item => {
             item['status'] = false
-            item['type'] = '活动'
         })
         noticeList.forEach(item => {
             item['status'] = false
-            item['type'] = '活动'
         })
 
         this.setState({
             pushList,
             noticeList
         })
+       } catch (error) {
+           console.log(error)
+       }
     }
     componentDidShow() {
         console.log(this.$router.params)
@@ -237,22 +250,22 @@ class home extends Component<homeProps, homeState> {
                     const endTime = formatDate(time[1]).simpleTimes
                     return (
                         <View
-                            key={item.id}
-                            className={classnames('li-ele card', {
+                          key={item.id}
+                          className={classnames('li-ele card', {
                                 active: this.hadJoin(item.rsvp)
                             })}
-                            onClick={() => {
+                          onClick={() => {
                                 this.goDetail(this.state.chooseType, item)
                             }}
                         >
                             <View className='main-panel'>
                                 <View
-                                    className={classnames(
+                                  className={classnames(
                                         'tag',
-                                        this.getBg(item.type)
+                                        this.getBg(item.content.tagInfo)
                                     )}
                                 >
-                                    {item.type}
+                                    {item.content.tagInfo}
                                 </View>
                                 <View className='left-panel'>
                                     <View className='avatar'>
@@ -260,8 +273,8 @@ class home extends Component<homeProps, homeState> {
                                     </View>
                                     {/* <ImageView img-class="avatar" pathId=""></ImageView> */}
                                     <View
-                                        className='status-button'
-                                        style={
+                                      className='status-button'
+                                      style={
                                             item.type === '项目'
                                                 ? ''
                                                 : 'display:none'
@@ -286,7 +299,7 @@ class home extends Component<homeProps, homeState> {
                                     'learnerId'
                                 ) ? null : this.hadJoin(item.rsvp) ? (
                                     <View
-                                        onClick={this.toggle.bind(this, item)}
+                                      onClick={this.toggle.bind(this, item)}
                                     >
                                         <AtButton className='sub-button'>
                                             已报名
@@ -307,15 +320,15 @@ class home extends Component<homeProps, homeState> {
                                 +Taro.getStorageSync('learnerId') ? (
                                 <View className='action-panel'>
                                     <View
-                                        className='action-item'
-                                        onClick={this.cancel.bind(this, item)}
+                                      className='action-item'
+                                      onClick={this.cancel.bind(this, item)}
                                     >
                                         <View className='at-icon at-icon-close icon-close' />
                                         <Text className='text'>取消</Text>
                                     </View>
                                     <View
-                                        className='action-item'
-                                        onClick={this.join.bind(this, item)}
+                                      className='action-item'
+                                      onClick={this.join.bind(this, item)}
                                     >
                                         <View className='at-icon at-icon-help icon-help' />
                                         <Text className='text'>可能参加</Text>
@@ -341,21 +354,20 @@ class home extends Component<homeProps, homeState> {
             }
         ]
 
-
         return (
             <View className='home-wrap'>
                 <ComponentBaseNavigation type='normal-page' />
                 <ScrollView
-                    className='scrollview'
-                    scrollY
-                    style={
+                  className='scrollview'
+                  scrollY
+                  style={
                         this.state.chooseType === 'push'
                             ? 'height:calc(100vh - ' +
                               '164rpx' +
                               ' - ' +
-                              this.state.statusBarHeight  +
+                              this.state.statusBarHeight +
                               'px' +
-                              ' - 88rpx'+
+                              ' - 88rpx' +
                               ')'
                             : 'display:none;'
                     }
@@ -364,18 +376,18 @@ class home extends Component<homeProps, homeState> {
                 </ScrollView>
 
                 <ScrollView
-                    className='scrollview'
-                    scrollY
-                    style={
+                  className='scrollview'
+                  scrollY
+                  style={
                         this.state.chooseType === 'notice'
                             ? 'height:calc(100vh - ' +
-                            '164rpx' +
-                            ' - ' +
-                            this.state.statusBarHeight  +
-                            'px' +
-                            ' - 88rpx'+
-                            ')'
-                          : 'display:none;'
+                              '164rpx' +
+                              ' - ' +
+                              this.state.statusBarHeight +
+                              'px' +
+                              ' - 88rpx' +
+                              ')'
+                            : 'display:none;'
                     }
                 >
                     <View className='ul-ele'>{listComponent}</View>
@@ -385,16 +397,16 @@ class home extends Component<homeProps, homeState> {
                     {tabList.map(item => {
                         return (
                             <View
-                                className={classnames('tab-item', {
+                              className={classnames('tab-item', {
                                     active: this.state.chooseType === item.type
                                 })}
-                                onClick={() => {
+                              onClick={() => {
                                     this.setState({ chooseType: item.type })
                                 }}
-                                key={item.type}
+                              key={item.type}
                             >
                                 <View
-                                    className={classnames(
+                                  className={classnames(
                                         'at-icon',
                                         item.iconClass
                                     )}

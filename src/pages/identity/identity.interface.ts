@@ -11,7 +11,6 @@ export interface IdentityState {
     role:string,
     birthday:string,
     branch:string,
-    isMentor:number,
     rolesList: Array<string>,
     branchsList: Array<string>,
 }

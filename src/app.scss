@@ -28,6 +28,7 @@
     vertical-align: middle;
     text-align: left;
     display: inline-block;
+
 }
 .my-form-item {
     position: relative;
@@ -36,7 +37,8 @@
     background-color: #fff;
     margin-left: 32rpx;
     margin-bottom: 1px;
-    position: relative;
+    display: flex;
+    align-items: center;
    
 }
 

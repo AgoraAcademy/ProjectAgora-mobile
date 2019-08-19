@@ -78,7 +78,7 @@ export class Request {
     static async request(opts: Options) {
         // token不存在或learnerFullName不存在
         if (!this.getToken()) {
-            await this.login()
+            return await this.login()
         }
 
         // token存在
@@ -101,15 +101,9 @@ export class Request {
             return res.data
         }
 
-        // 登陆失效
-        if (res.data.code === 99999) {
-            await this.login()
-            return this.request(opts)
-        }
-
+      
         // 请求成功
-        // if (res.data && res.data.code === 0 || res.data.succ === 0) { return res.data }
-        if (code===0) {
+        if (code === 0) {
             return res.data
         }
 
@@ -118,11 +112,12 @@ export class Request {
             ...res.data,
             err: (res.data && res.data.msg) || `网络错误～`
         }
-        await this.login()
+        // await this.login()
         Tips.toast(d.err)
-        Taro.redirectTo({ url: '/pages/authorize/authorize' }).then(() =>
-            Tips.toast('鉴权失败，请尝试重新授权。如果依然失败，请联系管理员')
-        )
+        // console.log("鉴权失败")
+        // Taro.redirectTo({ url: '/pages/authorize/authorize' }).then(() =>
+        //     Tips.toast('鉴权失败，请尝试重新授权。如果依然失败，请联系管理员')
+        // )
         throw new Error(d.err)
     }
 
@@ -138,58 +133,60 @@ export class Request {
         }
         return this.loginReadyPromise
     }
-
+    static async dealLogin(){
+        const { code } = await Taro.login()
+       try{
+        const res = await Taro.request({
+            url: `${MAINHOST}${requestConfig.loginUrl}`,
+            data: { js_code: code }
+        })
+        const data = res.data.data
+        await Taro.setStorageSync('token', data.token)
+        await Taro.setStorageSync('learnerFullName', data.learnerFullName)
+        await Taro.setStorageSync('unionid', data.unionid)
+        await Taro.setStorageSync('isAdmin', data.isAdmin)
+        await Taro.setStorageSync('learnerId', data.learnerId)
+        await Taro.setStorageSync('branch', data.branch)
+       }catch(err){
+            Taro.navigateTo({
+                url:"/pages/identity/identity"
+            })
+       }
+    }
     /**
      *
      * @static 登陆的具体方法
      * @returns
      * @memberof Request
      */
-    static onLogining() {
+    static async onLogining() {
         this.isLogining = true
-        return new Promise(async (resolve, reject) => {
-            // 获取code
-            const { code } = await Taro.login()
-            console.log({
-                code,
-                test: 'login'
-            })
-            if (!code) {
-                reject('没有code')
-                return
-            }
-            // 请求登录
-            const res = await Taro.request({
-                url: `${MAINHOST}${requestConfig.loginUrl}`,
-                data: { js_code: code }
-            })
-            
-            const data=res.data.data
-            console.log('onLogining.data', data)
-            if (data.unionid! === '') {
-                Taro.navigateTo({ url: '/pages/authorize/authorize' })
-            }
-            console.log(
-                'redirected to authorize',
-                'unionid: ',
-                data.unionid,
-                'learnerFullName: ',
-                data.learnerFullName
-            )
-
-            if (!data.token) {
-                reject('no token')
-                return
-            }
-            console.log('保存token')
-            await Taro.setStorageSync('token', data.token)
-            await Taro.setStorageSync('learnerFullName', data.learnerFullName)
-            await Taro.setStorageSync('unionid', data.unionid)
-            await Taro.setStorageSync('isAdmin', data.isAdmin)
-            await Taro.setStorageSync('learnerId', data.learnerId)
+        try {
+            console.log('check session success ooo')
+            await Taro.checkSession()
+            this.dealLogin()
+            // const currentUnionid = await Taro.getStorageSync('unionid')
+            // if (!currentUnionid) {
+            //     console.log('重定向 1')
+            //     Taro.navigateTo({ url: '/pages/identity/identity' })
+            // } else {
+            //     Taro.switchTab({ url: '/pages/home/home' })
+            // }
             this.isLogining = false
-            resolve()
-        })
+          
+        } catch (error) {
+            console.log('check session fail',error)
+            // 请求登录
+            try{
+                Taro.navigateTo({ url: '/pages/authorize/authorize' })
+                this.isLogining = false
+            } catch(err){
+                console.log(err)
+            }
+           
+            console.log("调用登录接口")
+           
+        }
     }
 
     /**
@@ -228,4 +225,6 @@ export class Request {
 const Api = Request.getApiList(requestConfig)
 Component.prototype.$api = Request.request.bind(Request)
 Component.prototype.$login = Request.login.bind(Request)
+Component.prototype.$dealLogin = Request.dealLogin.bind(Request)
+
 export default Api as any

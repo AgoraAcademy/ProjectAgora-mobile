@@ -1,12 +1,14 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
+import { AtIcon } from 'taro-ui'
+import { produce } from 'immer'
 import { StateInterface, PropsInterface } from './interface'
 import { choosePicGetUrl } from '../../utils/common'
 import Tips from '../../utils/tips'
-import produce from 'immer'
 import ImageView from '../ImageView/ImageView'
 import './style.scss'
-import { AtIcon } from 'taro-ui'
+
+
 class ImagePicker extends Component<
     PropsInterface,
     StateInterface
@@ -53,18 +55,18 @@ class ImagePicker extends Component<
     }
     render() {
         console.log({
-            thum:this.state.thumbnail
+            thum: this.state.thumbnail
         })
         return (
             <View>
                 {this.state.thumbnail.map((item, index) => {
                     return (
                         <ImageView
-                            pathId={item}
-                            key={item}
-                            img-class='preview-image'
-                            type='event'
-                            onClick={() => {
+                          pathId={item}
+                          key={item}
+                          img-class='preview-image'
+                          type='event'
+                          onClick={() => {
                                 this.removePic(index)
                             }}
                         />

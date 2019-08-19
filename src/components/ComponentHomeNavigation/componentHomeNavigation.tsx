@@ -68,7 +68,7 @@ class ComponentHomeNavigation extends Component<
                                       mask
                                       onClose={this.closeOverlay.bind(this)}
                                     >
-                                        <Overlay closeDrawer={()=>this.setState({ overlayStatus: false })} />
+                                        <Overlay onCloseDrawer={()=>this.setState({ overlayStatus: false })} />
                                     </AtDrawer>
                                     <View
                                       onClick={() => this.showOverlay()}

@@ -24,7 +24,7 @@ class ComponentHomeNavigation extends Component<
         console.log({
             type: item.type
         })
-        if (item.type == 'normal') {
+        if (item.type === 'normal') {
             Taro.navigateTo({
                 url: item.path
             })
@@ -33,7 +33,7 @@ class ComponentHomeNavigation extends Component<
                 url: item.path
             })
         }
-        this.props.closeDrawer && this.props.closeDrawer()
+        this.props.onCloseDrawer && this.props.onCloseDrawer()
     }
     render() {
         const routeMap = [
@@ -54,11 +54,11 @@ class ComponentHomeNavigation extends Component<
                 {routeMap.map(item => {
                     return (
                         <View
-                            className={classNames('list-item', {
+                          className={classNames('list-item', {
                                 active: item.path.includes(this.state.routePath)
                             })}
-                            key={item.path}
-                            onClick={() => this.jump(item)}
+                          key={item.path}
+                          onClick={() => this.jump(item)}
                         >
                             <View className='at-icon at-icon-home' />
                             <Text>{item.name}</Text>
