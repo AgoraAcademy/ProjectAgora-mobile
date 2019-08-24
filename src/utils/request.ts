@@ -32,7 +32,7 @@ export class Request {
     // 导出的api对象
     static apiLists: { [key: string]: () => any } = {}
     // token
-    static token: string = ''
+    // static token: string = ''
 
     // constructor(setting) {
 
@@ -66,8 +66,7 @@ export class Request {
     }
 
     static getToken() {
-        !this.token && (this.token = Taro.getStorageSync('token'))
-        return this.token
+        return Taro.getStorageSync('token')
     }
 
     /**
@@ -87,11 +86,11 @@ export class Request {
         console.log('before TaroRequest', opts)
         const res = await Taro.request(opts)
         const code = res.data.code
-        if (code === 1001) {
-            if (Taro.getStorageSync('learnerId')) {
-                await this.login()
-                return this.request(opts)
-            }
+        if (code === -1001) {
+            // if (Taro.getStorageSync('learnerId')) {
+            //     await this.login()
+            //     return this.request(opts)
+            // }
             Taro.navigateTo({ url: '/pages/authorize/authorize' })
             return
         }
