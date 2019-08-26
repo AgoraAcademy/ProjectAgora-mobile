@@ -1,4 +1,4 @@
-import Taro, { Component } from '@tarojs/taro'
+import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Textarea, Input } from '@tarojs/components'
 import { AtForm, AtInput, AtButton, AtAccordion } from 'taro-ui'
 import Tips from '../../utils/tips'
@@ -16,6 +16,7 @@ const numReg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9
 class EventCard extends Component<propsInterface, stateInterface> {
     constructor(props: propsInterface) {
         super(props)
+        
         this.state = {
             description: '',
             endDateTime: '',
@@ -28,7 +29,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
             editStatus: true,
             membersChoose: [],
             initiatorId: null,
-            open: false
+            open: false,
         }
     }
 
@@ -40,7 +41,9 @@ class EventCard extends Component<propsInterface, stateInterface> {
             this.getData()
         }
     }
-
+    config: Config = {
+        disableScroll: true
+    }
     onShow() {
         console.log('onshow')
     }
@@ -264,10 +267,11 @@ class EventCard extends Component<propsInterface, stateInterface> {
                               placeholder='活动简介'
                               value={this.state.description}
                               onInput={val => {
-                                    this.setState({
-                                        description: String(val.detail.value)
-                                    })
-                                }}
+                                this.setState({
+                                    description: String(val.detail.value)
+                                })
+                            }}
+                              autoHeight
                             />
                         </View>
                     </View>

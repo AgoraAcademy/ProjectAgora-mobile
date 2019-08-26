@@ -15,4 +15,5 @@ export interface StateInterface {
  */
 export interface PropsInterface {
     text: string;
+    size?: string | number;
 }

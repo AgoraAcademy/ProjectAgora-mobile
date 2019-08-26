@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Picker, ScrollView } from '@tarojs/components'
+import { View, Picker, ScrollView, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { produce } from 'immer'
 // import { connect } from "@tarojs/redux";
@@ -28,13 +28,13 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
     async componentDidMount() {
         await this.getData()
         if (this.props.idList) {
-          this.trans(this.props.idList)
+            this.trans(this.props.idList)
         }
     }
 
     componentWillReceiveProps(next) {
         if (next.idList) {
-           this.trans(next.idList)
+            this.trans(next.idList)
         }
         this.setState({
             show: next.show
@@ -133,10 +133,17 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
         return (
             <View className='members-picker-wrap'>
                 <View onClick={() => this.setState({ show: true })}>
-                    {this.state.choooseList.map(item => item.familyName + item.givenName).join(',') ||
-                        '请选择成员'}
+                    {this.state.choooseList
+                        .map(item => item.familyName + item.givenName)
+                        .join(',') || '请选择成员'}
                 </View>
-                <van-popup position='bottom' show={this.state.show} onclick-overlay={() => { this.closePopup() }}>
+                <van-popup
+                  position='bottom'
+                  show={this.state.show}
+                  onclick-overlay={() => {
+                        this.closePopup()
+                    }}
+                >
                     <View className='picker-container'>
                         <View className='tags-box'>
                             <View className='tags-container'>
@@ -149,7 +156,19 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
                                             }
                                           key={item.id}
                                         >
-                                            {item.familyName + item.givenName}
+                                            <View className='avatar-container'>
+                                                <Avatar
+                                                  text={
+                                                        item.familyName +
+                                                        item.givenName
+                                                    }
+                                                  size='40rpx'
+                                                />
+                                            </View>
+                                            <Text>
+                                                {item.familyName +
+                                                    item.givenName}
+                                            </Text>
                                         </View>
                                     )
                                 })}
@@ -171,10 +190,15 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
                                       key={item.id}
                                       onClick={() => this.pickMember(item)}
                                     >
-                                        <Avatar text={item.familyName + item.givenName} />
+                                        <Avatar
+                                          text={
+                                                item.familyName + item.givenName
+                                            }
+                                        />
                                         <View className='right-info'>
                                             <View className='name'>
-                                                {item.familyName + item.givenName}
+                                                {item.familyName +
+                                                    item.givenName}
                                             </View>
                                             {/* <View className='email'>
                                                 {item.email}
@@ -187,7 +211,7 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
                         <View className='sub-button-container'>
                             <AtButton
                               onClick={() => this.sub()}
-                              className='sub-button'
+                              className='member-sub-button'
                             >
                                 确认添加
                             </AtButton>

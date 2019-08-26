@@ -28,7 +28,7 @@ class ComponentHomeNavigation extends Component<
 
     render() {
         return (
-            <View className='avatar' style={{ background: this.state.bg }}>
+            <View className='avatar' style={{ background: this.state.bg, height: this.props.size?this.props.size:'', width: this.props.size?this.props.size:'' }}>
                 {this.getFirstText(this.props.text)}
             </View>
         );

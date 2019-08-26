@@ -34,14 +34,35 @@
 .at-input {
     display: inline-block;
 }
+.textarea-item{
+    .value-item{
+        height:auto;
+        position: relative;
+    }
+}
 textarea {
-    width: 150px;
+    width: 300rpx;
     display: inline-block;
     height: 100%;
     box-sizing: border-box;
+    min-height: 44rpx;
+    // outline: 1px solid red;
+    transform: translateY(5rpx);
+    // z-index: 1;
     // transform: translateY(15rpx);
 }
 
 input{
     transform: translateY(15rpx);
+}
+.member-sub-button {
+    background: $main;
+    color: white;
+    border: none;
+    border-radius: 40rpx;
+    height: 60rpx;
+    width: 370rpx;
+    line-height: 60rpx;
+    display: block;
+    margin:0 auto;
 }

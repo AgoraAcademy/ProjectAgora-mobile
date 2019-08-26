@@ -3,7 +3,8 @@
 .picker-container {
     position: relative;
     background: white;
-    z-index:9;
+    z-index:99;
+
 }
 .result-input {
     height: 100rpx;
@@ -15,16 +16,22 @@
     .tag {
         display: inline-block;
         padding: 2rpx 10rpx;
-        background: #7aa6f1;
-        color: white;
+        // background: #7aa6f1;
+        // color: white;
+        color:#777;
         border-radius: 10rpx;
         margin: 4rpx 4rpx;
         font-size: 24rpx;
+        .avatar-container{
+            margin-right:5rpx;
+        }
     }
     .tags-container {
         width: calc(100% - 120rpx);
         min-height: 60rpx;
         border-bottom: 1rpx solid rgba(0, 0, 0, 0.1);
+        overflow: auto;
+        white-space: nowrap;
     }
     .picker-button {
         display: inline-block;
@@ -72,15 +79,4 @@
     left:50%;
     transform: translateX(-50%);
     
-}
-.sub-button {
-    background: $main;
-    color: white;
-    border: none;
-    border-radius: 40rpx;
-    height: 60rpx;
-    width: 370rpx;
-    line-height: 60rpx;
-    display: block;
-    margin:0 auto;
 }
