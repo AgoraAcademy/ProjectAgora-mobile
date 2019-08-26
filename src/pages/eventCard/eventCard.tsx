@@ -16,7 +16,7 @@ const numReg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9
 class EventCard extends Component<propsInterface, stateInterface> {
     constructor(props: propsInterface) {
         super(props)
-        
+
         this.state = {
             description: '',
             endDateTime: '',
@@ -75,20 +75,20 @@ class EventCard extends Component<propsInterface, stateInterface> {
         let invitee = [
             this.state.membersChoose.length > 0
                 ? {
-                      content: this.state.membersChoose.map(item => item.id),
-                      // .join(','),
-                      type: 'list'
-                  }
+                    content: this.state.membersChoose.map(item => item.id),
+                    // .join(','),
+                    type: 'list'
+                }
                 : {
-                      content: [
-                          {
-                              scope: '校区',
-                              value: Taro.getStorageSync('branch')
-                          }
-                      ],
-                      // .join(','),
-                      type: 'filters'
-                  }
+                    content: [
+                        {
+                            scope: '校区',
+                            value: Taro.getStorageSync('branch')
+                        }
+                    ],
+                    // .join(','),
+                    type: 'filters'
+                }
         ].filter(item => item)
 
         let sendData: any = {
@@ -238,7 +238,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
             setTimeout(() => {
                 Taro.navigateBack()
             }, 1000)
-        } catch (err) {}
+        } catch (err) { }
     }
     render() {
         return (
@@ -260,17 +260,17 @@ class EventCard extends Component<propsInterface, stateInterface> {
                     </View>
                     <View className='register-title-panel'>发起活动</View>
 
-                    <View className='my-form-item'>
+                    <View className='my-form-item textarea-item'>
                         <View className='label-item'>活动简介</View>
                         <View className='value-item'>
                             <Textarea
                               placeholder='活动简介'
                               value={this.state.description}
                               onInput={val => {
-                                this.setState({
-                                    description: String(val.detail.value)
-                                })
-                            }}
+                                    this.setState({
+                                        description: String(val.detail.value)
+                                    })
+                                }}
                               autoHeight
                             />
                         </View>
@@ -337,7 +337,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
 
                         <View className='my-form-item'>
                             <View className='label-item'>邀请对象</View>
-                            <View className='value-item'>
+                            <View className='value-item scroll-value-item'>
                                 <MembersPicker
                                   idList={this.state.membersChoose}
                                   onChange={val =>
@@ -346,8 +346,8 @@ class EventCard extends Component<propsInterface, stateInterface> {
                                 />
                             </View>
                         </View>
-                    </AtAccordion>
-                    <View className='my-form-item'>
+
+                        <View className='my-form-item'>
                         <View className='label-item'>附图</View>
                         <View className='value-item'>
                             <ImagePicker
@@ -356,6 +356,8 @@ class EventCard extends Component<propsInterface, stateInterface> {
                         </View>
                     </View>
 
+                    </AtAccordion>
+                 
                     <AtButton
                       onClick={() => this.submit()}
                       className='sub-button'
@@ -366,15 +368,15 @@ class EventCard extends Component<propsInterface, stateInterface> {
                             : '确认发起'}
                     </AtButton>
                     {this.state.initiatorId ===
-                    +Taro.getStorageSync('learnerId') ? (
-                        <AtButton
-                          onClick={() => this.del()}
-                          className='sub-button red'
-                          loading={this.state.loading}
-                        >
-                            删除
+                        +Taro.getStorageSync('learnerId') ? (
+                            <AtButton
+                              onClick={() => this.del()}
+                              className='sub-button red'
+                              loading={this.state.loading}
+                            >
+                                删除
                         </AtButton>
-                    ) : null}
+                        ) : null}
                 </AtForm>
             </View>
         )

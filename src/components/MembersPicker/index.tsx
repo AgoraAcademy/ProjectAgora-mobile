@@ -132,7 +132,7 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
     render() {
         return (
             <View className='members-picker-wrap'>
-                <View onClick={() => this.setState({ show: true })}>
+                <View onClick={() => this.setState({ show: true })} className='chooseText'>
                     {this.state.choooseList
                         .map(item => item.familyName + item.givenName)
                         .join(',') || '请选择成员'}

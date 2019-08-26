@@ -6,7 +6,7 @@
     margin: 0 auto;
     margin-top: 20rpx;
 }
-.register-title-panel{
+.register-title-panel {
     background: $main;
     color: white;
     border: none;
@@ -16,8 +16,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size:32rpx;
-    margin:0 auto 30rpx auto;
+    font-size: 32rpx;
+    margin: 0 auto 30rpx auto;
 }
 
 .label-item {
@@ -28,7 +28,6 @@
     vertical-align: middle;
     text-align: left;
     display: inline-block;
-
 }
 .my-form-item {
     position: relative;
@@ -39,37 +38,41 @@
     margin-bottom: 1px;
     display: flex;
     align-items: center;
-   
 }
 
 .value-item {
     color: #888;
     font-size: 32rpx;
-    height: 44.8rpx;
+    min-height: 44.8rpx;
     line-height: 1.5;
     display: inline-block;
-    .preview-image{
-        width:100rpx;
-        height:100rpx;
+    &.scroll-value-item {
+        overflow-y: auto;
+        white-space: nowrap;
+    }
+    // overflow-y: auto;
+    // white-space: nowrap;
+    .preview-image {
+        width: 100rpx;
+        height: 100rpx;
         margin: 10rpx;
         display: inline-block;
-        border:1px solid rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.1);
         vertical-align: top;
     }
-    .at-icon-add{
-        width:100rpx;
-        height:100rpx;
+    .at-icon-add {
+        width: 100rpx;
+        height: 100rpx;
         margin: 10rpx;
         display: inline-flex;
-        border:1px solid rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.1);
         align-items: center;
         justify-content: center;
-        font-size:40rpx;
-        color:#888;
+        font-size: 40rpx;
+        color: #888;
         vertical-align: top;
     }
-    
 }
-.at-input::after{
+.at-input::after {
     display: none;
 }

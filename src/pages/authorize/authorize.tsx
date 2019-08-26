@@ -6,11 +6,11 @@ import { AtButton } from 'taro-ui';
 import { AuthorizeProps, AuthorizeState } from './authorize.interface'
 import './authorize.scss'
 import Logo from './logo.png'
-import { MAINHOST } from '../../config'
-import {
-    requestConfig
-} from '../../config/requestConfig'
-import ComponentBaseNavigation from "../../components/ComponentHomeNavigation/componentHomeNavigation";
+// import { MAINHOST } from '../../config'
+// import {
+//     requestConfig
+// } from '../../config/requestConfig'
+// import ComponentBaseNavigation from "../../components/ComponentHomeNavigation/componentHomeNavigation";
 
 @connect(({ authorize }) => ({
     ...authorize,

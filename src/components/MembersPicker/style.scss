@@ -3,12 +3,14 @@
 .picker-container {
     position: relative;
     background: white;
-    z-index:99;
-
 }
 .result-input {
     height: 100rpx;
     padding: 0 20rpx;
+}
+.chooseText{
+    white-space: nowrap;
+    overflow: auto;
 }
 .tags-box {
     padding: 5rpx 20rpx;
@@ -24,6 +26,7 @@
         font-size: 24rpx;
         .avatar-container{
             margin-right:5rpx;
+            display: inline-block;
         }
     }
     .tags-container {
@@ -46,7 +49,9 @@
     }
 }
 .scrollview {
-    height: calc(100vh - 300rpx);
+    height: calc(100vh - 290rpx);
+    padding-bottom:100rpx;
+    box-sizing: border-box;
 }
 .li-item {
     display: flex;

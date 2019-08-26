@@ -79,6 +79,8 @@ class App extends Component {
             'pages/community/community',
             'pages/eventCard/eventCard',
             'pages/eventCardDetail/eventCardDetail',
+            'pages/developing/developing',
+            'pages/study/study'
            
         ],
         window: {
@@ -96,7 +98,7 @@ class App extends Component {
                     text: '我的'
                 },
                 {
-                    pagePath: 'pages/booking/booking',
+                    pagePath: 'pages/study/study',
                     text: '学习'
                 },
                 {
