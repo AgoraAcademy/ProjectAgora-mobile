@@ -1,9 +1,9 @@
-import Taro, { Component } from '@tarojs/taro'
+import Taro, { PureComponent } from '@tarojs/taro'
 import { Image } from '@tarojs/components'
 import { StateInterface, PropsInterface } from './interface'
 import { MAINHOST } from '../../config'
 
-class ComponentHomeNavigation extends Component<
+class ComponentHomeNavigation extends PureComponent<
     PropsInterface,
     StateInterface
 > {
@@ -14,7 +14,6 @@ class ComponentHomeNavigation extends Component<
             imgSrc: ''
         }
     }
-
     componentDidMount() {
         if (!this.props.pathId) {
             return

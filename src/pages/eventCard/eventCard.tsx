@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Textarea, Input } from '@tarojs/components'
+import { View, Input } from '@tarojs/components'
 import { AtForm, AtInput, AtButton, AtAccordion } from 'taro-ui'
 import Tips from '../../utils/tips'
 import { propsInterface, stateInterface } from './interface'
@@ -289,7 +289,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
                         <View className='label-item'>开始时间</View>
                         <View className='value-item'>
                             <DateTimePicker
-                              onchange={val =>
+                              onChange={val =>
                                     this.setState({ startDateTime: val })
                                 }
                               initTime={this.state.startDateTime}
@@ -301,7 +301,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
                         <View className='label-item'>结束时间</View>
                         <View className='value-item'>
                             <DateTimePicker
-                              onchange={val =>
+                              onChange={val =>
                                     this.setState({ endDateTime: val })
                                 }
                               initTime={this.state.endDateTime}
@@ -322,7 +322,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
                             <View className='label-item'>截止时间</View>
                             <View className='value-item'>
                                 <DateTimePicker
-                                  onchange={val =>
+                                  onChange={val =>
                                         this.setState({ expireDateTime: val })
                                     }
                                   initTime={this.state.expireDateTime}
@@ -361,6 +361,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
                             <View className='label-item'>附图</View>
                             <View className='value-item'>
                                 <ImagePicker
+                                  list={this.state.thumbnail}
                                   onChange={list =>
                                         this.imagePickerChange(list)
                                     }

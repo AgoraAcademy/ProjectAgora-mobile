@@ -1,9 +1,9 @@
-import Taro, { Component } from '@tarojs/taro'
+import Taro, { PureComponent } from '@tarojs/taro'
 import { View, Textarea, Text } from '@tarojs/components'
 import { StateInterface, PropsInterface } from './interface'
 import './style.scss'
 
-class ComponentHomeNavigation extends Component<
+class ComponentHomeNavigation extends PureComponent<
     PropsInterface,
     StateInterface
 > {
@@ -12,15 +12,17 @@ class ComponentHomeNavigation extends Component<
 
         this.state = {
             focus: false,
-            content: ''
+            content: '',
+            firstStatus: true
         }
     }
     componentDidMount() {}
     componentWillReceiveProps(next) {
-        if (next.value) {
-            console.log(next.value, 'componentWillReceiveProps')
+        if (next.value && this.state.firstStatus) {
+            console.log(next.value, this.state.firstStatus, 'componentWillReceiveProps')
             this.setState({
-                content: next.value
+                content: next.value,
+                firstStatus: false
             })
         }
     }

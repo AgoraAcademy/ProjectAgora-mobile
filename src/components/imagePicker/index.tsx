@@ -8,11 +8,7 @@ import Tips from '../../utils/tips'
 import ImageView from '../ImageView/ImageView'
 import './style.scss'
 
-
-class ImagePicker extends Component<
-    PropsInterface,
-    StateInterface
-> {
+class ImagePicker extends Component<PropsInterface, StateInterface> {
     static externalClasses = ['img-class']
     constructor(props) {
         super(props)
@@ -25,6 +21,13 @@ class ImagePicker extends Component<
         if (this.props.list) {
             this.setState({
                 thumbnail: this.props.list
+            })
+        }
+    }
+    componentWillReceiveProps(nextProps){
+        if(nextProps.list){
+            this.setState({
+                thumbnail: nextProps.list
             })
         }
     }
@@ -53,6 +56,7 @@ class ImagePicker extends Component<
         })
         this.props.onChange(arr)
     }
+
     render() {
         console.log({
             thum: this.state.thumbnail

@@ -1,4 +1,4 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { PureComponent, Config } from '@tarojs/taro'
 import { View, Picker, ScrollView, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { produce } from 'immer'
@@ -14,7 +14,7 @@ import { colorList, roleSelectList } from '../../globalData'
 
 // import { } from '../../components'
 
-class NoticeCard extends Component<propsInterface, stateInterface> {
+class NoticeCard extends PureComponent<propsInterface, stateInterface> {
     constructor(props: propsInterface) {
         super(props)
         this.state = {

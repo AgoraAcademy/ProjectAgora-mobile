@@ -3,6 +3,7 @@
   "rules": {
     "no-unused-vars": ["error", { "varsIgnorePattern": "Taro" }],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] ,}],
+    "space-infix-ops": ["error", {"int32Hint": false}],
     "eqeqeq": 2,
     "key-spacing": [2, {
 			"beforeColon": false,

@@ -4,8 +4,9 @@
  * @interface StateInterface
  */
 export interface StateInterface {
-    focus:boolean;
-    content:string
+    focus: boolean;
+    content: string;
+    firstStatus: boolean;
 }
 
 /**
@@ -15,7 +16,7 @@ export interface StateInterface {
  * @interface PropsInterface
  */
 export interface PropsInterface {
-    onInput:Function;
-    placeholder:string;
-    value:string
+    onInput: Function;
+    placeholder: string;
+    value: string;
 }

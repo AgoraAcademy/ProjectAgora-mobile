@@ -1,10 +1,10 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { PureComponent, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 
 import { StateInterface, PropsInterface } from './interface'
 import { formatDate, formatDateFromStr } from '../../utils/common'
 
-class DateTimePicker extends Component<PropsInterface, StateInterface> {
+class DateTimePicker extends PureComponent<PropsInterface, StateInterface> {
     
 
     constructor(props) {
@@ -17,7 +17,6 @@ class DateTimePicker extends Component<PropsInterface, StateInterface> {
     }
     componentWillReceiveProps(next) {
         if (next.initTime) {
-            console.log('ues')
             this.setState({
                 time: formatDateFromStr(next.initTime).timestamp
             })
@@ -39,7 +38,7 @@ class DateTimePicker extends Component<PropsInterface, StateInterface> {
     }
     // input(val) {
     //     // console.log('input',val)
-    //     // this.props.onchange(formatDate(val.detail).formatDate)
+    //     // this.props.C(formatDate(val.detail).formatDate)
     //     // this.setState({
     //     //     timeStr: val.detail,
     //     //     time: val.detail
@@ -53,7 +52,7 @@ class DateTimePicker extends Component<PropsInterface, StateInterface> {
     confirm(val) {
         console.log('confirm')
         console.log(formatDate(val.detail).formatDate)
-        this.props.onchange(formatDate(val.detail).formatDate)
+        this.props.onChange(formatDate(val.detail).formatDate)
         this.setState({
             time: val.detail
         })
