@@ -30,7 +30,8 @@ class EventCard extends Component<propsInterface, stateInterface> {
             editStatus: true,
             membersChoose: [],
             initiatorId: null,
-            open: false
+            open: false,
+            navigateType: 'child-page'
         }
     }
 
@@ -244,7 +245,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
     render() {
         return (
             <View className='event-card-wrap'>
-                <ComponentBaseNavigation type='child-page' />
+                <ComponentBaseNavigation type={this.state.navigateType} />
                 <AtForm className='formPanel'>
                     <View className='act-panel'>
                         <AtInput
@@ -353,6 +354,9 @@ class EventCard extends Component<propsInterface, stateInterface> {
                                   onChange={val =>
                                         this.setState({ membersChoose: val })
                                     }
+                                  onShowChange={(val)=>this.setState({
+                                        navigateType: val ? 'picker-page' : 'child-page'
+                                    })}
                                 />
                             </View>
                         </View>

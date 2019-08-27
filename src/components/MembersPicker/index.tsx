@@ -123,6 +123,12 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
         this.setState({
             show: false
         })
+        this.props.onShowChange(false)
+    }
+    async openPopup() {
+        await this.getData()
+        this.setState({ show: true })
+        this.props.onShowChange(true)
     }
     sub() {
         this.props.onChange(this.state.choooseList)
@@ -132,7 +138,7 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
     render() {
         return (
             <View className='members-picker-wrap'>
-                <View onClick={() => this.setState({ show: true })} className='chooseText'>
+                <View onClick={() => this.openPopup()} className='chooseText'>
                     {this.state.choooseList
                         .map(item => item.familyName + item.givenName)
                         .join(',') || '请选择成员'}

@@ -116,12 +116,10 @@ class ComponentHomeNavigation extends Component<
                             'picker-page': (
                                 <View
                                   className='back-header'
-                                  onClick={() => {
-                                        this.back();
-                                    }}
+                                 
                                 >
-                                    <AtIcon value='chevron-left' size='20' />
-                                    <Text>返回</Text>
+                                    {/* <AtIcon value='chevron-left' size='20' />
+                                    <Text>返回</Text> */}
                                 </View>
                             )
                         }[type]

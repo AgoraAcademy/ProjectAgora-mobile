@@ -25,6 +25,7 @@ export interface stateInterface {
     // show: boolean;
     initiatorId: number | null;
     open: boolean;
+    navigateType: string
 }
 
 /**

@@ -80,8 +80,9 @@
 }
 .sub-button-container {
     position: absolute;
-    bottom: 20rpx;
+    bottom: -20rpx;
     left:50%;
     transform: translateX(-50%);
+    // outline: 1px solid red;
     
 }

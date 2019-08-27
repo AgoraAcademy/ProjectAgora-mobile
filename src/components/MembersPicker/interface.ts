@@ -22,4 +22,5 @@ export interface stateInterface {
 export interface propsInterface {
     onChange: Function;
     idList: Array<any>;
+    onShowChange: Function;
 }
