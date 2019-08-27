@@ -18,7 +18,7 @@
 }
 .bottom-tab-panel{
     display: flex;
-    height:164rpx;
+    height:134rpx;
     border-top:1rpx solid #E5E5E5;
     // border: 1px solid green;
     .tab-item{
@@ -30,8 +30,10 @@
         border-right: 1rpx solid #E5E5E5;
         font-size:28rpx;
         color:#646464;
+        height:100%;
         .at-icon{
-            font-size:40rpx;
+            font-size:42rpx;
+            margin-bottom:2rpx;
         }
         &:nth-last-of-type(1){
             border-right: none;

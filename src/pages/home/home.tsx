@@ -363,7 +363,7 @@ class home extends Component<homeProps, homeState> {
                   style={
                         this.state.chooseType === 'push'
                             ? 'height:calc(100vh - ' +
-                              '164rpx' +
+                              '134rpx' +
                               ' - ' +
                               this.state.statusBarHeight +
                               'px' +
@@ -381,7 +381,7 @@ class home extends Component<homeProps, homeState> {
                   style={
                         this.state.chooseType === 'notice'
                             ? 'height:calc(100vh - ' +
-                              '164rpx' +
+                              '134rpx' +
                               ' - ' +
                               this.state.statusBarHeight +
                               'px' +
