@@ -20,15 +20,7 @@
     margin: 0 auto 30rpx auto;
 }
 
-.label-item {
-    margin-right: 16rpx;
-    width: 172rpx;
-    font-size: 32rpx;
-    line-height: 1.5;
-    vertical-align: middle;
-    text-align: left;
-    display: inline-block;
-}
+
 .my-form-item {
     position: relative;
     padding: 16rpx 0;
@@ -39,13 +31,24 @@
     display: flex;
     align-items: center;
 }
-
+.label-item {
+    margin-right: 16rpx;
+    width: 172rpx;
+    font-size: 32rpx;
+    line-height: 1.5;
+    vertical-align: middle;
+    text-align: left;
+    display: inline-block;
+}
 .value-item {
     color: #888;
     font-size: 32rpx;
     min-height: 44.8rpx;
     line-height: 1.5;
     display: inline-block;
+    // outline: 1px solid red;
+    width:calc(100vw - 172rpx - 32rpx);
+    box-sizing: border-box;
     &.scroll-value-item {
         overflow-y: auto;
         white-space: nowrap;
@@ -75,4 +78,16 @@
 }
 .at-input::after {
     display: none;
+}
+
+.at-accordion__header::after {
+    border-color:rgba(0,0,0,.1)!important;
+    // border-color:red!important;
+}
+.at-accordion__content::after {
+    border:none!important;
+}
+
+.at-form::after {
+    border:none!important;
 }

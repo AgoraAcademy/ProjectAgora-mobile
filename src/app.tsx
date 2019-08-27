@@ -79,7 +79,6 @@ class App extends Component {
             'pages/community/community',
             'pages/eventCard/eventCard',
             'pages/eventCardDetail/eventCardDetail',
-            'pages/developing/developing',
             'pages/study/study'
            
         ],
