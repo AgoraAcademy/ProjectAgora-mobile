@@ -19,11 +19,18 @@ class home extends Component<homeProps, homeState> {
             chooseType: 'push',
             noticeList: [],
             members: [],
-            statusBarHeight: 0
+            statusBarHeight: 0,
+            isIPX: false
         }
     }
     componentDidMount() {
         Taro.getSystemInfo().then(res => {
+            if (res.model.search('iPhone X') > -1) {
+                this.setState({
+                    isIPX: true
+                })
+              }
+            // console.log({ res })
             this.setState({
                 statusBarHeight: res.statusBarHeight
             })
@@ -33,100 +40,100 @@ class home extends Component<homeProps, homeState> {
         disableScroll: true
     }
     async getData() {
-       try {
-        const res = await this.$api({
-            url: `${MAINHOST}/pushMessage`
-        })
-        console.log({
-            res
-        })
-        const pushList = res.data
+        try {
+            const res = await this.$api({
+                url: `${MAINHOST}/pushMessage`
+            })
+            console.log({
+                res
+            })
+            const pushList = res.data
 
-        const noticeList = [
-            {
-                content: {
-                    description: '12',
-                    logoInfo: {
-                        type: 'string',
-                        url: 'string'
+            const noticeList = [
+                {
+                    content: {
+                        description: '12',
+                        logoInfo: {
+                            type: 'string',
+                            url: 'string'
+                        },
+                        operationInfo: {
+                            operationType: 'string',
+                            operationValue: 'string'
+                        },
+                        tagInfo: '\u6d3b\u52a8',
+                        timeInfo: '1566111600000-1566111600000',
+                        title: '假数据'
                     },
-                    operationInfo: {
-                        operationType: 'string',
-                        operationValue: 'string'
+                    entityId: 18,
+                    expireDateTime: '2019-08-18T07:00:00+08:00',
+                    id: 18,
+                    messageType: 'Event',
+                    modifiedDateTime: '2019-08-18T20:26:47+08:00',
+                    recipients: [
+                        {
+                            content: [1, 35],
+                            type: 'list'
+                        }
+                    ],
+                    rsvp: {
+                        accept: [],
+                        decline: [],
+                        tentative: []
                     },
-                    tagInfo: '\u6d3b\u52a8',
-                    timeInfo: '1566111600000-1566111600000',
-                    title: '假数据'
+                    senderId: 35,
+                    sentDateTime: '2019-08-18T15:00:14+08:00'
                 },
-                entityId: 18,
-                expireDateTime: '2019-08-18T07:00:00+08:00',
-                id: 18,
-                messageType: 'Event',
-                modifiedDateTime: '2019-08-18T20:26:47+08:00',
-                recipients: [
-                    {
-                        content: [1, 35],
-                        type: 'list'
-                    }
-                ],
-                rsvp: {
-                    accept: [],
-                    decline: [],
-                    tentative: []
-                },
-                senderId: 35,
-                sentDateTime: '2019-08-18T15:00:14+08:00'
-            },
-            {
-                content: {
-                    description: '12',
-                    logoInfo: {
-                        type: 'string',
-                        url: 'string'
+                {
+                    content: {
+                        description: '12',
+                        logoInfo: {
+                            type: 'string',
+                            url: 'string'
+                        },
+                        operationInfo: {
+                            operationType: 'string',
+                            operationValue: 'string'
+                        },
+                        tagInfo: '\u6d3b\u52a8',
+                        timeInfo: '1566111600000-1566111600000',
+                        title: '假数据'
                     },
-                    operationInfo: {
-                        operationType: 'string',
-                        operationValue: 'string'
+                    entityId: 18,
+                    expireDateTime: '2019-08-18T07:00:00+08:00',
+                    id: 18,
+                    messageType: 'Event',
+                    modifiedDateTime: '2019-08-18T20:26:47+08:00',
+                    recipients: [
+                        {
+                            content: [1, 35],
+                            type: 'list'
+                        }
+                    ],
+                    rsvp: {
+                        accept: [],
+                        decline: [],
+                        tentative: []
                     },
-                    tagInfo: '\u6d3b\u52a8',
-                    timeInfo: '1566111600000-1566111600000',
-                    title: '假数据'
-                },
-                entityId: 18,
-                expireDateTime: '2019-08-18T07:00:00+08:00',
-                id: 18,
-                messageType: 'Event',
-                modifiedDateTime: '2019-08-18T20:26:47+08:00',
-                recipients: [
-                    {
-                        content: [1, 35],
-                        type: 'list'
-                    }
-                ],
-                rsvp: {
-                    accept: [],
-                    decline: [],
-                    tentative: []
-                },
-                senderId: 35,
-                sentDateTime: '2019-08-18T15:00:14+08:00'
-            }
-        ]
+                    senderId: 35,
+                    sentDateTime: '2019-08-18T15:00:14+08:00'
+                }
+            ]
 
-        pushList.forEach(item => {
-            item['status'] = false
-        })
-        noticeList.forEach(item => {
-            item['status'] = false
-        })
+            pushList.forEach(item => {
+                item['status'] = false
+            })
+            noticeList.forEach(item => {
+                item['status'] = false
+            })
 
-        this.setState({
-            pushList,
-            noticeList
-        })
-       } catch (error) {
-           console.log(error)
-       }
+            this.setState({
+                pushList,
+                noticeList
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
     componentDidShow() {
         console.log(this.$router.params)
@@ -139,7 +146,7 @@ class home extends Component<homeProps, homeState> {
         })
         if (item.senderId === +Taro.getStorageSync('learnerId')) {
             Taro.navigateTo({
-                url: '/pages/eventCard/eventCard?type=edit&id=' + item.id
+                url: '/pages/eventCard/eventCard?type=edit&id=' + item.entityId
             })
         } else {
             Taro.navigateTo({
@@ -147,7 +154,7 @@ class home extends Component<homeProps, homeState> {
                     '/pages/eventCardDetail/eventCardDetail?type=' +
                     type +
                     '&id=' +
-                    item.id
+                    item.entityId
             })
         }
     }
@@ -367,6 +374,7 @@ class home extends Component<homeProps, homeState> {
                               ' - ' +
                               this.state.statusBarHeight +
                               'px' +
+                            //   (this.state.isIPX ? " - 44rpx " : '') +
                               ' - 88rpx' +
                               ')'
                             : 'display:none;'
@@ -393,29 +401,32 @@ class home extends Component<homeProps, homeState> {
                     <View className='ul-ele'>{listComponent}</View>
                 </ScrollView>
 
-                <View className='bottom-tab-panel'>
-                    {tabList.map(item => {
-                        return (
-                            <View
-                              className={classnames('tab-item', {
-                                    active: this.state.chooseType === item.type
-                                })}
-                              onClick={() => {
-                                    this.setState({ chooseType: item.type })
-                                }}
-                              key={item.type}
-                            >
+                <View className='bottom-tab-panel-container'>
+                    <View className='bottom-tab-panel'>
+                        {tabList.map(item => {
+                            return (
                                 <View
-                                  className={classnames(
-                                        'at-icon',
-                                        item.iconClass
-                                    )}
-                                />
+                                  className={classnames('tab-item', {
+                                        active:
+                                            this.state.chooseType === item.type
+                                    })}
+                                  onClick={() => {
+                                        this.setState({ chooseType: item.type })
+                                    }}
+                                  key={item.type}
+                                >
+                                    <View
+                                      className={classnames(
+                                            'at-icon',
+                                            item.iconClass
+                                        )}
+                                    />
 
-                                <Text>{item.name}</Text>
-                            </View>
-                        )
-                    })}
+                                    <Text>{item.name}</Text>
+                                </View>
+                            )
+                        })}
+                    </View>
                 </View>
             </View>
         )
