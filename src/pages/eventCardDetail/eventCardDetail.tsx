@@ -1,4 +1,4 @@
-import Taro, { Component } from '@tarojs/taro'
+import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtForm, AtButton } from 'taro-ui'
 import Tips from '../../utils/tips'
@@ -32,6 +32,16 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
     }
     componentDidMount() {
         this.getData()
+        Taro.showShareMenu({
+            withShareTicket: true
+        })
+    }
+    onShareAppMessage(): any {
+        // 自定义分享内容
+        var shareObj = {
+            title: this.state.pageInfo.initiatorDisplayName + "发起了活动:" + this.state.pageInfo.eventInfo.title + ",快参加吧~"
+        }
+        return shareObj
     }
     getJoinStatus() {
         let flag = false
@@ -54,7 +64,7 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
         const acceptList = this.state.pageInfo.rsvp.accept
         return acceptList
             .map(item => {
-                return item.familyName+item.givenName
+                return item.familyName + item.givenName
             })
             .filter(n => n)
             .join(',')

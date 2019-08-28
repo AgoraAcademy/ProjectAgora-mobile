@@ -30,7 +30,7 @@ class Identity extends Component<IdentityProps, IdentityState> {
         const token = Taro.getStorageSync("token");
         const iv = Taro.getStorageSync("iv");
         const encryptedData = Taro.getStorageSync("encryptedData");
-        const res=await Taro.request({
+        const res = await Taro.request({
             url: `${MAINHOST}/learner`,
             data: {
                 familyName: this.state.familyName,
@@ -96,7 +96,7 @@ class Identity extends Component<IdentityProps, IdentityState> {
                         >
                            <View className='label-item'>出生日期</View>
                             <View className='value-item'>
-                                {this.state.birthday||"请选择出生日期"}
+                                {this.state.birthday || "请选择出生日期"}
                             </View>
                         </Picker>
                     </View>

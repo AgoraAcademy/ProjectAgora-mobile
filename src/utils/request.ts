@@ -17,11 +17,11 @@ declare type Methods =
 declare type Headers = { [key: string]: string }
 declare type Datas = { method: Methods; [key: string]: any }
 interface Options {
-    url: string;
-    host?: string;
-    method?: Methods;
-    data?: Datas;
-    header?: Headers;
+    url: string
+    host?: string
+    method?: Methods
+    data?: Datas
+    header?: Headers
 }
 
 export class Request {
@@ -77,7 +77,7 @@ export class Request {
     static async request(opts: Options) {
         // token不存在或learnerFullName不存在
         if (!this.getToken()) {
-            return await this.login()
+            await this.dealLogin()
         }
 
         // token存在
@@ -100,7 +100,6 @@ export class Request {
             return res.data
         }
 
-      
         // 请求成功
         if (code === 0) {
             return res.data
@@ -132,25 +131,26 @@ export class Request {
         }
         return this.loginReadyPromise
     }
-    static async dealLogin(){
+    static async dealLogin() {
         const { code } = await Taro.login()
-       try{
-        const res = await Taro.request({
-            url: `${MAINHOST}${requestConfig.loginUrl}`,
-            data: { js_code: code }
-        })
-        const data = res.data.data
-        await Taro.setStorageSync('token', data.token)
-        await Taro.setStorageSync('learnerFullName', data.learnerFullName)
-        await Taro.setStorageSync('unionid', data.unionid)
-        await Taro.setStorageSync('isAdmin', data.isAdmin)
-        await Taro.setStorageSync('learnerId', data.learnerId)
-        await Taro.setStorageSync('branch', data.branch)
-       }catch(err){
-            Taro.navigateTo({
-                url:"/pages/identity/identity"
+        try {
+            const res = await Taro.request({
+                url: `${MAINHOST}${requestConfig.loginUrl}`,
+                data: { js_code: code }
             })
-       }
+            const data = res.data.data
+            await Taro.setStorageSync('token', data.token)
+            await Taro.setStorageSync('learnerFullName', data.learnerFullName)
+            await Taro.setStorageSync('unionid', data.unionid)
+            await Taro.setStorageSync('isAdmin', data.isAdmin)
+            await Taro.setStorageSync('learnerId', data.learnerId)
+            await Taro.setStorageSync('branch', data.branch)
+            return true
+        } catch (err) {
+            Taro.navigateTo({
+                url: '/pages/identity/identity'
+            })
+        }
     }
     /**
      *
@@ -172,19 +172,17 @@ export class Request {
             //     Taro.switchTab({ url: '/pages/home/home' })
             // }
             this.isLogining = false
-          
         } catch (error) {
-            console.log('check session fail',error)
+            console.log('check session fail', error)
             // 请求登录
-            try{
+            try {
                 Taro.navigateTo({ url: '/pages/authorize/authorize' })
                 this.isLogining = false
-            } catch(err){
+            } catch (err) {
                 console.log(err)
             }
-           
-            console.log("调用登录接口")
-           
+
+            console.log('调用登录接口')
         }
     }
 

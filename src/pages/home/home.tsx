@@ -23,149 +23,104 @@ class home extends Component<homeProps, homeState> {
             isIPX: false
         }
     }
+
     componentDidMount() {
+        Taro.showShareMenu({
+            withShareTicket: true
+        })
         Taro.getSystemInfo().then(res => {
             if (res.model.search('iPhone X') > -1) {
                 this.setState({
                     isIPX: true
                 })
-              }
+            }
             // console.log({ res })
             this.setState({
                 statusBarHeight: res.statusBarHeight
             })
         })
+        console.log(this.$router.params)
+        this._renderPushList()
+        this._renderNoticeList()
     }
     config: Config = {
-        disableScroll: true
+        navigationBarTitleText: '首页',
+        disableScroll: true,
+        enablePullDownRefresh: true
     }
-    async getData() {
+    onShareAppMessage(): any {
+        // 自定义分享内容
+        var shareObj = {
+            title: '首页'
+        }
+        return shareObj
+    }
+    async _renderNoticeList() {
+        const res = await this.$api({
+            url: `${MAINHOST}/notification`
+        })
+        // console.log({
+        //     res
+        // })
+        const noticeList = res.data
+        noticeList.forEach(item => {
+            item['status'] = false
+        })
+        this.setState({
+            noticeList
+        })
+    }
+    async _renderPushList() {
         try {
             const res = await this.$api({
                 url: `${MAINHOST}/pushMessage`
             })
-            console.log({
-                res
-            })
+            // console.log({
+            //     res
+            // })
             const pushList = res.data
-
-            const noticeList = [
-                {
-                    content: {
-                        description: '12',
-                        logoInfo: {
-                            type: 'string',
-                            url: 'string'
-                        },
-                        operationInfo: {
-                            operationType: 'string',
-                            operationValue: 'string'
-                        },
-                        tagInfo: '\u6d3b\u52a8',
-                        timeInfo: '1566111600000-1566111600000',
-                        title: '假数据'
-                    },
-                    entityId: 18,
-                    expireDateTime: '2019-08-18T07:00:00+08:00',
-                    id: 18,
-                    messageType: 'Event',
-                    modifiedDateTime: '2019-08-18T20:26:47+08:00',
-                    recipients: [
-                        {
-                            content: [1, 35],
-                            type: 'list'
-                        }
-                    ],
-                    rsvp: {
-                        accept: [],
-                        decline: [],
-                        tentative: []
-                    },
-                    senderId: 35,
-                    sentDateTime: '2019-08-18T15:00:14+08:00'
-                },
-                {
-                    content: {
-                        description: '12',
-                        logoInfo: {
-                            type: 'string',
-                            url: 'string'
-                        },
-                        operationInfo: {
-                            operationType: 'string',
-                            operationValue: 'string'
-                        },
-                        tagInfo: '\u6d3b\u52a8',
-                        timeInfo: '1566111600000-1566111600000',
-                        title: '假数据'
-                    },
-                    entityId: 18,
-                    expireDateTime: '2019-08-18T07:00:00+08:00',
-                    id: 18,
-                    messageType: 'Event',
-                    modifiedDateTime: '2019-08-18T20:26:47+08:00',
-                    recipients: [
-                        {
-                            content: [1, 35],
-                            type: 'list'
-                        }
-                    ],
-                    rsvp: {
-                        accept: [],
-                        decline: [],
-                        tentative: []
-                    },
-                    senderId: 35,
-                    sentDateTime: '2019-08-18T15:00:14+08:00'
-                }
-            ]
 
             pushList.forEach(item => {
                 item['status'] = false
             })
-            noticeList.forEach(item => {
-                item['status'] = false
-            })
 
             this.setState({
-                pushList,
-                noticeList
+                pushList
             })
         } catch (error) {
             console.log(error)
         }
     }
-    componentDidShow() {
-        console.log(this.$router.params)
-        this.getData()
-    }
+    // componentDidShow() {
 
+    // }
+
+    goEdit(type, item, event) {
+        event.stopPropagation()
+        Taro.navigateTo({
+            url: '/pages/eventCard/eventCard?type=edit&id=' + item.entityId
+        })
+    }
     goDetail(type, item) {
         console.log({
             item
         })
-        if (item.senderId === +Taro.getStorageSync('learnerId')) {
-            Taro.navigateTo({
-                url: '/pages/eventCard/eventCard?type=edit&id=' + item.entityId
-            })
-        } else {
-            Taro.navigateTo({
-                url:
-                    '/pages/eventCardDetail/eventCardDetail?type=' +
-                    type +
-                    '&id=' +
-                    item.entityId
-            })
-        }
+        Taro.navigateTo({
+            url:
+                '/pages/eventCardDetail/eventCardDetail?type=' +
+                type +
+                '&id=' +
+                item.entityId
+        })
     }
-    async cancel(item, event: React.MouseEvent) {
+    async cancel(item, event) {
         event.stopPropagation()
         event.stopPropagation()
         if (await this.change('不参加', item)) {
             Tips.toast('取消成功')
             Taro.navigateBack()
         }
-        this.getData()
+        this._renderPushList()
     }
     async change(status, item) {
         const sendData = {
@@ -183,14 +138,14 @@ class home extends Component<homeProps, homeState> {
             return false
         }
     }
-    async join(item, event: React.MouseEvent) {
+    async join(item, event) {
         event.stopPropagation()
         if (await this.change('参加', item)) {
             Tips.toast('参加成功')
-            this.getData()
+            this._renderPushList()
         }
     }
-    async del(item, event: React.MouseEvent) {
+    async del(item, event) {
         event.stopPropagation()
         try {
             await this.$api({
@@ -200,10 +155,10 @@ class home extends Component<homeProps, homeState> {
                 // },
                 method: 'DELETE'
             })
-            this.getData()
+            this._renderPushList()
         } catch (err) {}
     }
-    toggle(item, event: React.MouseEvent) {
+    toggle(item, event) {
         // console.log({ event ,item});
         event.stopPropagation()
         const type =
@@ -244,6 +199,20 @@ class home extends Component<homeProps, homeState> {
             计划: 'yellow'
         }[type]
     }
+    toggleBottomTab(type) {
+        if (this.state.chooseType === type) {
+            return
+        }
+        this.setState({ chooseType: type })
+        switch (type) {
+            case 'push':
+                this._renderPushList()
+                break
+            case 'notice':
+                this._renderNoticeList()
+                break
+        }
+    }
     render() {
         const data =
             this.state.chooseType === 'push'
@@ -279,16 +248,6 @@ class home extends Component<homeProps, homeState> {
                                         <Avatar text={item.content.title} />
                                     </View>
                                     {/* <ImageView img-class="avatar" pathId=""></ImageView> */}
-                                    <View
-                                      className='status-button'
-                                      style={
-                                            item.type === '项目'
-                                                ? ''
-                                                : 'display:none'
-                                        }
-                                    >
-                                        招募中
-                                    </View>
                                 </View>
                                 <View className='infoPanel'>
                                     <View className='title'>
@@ -301,10 +260,20 @@ class home extends Component<homeProps, homeState> {
                                         {item.content.description}
                                     </View>
                                 </View>
-                                {item.initiatorId ===
-                                +Taro.getStorageSync(
-                                    'learnerId'
-                                ) ? null : this.hadJoin(item.rsvp) ? (
+                                {item.senderId ===
+                                +Taro.getStorageSync('learnerId') ? (
+                                    <View
+                                      onClick={this.goEdit.bind(
+                                            this,
+                                            this.state.chooseType,
+                                            item
+                                        )}
+                                    >
+                                        <AtButton className='sub-button'>
+                                            编辑
+                                        </AtButton>
+                                    </View>
+                                ) : this.hadJoin(item.rsvp) ? (
                                     <View
                                       onClick={this.toggle.bind(this, item)}
                                     >
@@ -323,7 +292,7 @@ class home extends Component<homeProps, homeState> {
                                 <View className='at-icon at-icon-chevron-right icon-right' />
                             </View>
                             {item.status &&
-                            item.initiatorId !==
+                            item.senderId !==
                                 +Taro.getStorageSync('learnerId') ? (
                                 <View className='action-panel'>
                                     <View
@@ -342,6 +311,72 @@ class home extends Component<homeProps, homeState> {
                                     </View>
                                 </View>
                             ) : null}
+                        </View>
+                    )
+                })
+            ) : (
+                <View className='no-data'>暂无数据</View>
+            )
+
+        const noticeListComponent =
+            data.length > 0 ? (
+                data.map(item => {
+                    const time = item.content.timeInfo.split('-')
+                    const startTime = formatDate(time[0]).simpleTimes
+                    const endTime = formatDate(time[1]).simpleTimes
+                    return (
+                        <View
+                          key={item.id}
+                          className={classnames('li-ele card', {
+                                active: this.hadJoin(item.rsvp)
+                            })}
+                          onClick={() => {
+                                this.goDetail(this.state.chooseType, item)
+                            }}
+                        >
+                            <View className='main-panel'>
+                                <View
+                                  className={classnames(
+                                        'tag',
+                                        this.getBg(item.content.tagInfo)
+                                    )}
+                                >
+                                    {item.content.tagInfo}
+                                </View>
+                                <View className='left-panel'>
+                                    <View className='avatar'>
+                                        <Avatar text={item.content.title} />
+                                    </View>
+                                    {/* <ImageView img-class="avatar" pathId=""></ImageView> */}
+                                </View>
+                                <View className='infoPanel'>
+                                    <View className='title'>
+                                        {item.content.title}
+                                    </View>
+                                    <View className='date'>
+                                        {startTime + '-' + endTime}
+                                    </View>
+                                    <View className='desc'>
+                                        {item.content.description}
+                                    </View>
+                                </View>
+                                {item.senderId ===
+                                +Taro.getStorageSync('learnerId') ? (
+                                    <View
+                                      onClick={this.goEdit.bind(
+                                            this,
+                                            this.state.chooseType,
+                                            item
+                                        )}
+                                    >
+                                        <AtButton className='sub-button'>
+                                            改期
+                                        </AtButton>
+                                    </View>
+                                ) : null}
+
+                                <View className='at-icon at-icon-chevron-right icon-right' />
+                            </View>
                         </View>
                     )
                 })
@@ -374,7 +409,7 @@ class home extends Component<homeProps, homeState> {
                               ' - ' +
                               this.state.statusBarHeight +
                               'px' +
-                            //   (this.state.isIPX ? " - 44rpx " : '') +
+                              //   (this.state.isIPX ? " - 44rpx " : '') +
                               ' - 88rpx' +
                               ')'
                             : 'display:none;'
@@ -398,7 +433,7 @@ class home extends Component<homeProps, homeState> {
                             : 'display:none;'
                     }
                 >
-                    <View className='ul-ele'>{listComponent}</View>
+                    <View className='ul-ele'>{noticeListComponent}</View>
                 </ScrollView>
 
                 <View className='bottom-tab-panel-container'>
@@ -411,7 +446,7 @@ class home extends Component<homeProps, homeState> {
                                             this.state.chooseType === item.type
                                     })}
                                   onClick={() => {
-                                        this.setState({ chooseType: item.type })
+                                        this.toggleBottomTab(item.type)
                                     }}
                                   key={item.type}
                                 >

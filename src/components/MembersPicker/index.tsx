@@ -41,7 +41,6 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
         })
     }
     config: Config = {
-        navigationBarTitleText: '发起活动',
         usingComponents: {
             'van-popup': '../../components/vant-weapp/vant-dist/popup/index'
         }

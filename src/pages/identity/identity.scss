@@ -1,7 +1,10 @@
 @import '../../variable.scss';
-identity-wrap {
+.identity-wrap {
     width: 100%;
     min-height: 100vh;
+    .value-item{
+        width:auto;
+    }
 }
 .sub-button {
     background: $main;

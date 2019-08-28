@@ -37,6 +37,10 @@ class ComponentHomeNavigation extends Component<
     back() {
         if (Taro.getCurrentPages().length > 1) {
             Taro.navigateBack();
+        }else{
+            Taro.switchTab({
+                url: '/pages/home/home'
+            })
         }
     }
     showOverlay() {
