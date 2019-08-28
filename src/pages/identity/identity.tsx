@@ -9,12 +9,13 @@ import "./identity.scss";
 import { MAINHOST } from "../../config";
 import ComponentBaseNavigation from "../../components/ComponentHomeNavigation/componentHomeNavigation";
 import { rolesList, branchsList } from '../../globalData'
+import { requestConfig } from "../../config/requestConfig";
 // import { } from '../../components'
 
 class Identity extends Component<IdentityProps, IdentityState> {
     constructor(props: IdentityProps) {
         super(props);
-      
+
         this.state = {
             familyName: "",
             givenName: "",
@@ -25,9 +26,16 @@ class Identity extends Component<IdentityProps, IdentityState> {
             branchsList: branchsList
         };
     }
-    componentDidMount() {}
+    componentDidMount() { }
     async onSubmit() {
-        const token = Taro.getStorageSync("token");
+        // const token = Taro.getStorageSync("token");
+        const { code } = await Taro.login();
+        // 请求登录
+        const { data } = await Taro.request({
+            url: `${MAINHOST}${requestConfig.loginUrl}`,
+            data: { js_code: code }
+        });
+
         const iv = Taro.getStorageSync("iv");
         const encryptedData = Taro.getStorageSync("encryptedData");
         const res = await Taro.request({
@@ -42,7 +50,7 @@ class Identity extends Component<IdentityProps, IdentityState> {
                 iv,
                 encryptedData
             },
-            header: { token: token },
+            header: { token: data.token },
             method: "POST"
         });
         if (res.statusCode === 201) {
@@ -94,7 +102,7 @@ class Identity extends Component<IdentityProps, IdentityState> {
                                 });
                             }}
                         >
-                           <View className='label-item'>出生日期</View>
+                            <View className='label-item'>出生日期</View>
                             <View className='value-item'>
                                 {this.state.birthday || "请选择出生日期"}
                             </View>
