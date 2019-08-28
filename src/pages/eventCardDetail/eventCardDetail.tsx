@@ -36,6 +36,9 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
             withShareTicket: true
         })
     }
+    config: Config = {
+        disableScroll: true
+    };
     onShareAppMessage(): any {
         // 自定义分享内容
         var shareObj = {

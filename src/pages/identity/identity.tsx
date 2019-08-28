@@ -27,6 +27,9 @@ class Identity extends Component<IdentityProps, IdentityState> {
         };
     }
     componentDidMount() { }
+    config: Config = {
+        disableScroll: true
+    };
     async onSubmit() {
         // const token = Taro.getStorageSync("token");
         const { code } = await Taro.login();

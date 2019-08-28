@@ -28,7 +28,8 @@ class Authorize extends Component<AuthorizeProps, AuthorizeState> {
     componentDidMount() {
     }
     config: Config = {
-        navigationBarTitleText: '授权页面'
+        navigationBarTitleText: '授权页面',
+        disableScroll: true
     }
 
     async ping() {

@@ -11,6 +11,8 @@ export interface homeState {
     members: Array<any>;
     statusBarHeight: number;
     isIPX: boolean;
+    refreshing: boolean;
+    refreshed: boolean;
 }
 
 /**

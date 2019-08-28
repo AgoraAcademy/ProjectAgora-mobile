@@ -12,6 +12,7 @@ declare var wx: any;
 declare namespace JSX {
     interface IntrinsicElements {
         'van-datetime-picker': any;
-        'van-popup': any
+        'van-popup': any;
+        'pulldown-refresh':any;
     }
   }

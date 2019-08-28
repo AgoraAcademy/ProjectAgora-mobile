@@ -28,7 +28,8 @@ class NoticeCard extends Component<propsInterface, stateInterface> {
     }
     componentDidMount() {}
     config: Config = {
-        navigationBarTitleText: "活动"
+        navigationBarTitleText: "活动",
+        disableScroll: true
     };
     async onSubmit() {
         const token = Taro.getStorageSync("token");

@@ -1,5 +1,5 @@
 
-import Taro, { Component } from '@tarojs/taro'
+import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { CommunityProps, CommunityState } from './community.interface'
 import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/componentHomeNavigation'
@@ -10,6 +10,9 @@ class Community extends Component<CommunityProps, CommunityState> {
     constructor(props: CommunityProps) {
         super(props)
         this.state = {}
+    }
+    config: Config = {
+        disableScroll: true
     }
     render() {
         return (

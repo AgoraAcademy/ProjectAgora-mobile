@@ -27,7 +27,8 @@ const config = {
   copy: {
     patterns: [
         { from: 'src/components/vant-weapp/vant-dist/wxs', to: 'dist/components/vant-weapp/vant-dist/wxs' },
-        { from: 'src/components/vant-weapp/vant-dist/picker-column/index.wxs', to:  'dist/components/vant-weapp/vant-dist/picker-column/index.wxs' }
+        { from: 'src/components/vant-weapp/vant-dist/picker-column/index.wxs', to: 'dist/components/vant-weapp/vant-dist/picker-column/index.wxs' },
+        { from: 'src/pages/home/pullDownRefresh/pullDownRefresh.wxs', to: 'dist/pages/home/pullDownRefresh/pullDownRefresh.wxs' }
     ],
     options: {
     }
