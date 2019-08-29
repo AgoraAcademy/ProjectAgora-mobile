@@ -42,8 +42,7 @@ class home extends Component<homeProps, homeState> {
             })
         })
         console.log(this.$router.params)
-        this._renderPushList()
-        this._renderNoticeList()
+
     }
     config: Config = {
         usingComponents: {
@@ -110,9 +109,10 @@ class home extends Component<homeProps, homeState> {
             console.log(error)
         }
     }
-    // componentDidShow() {
-
-    // }
+    componentDidShow() {
+        this._renderPushList()
+        this._renderNoticeList()
+    }
 
     goEdit(type, item, event) {
         event.stopPropagation()
@@ -222,15 +222,17 @@ class home extends Component<homeProps, homeState> {
         if (this.state.chooseType === type) {
             return
         }
-        this.setState({ chooseType: type })
-        switch (type) {
-            case 'push':
-                this._renderPushList()
-                break
-            case 'notice':
-                this._renderNoticeList()
-                break
-        }
+        this.setState({ chooseType: type }, () => {
+            switch (type) {
+                case 'push':
+                    this._renderPushList()
+                    break
+                case 'notice':
+                    this._renderNoticeList()
+                    break
+            }
+        })
+
     }
     render() {
         const data =
@@ -240,7 +242,7 @@ class home extends Component<homeProps, homeState> {
         const listComponent =
             data.length > 0 ? (
                 data.map(item => {
-                    const time = item.content.timeInfo.split('-')
+                    const time = item.content.timeInfo ? item.content.timeInfo.split('-') : ['0', '0']
                     const startTime = formatDate(time[0]).simpleTimes
                     const endTime = formatDate(time[1]).simpleTimes
                     return (
@@ -340,9 +342,9 @@ class home extends Component<homeProps, homeState> {
         const noticeListComponent =
             data.length > 0 ? (
                 data.map(item => {
-                    const time = item.content.timeInfo.split('-')
-                    const startTime = formatDate(time[0]).simpleTimes
-                    const endTime = formatDate(time[1]).simpleTimes
+                    // const time = item.content.timeInfo.split('-')
+                    const startTime = formatDate(new Date(item.content.startDateTime)).simpleTimes
+                    const endTime = formatDate(new Date(item.content.endDateTime)).simpleTimes
                     return (
                         <View
                           key={item.id}
@@ -364,35 +366,32 @@ class home extends Component<homeProps, homeState> {
                                 </View>
                                 <View className='left-panel'>
                                     <View className='avatar'>
-                                        <Avatar text={item.content.title} />
+                                        <Avatar text={item.title} />
                                     </View>
                                     {/* <ImageView img-class="avatar" pathId=""></ImageView> */}
                                 </View>
                                 <View className='infoPanel'>
                                     <View className='title'>
-                                        {item.content.title}
+                                        {item.title}
                                     </View>
                                     <View className='date'>
                                         {startTime + '-' + endTime}
                                     </View>
                                     <View className='desc'>
-                                        {item.content.description}
+                                        {item.description}
                                     </View>
                                 </View>
-                                {item.senderId ===
-                                    +Taro.getStorageSync('learnerId') ? (
-                                        <View
-                                          onClick={this.goEdit.bind(
-                                                this,
-                                                this.state.chooseType,
-                                                item
-                                            )}
-                                        >
-                                            <AtButton className='sub-button'>
-                                                改期
+                                <View
+                                  onClick={this.goEdit.bind(
+                                        this,
+                                        this.state.chooseType,
+                                        item
+                                    )}
+                                >
+                                    <AtButton className='sub-button'>
+                                        改期
                                         </AtButton>
-                                        </View>
-                                    ) : null}
+                                </View>
 
                                 <View className='at-icon at-icon-chevron-right icon-right' />
                             </View>

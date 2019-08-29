@@ -66,6 +66,14 @@ class EventCard extends Component<propsInterface, stateInterface> {
             initiatorId: data.initiatorId
         })
     }
+    hadJoin(rsvp) {
+        if (!rsvp || !rsvp.accept) {
+            return false
+        }
+        return rsvp.accept.some(item => {
+            item.id === +Taro.getStorageSync('learnerId')
+        })
+    }
     async submit() {
         if (!this.checkForm()) {
             return
@@ -229,6 +237,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
     dateChange(val) {
         console.log(val)
     }
+    
     async del() {
         const { id } = this.$router.params
         try {
@@ -383,6 +392,9 @@ class EventCard extends Component<propsInterface, stateInterface> {
                             ? '保存'
                             : '确认发起'}
                     </AtButton>
+
+                   
+
                     {this.state.initiatorId ===
                     +Taro.getStorageSync('learnerId') ? (
                         <AtButton

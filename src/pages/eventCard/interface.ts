@@ -25,7 +25,7 @@ export interface stateInterface {
     // show: boolean;
     initiatorId: number | null;
     open: boolean;
-    navigateType: string
+    navigateType: 'normal-page' | 'child-page' | 'picker-page';
 }
 
 /**

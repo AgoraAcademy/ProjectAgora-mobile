@@ -89,6 +89,12 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
     formatDate(str) {
         return formatDateFromStr(str).text
     }
+    goEdit() {
+        Taro.navigateTo({
+            url: '/pages/eventCard/eventCard?type=edit&id=' + this.$router.params.id
+        })
+    }
+
     async change(status) {
         const sendData = {
             rsvp: status
@@ -208,24 +214,24 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
                         <View className='value-item'>{this.joinList()}</View>
                     </View>
                     {this.state.pageInfo.initiatorId ===
-                    +Taro.getStorageSync('learnerId') ? (
-                        <View>
-                            <AtButton
-                              className='sub-button red'
-                              onClick={() => this.del()}
-                            >
-                                删除
+                        +Taro.getStorageSync('learnerId') ? (
+                            <View>
+                                <AtButton
+                                  onClick={() => this.goEdit()}
+                                  className='sub-button'
+                                >
+                                    编辑
+                                 </AtButton>
+                                <AtButton
+                                  className='sub-button red'
+                                  onClick={() => this.del()}
+                                >
+                                    删除
                             </AtButton>
-                        </View>
-                    ) : null}
-                    {this.state.joinStatus ? null : (
-                        <View>
-                            <AtButton
-                              className='sub-button'
-                              onClick={() => this.join()}
-                            >
-                                确认报名
-                            </AtButton>
+                            </View>
+                        ) : null}
+                    {this.state.joinStatus ?
+                        (
                             <View className='action-panel'>
                                 <View
                                   className='action-item'
@@ -242,8 +248,26 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
                                     <Text className='text'>可能参加</Text>
                                 </View>
                             </View>
-                        </View>
-                    )}
+                        ) : (
+                            <View>
+                                <AtButton
+                                  className='sub-button'
+                                  onClick={() => this.join()}
+                                >
+                                    确认报名
+                                </AtButton>
+                                <View className='action-panel'>
+
+                                    <View
+                                      className='action-item'
+                                      onClick={() => this.maybeJoin()}
+                                    >
+                                        <View className='at-icon at-icon-help icon-help' />
+                                        <Text className='text'>可能参加</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        )}
                 </AtForm>
             </View>
         )
