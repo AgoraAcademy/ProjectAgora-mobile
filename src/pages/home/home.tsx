@@ -47,7 +47,7 @@ class home extends Component<homeProps, homeState> {
     }
     config: Config = {
         usingComponents: {
-            "pulldown-refresh": './pullDownRefresh/pullDownRefresh'
+            "pulldown-refresh": '../../components/pullDownRefresh/pullDownRefresh'
         },
         navigationBarTitleText: '首页',
         disableScroll: true
