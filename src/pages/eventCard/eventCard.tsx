@@ -303,6 +303,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
                                     this.setState({ startDateTime: val })
                                 }
                               initTime={this.state.startDateTime}
+                              
                               placeholder='请选择活动开始时间'
                             />
                         </View>
@@ -314,6 +315,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
                               onChange={val =>
                                     this.setState({ endDateTime: val })
                                 }
+                              minDate={Date.parse(this.state.startDateTime) + 60000}
                               initTime={this.state.endDateTime}
                               placeholder='请选择活动结束时间'
                             />

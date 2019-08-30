@@ -21,6 +21,15 @@ class DateTimePicker extends PureComponent<PropsInterface, StateInterface> {
                 time: formatDateFromStr(next.initTime).timestamp
             })
         }
+        // console.log({
+        //     date: "data",
+        //     next
+        // })
+        if(next.minDate){
+            this.setState({
+                minTime: next.minDate
+            })
+        }
         this.setState({
             show: next.show
         })

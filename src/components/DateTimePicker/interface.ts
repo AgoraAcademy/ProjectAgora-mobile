@@ -19,5 +19,6 @@ export interface PropsInterface {
     onChange: Function;
     placeholder?: string;
     initTime?: string;
+    minDate?: number
     // show: boolean
 }
