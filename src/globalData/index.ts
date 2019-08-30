@@ -1,5 +1,5 @@
 export const rolesList = ['社区成员', '全职导师', '驻场导师']
-export const branchsList = ['成都·先锋', '深圳·安格']
+export const branchsList = ['请选择校区', '成都·先锋', '深圳·安格']
 export const colorList = [
     "#f44336",
     "#ffebee",

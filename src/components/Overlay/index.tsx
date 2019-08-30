@@ -38,6 +38,7 @@ class ComponentHomeNavigation extends Component<
     render() {
         const routeMap = [
             { path: '/pages/home/home', name: '主页' },
+            { path: '/pages/booking/booking', name: '房间预订', type: 'normal' },
             { path: '/pages/study/study', name: '学习' },
             { path: '/pages/community/community', name: '社区' },
             {

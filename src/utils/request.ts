@@ -77,7 +77,8 @@ export class Request {
     static async request(opts: Options) {
         // token不存在或learnerFullName不存在
         if (!this.getToken()) {
-            await this.dealLogin()
+            // await this.dealLogin()
+            Taro.navigateTo({ url: '/pages/authorize/authorize' })
         }
 
         // token存在
@@ -87,10 +88,6 @@ export class Request {
         const res = await Taro.request(opts)
         const code = res.data.code
         if (code === -1001) {
-            // if (Taro.getStorageSync('learnerId')) {
-            //     await this.login()
-            //     return this.request(opts)
-            // }
             Taro.navigateTo({ url: '/pages/authorize/authorize' })
             return
         }
@@ -131,14 +128,36 @@ export class Request {
         }
         return this.loginReadyPromise
     }
+    static async checkLogin(){
+        return new Promise((resolve)=>{
+            Taro.checkSession({
+                success() {
+                    resolve()
+                },
+                async fail() {
+                    const { code } = await Taro.login()
+                    await Taro.setStorageSync('code', code)
+                    console.log('刷新 taro login')
+                    resolve()
+                }
+            })
+        })
+    }
     static async dealLogin() {
-        const { code } = await Taro.login()
+        await this.checkLogin()
         try {
             const res = await Taro.request({
                 url: `${MAINHOST}${requestConfig.loginUrl}`,
-                data: { js_code: code }
+                data: { js_code: Taro.getStorageSync('code') }
             })
             const data = res.data.data
+            if (res.data.code === -1008) {
+                await Taro.setStorageSync('token', data.token)
+                Taro.navigateTo({
+                    url: '/pages/identity/identity'
+                })
+                return
+            }
             await Taro.setStorageSync('token', data.token)
             await Taro.setStorageSync('learnerFullName', data.learnerFullName)
             await Taro.setStorageSync('unionid', data.unionid)
@@ -147,9 +166,10 @@ export class Request {
             await Taro.setStorageSync('branch', data.branch)
             return true
         } catch (err) {
-            Taro.navigateTo({
-                url: '/pages/identity/identity'
-            })
+            console.log(err)
+            // Taro.navigateTo({
+            //     url: '/pages/identity/identity'
+            // })
         }
     }
     /**
@@ -162,8 +182,8 @@ export class Request {
         this.isLogining = true
         try {
             console.log('check session success ooo')
-            await Taro.checkSession()
-            this.dealLogin()
+            // await Taro.checkSession()
+            await this.dealLogin()
             // const currentUnionid = await Taro.getStorageSync('unionid')
             // if (!currentUnionid) {
             //     console.log('重定向 1')

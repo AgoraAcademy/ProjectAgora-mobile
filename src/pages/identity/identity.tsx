@@ -32,13 +32,15 @@ class Identity extends Component<IdentityProps, IdentityState> {
     };
     async onSubmit() {
         // const token = Taro.getStorageSync("token");
-        const { code } = await Taro.login();
+        // const { code } = await Taro.login();
         // 请求登录
-        const { data } = await Taro.request({
-            url: `${MAINHOST}${requestConfig.loginUrl}`,
-            data: { js_code: code }
-        });
-
+        // const { data } = await Taro.request({
+        //     url: `${MAINHOST}${requestConfig.loginUrl}`,
+        //     data: { js_code: code }
+        // });
+        if(!this.checkForm()){
+            return
+        }
         const iv = Taro.getStorageSync("iv");
         const encryptedData = Taro.getStorageSync("encryptedData");
         const res = await Taro.request({
@@ -53,16 +55,32 @@ class Identity extends Component<IdentityProps, IdentityState> {
                 iv,
                 encryptedData
             },
-            header: { token: data.token },
+            header: { token: Taro.getStorageSync("token") },
             method: "POST"
         });
-        if (res.statusCode === 201) {
+        if (res.statusCode === 200 && res.data.code === 0) {
             Tips.toast("注册成功")
             await this.$login()
             Taro.switchTab({
                 url: "/pages/home/home"
             })
         }
+    }
+    changeBranch(e){
+        this.setState({
+            branch: this.state.branchsList[e.detail.value]
+        });
+    }
+    checkForm(){
+        if(!this.state.birthday){
+            Tips.toast("请选择出生日期")
+            return false
+        }
+        if(this.state.branch === branchsList[0]){
+            Tips.toast("请选择校区")
+            return false
+        }
+        return true
     }
     render() {
         return (
@@ -131,12 +149,10 @@ class Identity extends Component<IdentityProps, IdentityState> {
                     <View className='my-form-item'>
                         <Picker
                           mode='selector'
-                          value={0}
+                          value={3}
                           range={this.state.branchsList}
                           onChange={e => {
-                                this.setState({
-                                    branch: this.state.branchsList[e.detail.value]
-                                });
+                                this.changeBranch(e)
                             }}
                         >
                             <View className='label-item'>校区</View>

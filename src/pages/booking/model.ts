@@ -20,17 +20,17 @@ export default {
             try {
                 console.log("开始尝试获取roomList")
                 const result = yield call(bookingApi.getRoomList)
-                if (result.length > 0 ) {
-                    return result
+                if (result.data.length > 0 ) {
+                    return result.data
                 } else {
-                    yield put({ type: "setField", name: "isLoadingFailed", value: true})
+                    yield put({ type: "setField", name: "isLoadingFailed", value: true })
                 }
                 
             } catch(err){
                 console.log("err", err)
             }
         },
-        * loadEvents (action, { select, call, put}) {
+        * loadEvents (action, { select, call, put }) {
             // 此处由于同时需要提供query和path, 不走封装好的方法
             const { monthToLoad, roomCode } = action.payload
             const token = Taro.getStorageSync('token')
@@ -39,9 +39,9 @@ export default {
                 data: { monthToLoad },
                 header: { 'token': token }
             })
-            yield put({ type: "setField", name: "loadedEvents", value: result.data || []})
+            yield put({ type: "setField", name: "loadedEvents", value: result.data.data || [] })
         },
-        * clearEvents (action, { select, call, put}) {
+        * clearEvents (action, { select, call, put }) {
             yield put({ type: "setField", name: "loadedEvents", value: [] })
         },
         * createEvent (action) {
@@ -54,9 +54,12 @@ export default {
                 header: { 'token': token },
                 method: "POST"
             }).then(data => {
-                if (data.statusCode === 201) {
+                if (data.statusCode === 200 && data.data.code === 0) {
+                    console.log('chenggong1')
                     Tips.toast("成功")
-                    Taro.redirectTo({url: `/pages/booking/booking?statusCode=${data.statusCode}&roomCode=${roomCode}&selectedDate=${body.startDate}`})
+                    setTimeout(()=>{
+                        Taro.redirectTo({ url: `/pages/booking/booking?statusCode=${data.statusCode}&roomCode=${roomCode}&selectedDate=${body.startDate}` })
+                    }, 2000)
                 }
             })
         },
@@ -64,14 +67,14 @@ export default {
             const { body, roomCode, startDate } = action.payload
             const token = Taro.getStorageSync('token')
             yield Taro.request({
-                url: `${MAINHOST}/booking/${roomCode}?monthToLoad=${startDate.substr(0,7)}`,
+                url: `${MAINHOST}/booking/${roomCode}?monthToLoad=${startDate.substr(0, 7)}`,
                 data: { ...body },
                 header: { 'token': token },
                 method: "DELETE"
             }).then(data => {
-                if (data.statusCode === 201) {
+                if (data.statusCode === 200 && data.data.code === 0) {
                     Tips.toast("成功")
-                    Taro.redirectTo({url: `/pages/booking/booking?statusCode=${data.statusCode}&roomCode=${roomCode}&selectedDate=${startDate}`})
+                    Taro.redirectTo({ url: `/pages/booking/booking?statusCode=${data.statusCode}&roomCode=${roomCode}&selectedDate=${startDate}` })
                 }
             })
         }
@@ -80,8 +83,8 @@ export default {
     reducers: {
         setField(state, action) {
             console.log("此处action", action)
-            const {name, value} = action;
-            let newState = {...state}
+            const { name, value } = action;
+            let newState = { ...state }
             newState[name] = value
             return newState;
         },

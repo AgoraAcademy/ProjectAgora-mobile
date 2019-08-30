@@ -4,7 +4,7 @@ import moment from 'moment';
 import { connect } from '@tarojs/redux'
 import { AtSteps, AtAvatar, AtCalendar, AtListItem, AtActivityIndicator, AtTag } from 'taro-ui'
 // import Api from '../../utils/request'
-// import Tips from '../../utils/tips'
+import Tips from '../../utils/tips'
 import { BookingProps, BookingState, RoomEvent } from './booking.interface'
 import './booking.scss'
 import ComponentBaseNavigation from "../../components/ComponentHomeNavigation/componentHomeNavigation";
@@ -83,7 +83,7 @@ class Booking extends Component<BookingProps, BookingState> {
         this.getRoomList()
         try{
             const { statusCode, roomCode, selectedDate } =  Taro.getCurrentPages()[1].options
-            if (statusCode === "201") {
+            if (statusCode === "200") {
                 this.setState({
                     currentStep: 3,
                     selectedRoomCode: roomCode,
@@ -168,11 +168,20 @@ class Booking extends Component<BookingProps, BookingState> {
         }
         return processedData
     }
-
+    checkForm(){
+        if(!this.state.bookingPostBody.subject){
+            Tips.toast('请输入标题')
+            return false
+        }
+        return true
+    }
     render() {
         const roomListNames = this.getRoomListNames()
         const dataSource = this.getDataSource()
         const handleBookingPost = async (e) =>  {
+            if(!this.checkForm()){
+                return
+            }
             this.setState({confirmLoading: true})
             const { bookingPostBody, selectedDate } = this.state
             const dateMoment = moment(selectedDate, "YYYY-MM-DD")
@@ -197,6 +206,7 @@ class Booking extends Component<BookingProps, BookingState> {
             this.props.dispatch({type: "booking/createEvent", payload: {body, roomCode: this.state.selectedRoomCode}})
         }
         const handleBookingDelete = async (e) =>{
+            console.log('handleBookingDelete')
             this.setState({confirmLoading: true})
             const { changekey, startDate } = this.state.selectRoomEvent!
             let body = {
@@ -395,6 +405,7 @@ class Booking extends Component<BookingProps, BookingState> {
                             确认
                         </Button>
                     </Form>
+                   
                     <Form reportSubmit onSubmit={handleBookingDelete}>
                         <Button
                             style={{ display: (this.state.selectRoomEvent!.bookedByName === Taro.getStorageSync("learnerFullName") && this.state.selectRoomEvent!.type === "appointment") ? "block" : "none" }}
@@ -410,7 +421,7 @@ class Booking extends Component<BookingProps, BookingState> {
         const stepitems = [{ title: '选择区域' }, { title: '选择房间' }, { title: '选择日期' }, { title: '选择时间' }, { title: '预约信息' }]
         return (
             <View className='booking-wrap'>
-                <ComponentBaseNavigation type="normal-page"/>
+                <ComponentBaseNavigation type="child-page"/>
                 <View className="stepIndicator">
                     <AtSteps
                         items={stepitems}
