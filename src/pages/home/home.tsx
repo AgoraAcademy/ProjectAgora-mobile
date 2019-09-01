@@ -107,10 +107,11 @@ class home extends Component<homeProps, homeState> {
             })
         } catch (error) {
             console.log(error)
+            return Promise.reject()
         }
     }
-    componentDidShow() {
-        this._renderPushList()
+    async componentDidShow() {
+        await this._renderPushList()
         this._renderNoticeList()
     }
 

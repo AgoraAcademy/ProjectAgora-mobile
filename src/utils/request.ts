@@ -64,9 +64,22 @@ export class Request {
             url: `${opts.host || MAINHOST}${opts.url}`
         }
     }
-
+    static getCurrentPages(){
+        const pages = Taro.getCurrentPages()
+        const currentPage = pages[pages.length-1]
+        return currentPage 
+    }
     static getToken() {
         return Taro.getStorageSync('token')
+    }
+    static goAuthorize(){
+        const route=this.getCurrentPages().route
+        // console.log({
+        //     route
+        // })
+        if(route!=='pages/authorize/authorize'){
+            Taro.navigateTo({ url: '/pages/authorize/authorize' })
+        }
     }
 
     /**
@@ -78,7 +91,8 @@ export class Request {
         // token不存在或learnerFullName不存在
         if (!this.getToken()) {
             // await this.dealLogin()
-            Taro.navigateTo({ url: '/pages/authorize/authorize' })
+            this.goAuthorize()
+            return Promise.reject()
         }
 
         // token存在
@@ -88,8 +102,8 @@ export class Request {
         const res = await Taro.request(opts)
         const code = res.data.code
         if (code === -1001) {
-            Taro.navigateTo({ url: '/pages/authorize/authorize' })
-            return
+            this.goAuthorize()
+            return Promise.reject()
         }
 
         // 是否mock
@@ -129,7 +143,14 @@ export class Request {
         return this.loginReadyPromise
     }
     static async checkLogin(){
-        return new Promise((resolve)=>{
+        return new Promise(async (resolve)=>{
+            if( !Taro.getStorageSync('code')){
+                const { code } = await Taro.login()
+                Taro.setStorageSync('code', code)
+                console.log('刷新 taro login')
+                resolve()
+                return
+            }
             Taro.checkSession({
                 success() {
                     resolve()
@@ -151,7 +172,7 @@ export class Request {
                 data: { js_code: Taro.getStorageSync('code') }
             })
             const data = res.data.data
-            if (res.data.code === -1008) {
+            if (res.data.code === -1008||res.data.code === -1005) {
                 await Taro.setStorageSync('token', data.token)
                 Taro.navigateTo({
                     url: '/pages/identity/identity'
@@ -196,7 +217,7 @@ export class Request {
             console.log('check session fail', error)
             // 请求登录
             try {
-                Taro.navigateTo({ url: '/pages/authorize/authorize' })
+                this.goAuthorize()
                 this.isLogining = false
             } catch (err) {
                 console.log(err)
