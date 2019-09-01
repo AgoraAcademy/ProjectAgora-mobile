@@ -22,7 +22,8 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
             choooseList: [],
             selector: roleSelectList,
             selectorChecked: [],
-            show: false
+            show: false,
+            statusBarHeight: 0
         }
     }
     async componentDidMount() {
@@ -30,6 +31,13 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
         if (this.props.idList) {
             this.trans(this.props.idList)
         }
+        Taro.getSystemInfo().then(res => {
+            
+            // console.log({ res })
+            this.setState({
+                statusBarHeight: res.statusBarHeight
+            })
+        })
     }
 
     componentWillReceiveProps(next) {
@@ -149,7 +157,9 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
                         this.closePopup()
                     }}
                 >
-                    <View className='picker-container'>
+                    <View className='picker-container' style={
+                            { height: `calc(100vh - 88rpx - ${this.state.statusBarHeight}px)` }}
+                    >
                         <View className='tags-box'>
                             <View className='tags-container'>
                                 {this.state.choooseList.map(item => {
@@ -187,7 +197,9 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
                                 <View className='picker-button'>添加群组</View>
                             </Picker>
                         </View>
-                        <ScrollView className='scrollview' scrollY>
+                        <ScrollView className='scrollview' scrollY  style={
+                            { height: `calc(100vh - 88rpx - ${this.state.statusBarHeight}px - 80rpx)` }}
+                        >
                             {this.state.list.map(item => {
                                 return (
                                     <View
@@ -213,7 +225,9 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
                                 )
                             })}
                         </ScrollView>
-                        <View className='sub-button-container'>
+                      
+                    </View>
+                    <View className='sub-button-container' style={{ bottom: `-${this.state.statusBarHeight}px` }}>
                             <AtButton
                               onClick={() => this.sub()}
                               className='member-sub-button'
@@ -221,7 +235,6 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
                                 确认添加
                             </AtButton>
                         </View>
-                    </View>
                 </van-popup>
             </View>
         )

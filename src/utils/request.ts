@@ -15,7 +15,7 @@ declare type Methods =
     | 'TRACE'
     | 'CONNECT'
 declare type Headers = { [key: string]: string }
-declare type Datas = { method: Methods; [key: string]: any }
+declare type Datas = { method: Methods;[key: string]: any }
 interface Options {
     url: string
     host?: string
@@ -64,20 +64,20 @@ export class Request {
             url: `${opts.host || MAINHOST}${opts.url}`
         }
     }
-    static getCurrentPages(){
+    static getCurrentPages() {
         const pages = Taro.getCurrentPages()
-        const currentPage = pages[pages.length-1]
-        return currentPage 
+        const currentPage = pages[pages.length - 1]
+        return currentPage
     }
     static getToken() {
         return Taro.getStorageSync('token')
     }
-    static goAuthorize(){
-        const route=this.getCurrentPages().route
+    static goAuthorize() {
+        const route = this.getCurrentPages().route
         // console.log({
         //     route
         // })
-        if(route!=='pages/authorize/authorize'){
+        if (route !== 'pages/authorize/authorize') {
             Taro.navigateTo({ url: '/pages/authorize/authorize' })
         }
     }
@@ -142,9 +142,9 @@ export class Request {
         }
         return this.loginReadyPromise
     }
-    static async checkLogin(){
-        return new Promise(async (resolve)=>{
-            if( !Taro.getStorageSync('code')){
+    static async checkLogin() {
+        return new Promise(async (resolve) => {
+            if (!Taro.getStorageSync('code')) {
                 const { code } = await Taro.login()
                 Taro.setStorageSync('code', code)
                 console.log('刷新 taro login')
@@ -153,6 +153,7 @@ export class Request {
             }
             Taro.checkSession({
                 success() {
+                    console.log('已有,不需要刷新login')
                     resolve()
                 },
                 async fail() {
@@ -172,19 +173,36 @@ export class Request {
                 data: { js_code: Taro.getStorageSync('code') }
             })
             const data = res.data.data
-            if (res.data.code === -1008||res.data.code === -1005) {
+            if (res.data.code === -1008 ) {
+                console.log(res.data,'999')
                 await Taro.setStorageSync('token', data.token)
                 Taro.navigateTo({
                     url: '/pages/identity/identity'
                 })
-                return
+                return Promise.reject()
             }
+            if(res.data.code === -1005){
+                // await this.checkLogin()
+                // const res = await Taro.request({
+                //     url: `${MAINHOST}${requestConfig.loginUrl}`,
+                //     data: { js_code: Taro.getStorageSync('code') }
+                // })
+                // const _data = res.data.data 
+                
+                // await Taro.setStorageSync('token', _data.token)
+                Taro.navigateTo({
+                    url: '/pages/identity/identity'
+                })
+                return Promise.reject()
+            }
+            console.log('o.ooooo')
             await Taro.setStorageSync('token', data.token)
             await Taro.setStorageSync('learnerFullName', data.learnerFullName)
             await Taro.setStorageSync('unionid', data.unionid)
             await Taro.setStorageSync('isAdmin', data.isAdmin)
             await Taro.setStorageSync('learnerId', data.learnerId)
             await Taro.setStorageSync('branch', data.branch)
+           
             return true
         } catch (err) {
             console.log(err)

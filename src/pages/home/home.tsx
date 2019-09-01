@@ -146,7 +146,7 @@ class home extends Component<homeProps, homeState> {
         const sendData = {
             rsvp: status
         }
-        const id = item.id
+        const id = item.entityId
         try {
             await this.$api({
                 url: `${MAINHOST}/event/${id}/patch`,

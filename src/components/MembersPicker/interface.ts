@@ -10,6 +10,7 @@ export interface stateInterface {
     selector: Array<any>;
     selectorChecked: string[] | number[] | Object[];
     show: boolean;
+    statusBarHeight: number;
    
 }
 

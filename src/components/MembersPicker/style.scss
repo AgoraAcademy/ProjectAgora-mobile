@@ -3,6 +3,21 @@
 .picker-container {
     position: relative;
     background: white;
+    box-sizing: border-box;
+    padding-top:1px;
+}
+.members-picker-wrap{
+    overflow: hidden;
+    
+   
+}
+.picker-container{
+    box-sizing: border-box;
+    // outline: 1px solid red;
+    // position: fixed;
+    width:100vw;
+    transform: translateX(-1px);
+    // padding-bottom:100rpx;
 }
 .result-input {
     height: 100rpx;
@@ -49,9 +64,9 @@
     }
 }
 .scrollview {
-    height: calc(100vh - 290rpx);
     padding-bottom:100rpx;
     box-sizing: border-box;
+
 }
 .li-item {
     display: flex;
@@ -80,7 +95,7 @@
 }
 .sub-button-container {
     position: absolute;
-    bottom: -20rpx;
+    // bottom: -20rpx;
     left:50%;
     transform: translateX(-50%);
     // outline: 1px solid red;

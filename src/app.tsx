@@ -69,7 +69,7 @@ class App extends Component {
      */
     config: Config = {
         pages: [
-            
+           
             'pages/home/home',
             'pages/noticeCard/noticeCard',
             'pages/index/index',

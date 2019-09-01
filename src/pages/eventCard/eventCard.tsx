@@ -204,7 +204,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
             return false
         }
         if (!this.state.description) {
-            Tips.toast('请输入描述')
+            Tips.toast('请输入活动简介')
             return false
         }
         if (!this.state.startDateTime) {
