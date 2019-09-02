@@ -31,7 +31,8 @@ class EventCard extends Component<propsInterface, stateInterface> {
             membersChoose: [],
             initiatorId: null,
             open: false,
-            navigateType: 'child-page'
+            navigateType: 'child-page',
+            location: ""
         }
     }
 
@@ -63,7 +64,8 @@ class EventCard extends Component<propsInterface, stateInterface> {
             title: data.eventInfo.title,
             thumbnail: data.thumbnail,
             membersChoose: data.invitee[0].content.map(item => ({ id: item })),
-            initiatorId: data.initiatorId
+            initiatorId: data.initiatorId,
+            location: data.eventInfo.location[0] ? data.eventInfo.location[0].name : ''
         })
     }
     hadJoin(rsvp) {
@@ -123,7 +125,12 @@ class EventCard extends Component<propsInterface, stateInterface> {
                 description: this.state.description,
                 endDateTime: this.state.endDateTime,
                 fee: this.state.fee,
-                location: [],
+                location: [{
+                    name: this.state.location, //位置名称
+                    address: '', //详细地址
+                    latitude: '', //纬度
+                    longtitude: '', //经度
+                }],
                 expireDateTime:
                     this.state.expireDateTime || this.state.endDateTime,
                 startDateTime: this.state.startDateTime,
@@ -143,7 +150,13 @@ class EventCard extends Component<propsInterface, stateInterface> {
                 startDateTime: this.state.startDateTime,
                 thumbnail: this.state.thumbnail,
                 title: this.state.title,
-                description: this.state.description
+                description: this.state.description,
+                location: {
+                    name: this.state.location, //位置名称
+                    address: '', //详细地址
+                    latitude: '', //纬度
+                    longtitude: '', //经度
+                }
             }
         }
         console.log({ sendData })
@@ -295,6 +308,19 @@ class EventCard extends Component<propsInterface, stateInterface> {
                             /> */}
                         </View>
                     </View>
+                    <View className='my-form-item'>
+                            <View className='label-item'>活动地点</View>
+                            <View className='value-item'>
+                                <Input
+                                  type='text'
+                                  placeholder='活动地点'
+                                  value={this.state.location}
+                                  onInput={ev => {
+                                        this.setState({ location: ev.detail.value })
+                                    }}
+                                />
+                            </View>
+                        </View>
                     <View className='my-form-item'>
                         <View className='label-item'>开始时间</View>
                         <View className='value-item'>

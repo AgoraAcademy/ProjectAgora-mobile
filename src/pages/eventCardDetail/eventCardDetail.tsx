@@ -67,7 +67,7 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
         const acceptList = this.state.pageInfo.rsvp.accept
         return acceptList
             .map(item => {
-                return item.familyName + item.givenName
+                return item.fullname
             })
             .filter(n => n)
             .join(',')
@@ -184,7 +184,7 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
                     <View className='my-form-item'>
                         <View className='label-item'>活动地点</View>
                         <View className='value-item'>
-                            {this.state.pageInfo.eventInfo.location}
+                            {this.state.pageInfo.eventInfo.location[0] ? this.state.pageInfo.eventInfo.location[0].name : ''}
                         </View>
                     </View>
                     <View className='my-form-item'>

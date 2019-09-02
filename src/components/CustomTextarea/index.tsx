@@ -19,7 +19,7 @@ class ComponentHomeNavigation extends PureComponent<
     componentDidMount() {}
     componentWillReceiveProps(next) {
         if (next.value && this.state.firstStatus) {
-            console.log(next.value, this.state.firstStatus, 'componentWillReceiveProps')
+            // console.log(next.value, this.state.firstStatus, 'componentWillReceiveProps')
             this.setState({
                 content: next.value,
                 firstStatus: false

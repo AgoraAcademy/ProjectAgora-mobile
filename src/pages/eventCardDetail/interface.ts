@@ -5,8 +5,8 @@
  * @interface stateInterface
  */
 export interface stateInterface {
-    pageInfo: any
-    joinStatus: boolean
+    pageInfo: any;
+    joinStatus: boolean;
 }
 
 /**

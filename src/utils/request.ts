@@ -182,6 +182,8 @@ export class Request {
                 return Promise.reject()
             }
             if(res.data.code === -1005){
+                Taro.clearStorageSync()
+                // await this.dealLogin()
                 // await this.checkLogin()
                 // const res = await Taro.request({
                 //     url: `${MAINHOST}${requestConfig.loginUrl}`,
@@ -190,9 +192,9 @@ export class Request {
                 // const _data = res.data.data 
                 
                 // await Taro.setStorageSync('token', _data.token)
-                Taro.navigateTo({
-                    url: '/pages/identity/identity'
-                })
+                // Taro.navigateTo({
+                //     url: '/pages/identity/identity'
+                // })
                 return Promise.reject()
             }
             console.log('o.ooooo')

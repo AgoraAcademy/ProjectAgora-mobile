@@ -78,9 +78,8 @@ class Booking extends Component<BookingProps, BookingState> {
         }
         return selectedListData[0].rooms
     }
-
-    componentDidMount() {
-        this.getRoomList()
+    async getData(){
+        await this.getRoomList()
         try{
             const { statusCode, roomCode, selectedDate } =  Taro.getCurrentPages()[1].options
             if (statusCode === "200") {
@@ -100,6 +99,9 @@ class Booking extends Component<BookingProps, BookingState> {
         } catch(error) {
             console.log("query error", error)
         }
+    }
+    componentDidMount() {
+        this.getData()
     }
 
     processRoomListData = (filteredData) => {
@@ -217,12 +219,17 @@ class Booking extends Component<BookingProps, BookingState> {
         }
         let content: any = null
         if (this.state.currentStep === 0) {
-            content = roomListNames.map((item) => {
-                return <Button key={item} onClick={() => this.setState({ selectedListname: item, currentStep: 1 })}
-                >
-                    {item}
-                </Button>
-            })
+            if(roomListNames.length===0){
+                content= <Button onClick={()=>this.getData()}>网络异常,点击重试</Button>
+            }else{
+                content = roomListNames.map((item) => {
+                    return <Button key={item} onClick={() => this.setState({ selectedListname: item, currentStep: 1 })}
+                    >
+                        {item}
+                    </Button>
+                })
+            }
+            
         }
         if (this.state.currentStep === 1) {
             content = dataSource!.map((item) => {

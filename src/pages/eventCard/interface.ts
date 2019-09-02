@@ -6,6 +6,12 @@
  */
 import { IMG_TYPE } from '../../globalData/globalInterface'
 
+export interface ILocation {
+    name: string, //位置名称
+    address: string, //详细地址
+    latitude: string, //纬度
+    longtitude: string, //经度
+}
 export interface stateInterface {
     description: string;
     endDateTime: string;
@@ -26,6 +32,7 @@ export interface stateInterface {
     initiatorId: number | null;
     open: boolean;
     navigateType: 'normal-page' | 'child-page' | 'picker-page';
+    location: string;
 }
 
 /**
@@ -47,3 +54,5 @@ export interface Rule {
     type: 'list' | 'filters';
     content: number[] | Filter[]
 }
+
+
