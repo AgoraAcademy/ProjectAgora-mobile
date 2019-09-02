@@ -58,9 +58,9 @@ class ImagePicker extends Component<PropsInterface, StateInterface> {
     }
 
     render() {
-        console.log({
-            thum: this.state.thumbnail
-        })
+        // console.log({
+        //     thum: this.state.thumbnail
+        // })
         return (
             <View>
                 {this.state.thumbnail.map((item, index) => {

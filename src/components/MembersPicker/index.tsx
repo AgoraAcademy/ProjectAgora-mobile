@@ -1,18 +1,14 @@
 import Taro, { PureComponent, Config } from '@tarojs/taro'
 import { View, Picker, ScrollView, Text } from '@tarojs/components'
+import classNames from 'classnames'
 import { AtButton } from 'taro-ui'
 import { produce } from 'immer'
-// import { connect } from "@tarojs/redux";
-// import Api from '../../utils/request'
-// import Tips from '../../utils/tips'
 import { propsInterface, stateInterface } from './interface'
 import './style.scss'
 import { MAINHOST } from '../../config'
-// import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/componentHomeNavigation'
 import Avatar from '../../components/Avatar'
 import { colorList, roleSelectList } from '../../globalData'
 
-// import { } from '../../components'
 
 class NoticeCard extends PureComponent<propsInterface, stateInterface> {
     constructor(props: propsInterface) {
@@ -23,7 +19,8 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
             selector: roleSelectList,
             selectorChecked: [],
             show: false,
-            statusBarHeight: 0
+            statusBarHeight: 0,
+            first: true
         }
     }
     async componentDidMount() {
@@ -32,8 +29,7 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
             this.trans(this.props.idList)
         }
         Taro.getSystemInfo().then(res => {
-            
-            // console.log({ res })
+            console.log({ res: res.statusBarHeight })
             this.setState({
                 statusBarHeight: res.statusBarHeight
             })
@@ -41,12 +37,14 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
     }
 
     componentWillReceiveProps(next) {
-        if (next.idList) {
-            this.trans(next.idList)
+        if (this.state.first) {
+            if (next.idList) {
+                this.trans(next.idList)
+                this.setState({
+                    first: false
+                })
+            }
         }
-        this.setState({
-            show: next.show
-        })
     }
     config: Config = {
         usingComponents: {
@@ -54,7 +52,7 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
         }
     }
     trans(idList) {
-        console.log('id trans', idList)
+        // console.log('id trans', idList)
         let arr: Array<any> = []
         idList.forEach(item => {
             this.state.list.forEach(cell => {
@@ -111,7 +109,6 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
         const res = await this.$api({
             url: `${MAINHOST}/learner`
         })
-        console.log(res.data, '000')
         this.setState({
             list: res.data
         })
@@ -126,7 +123,7 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
             }
         )
     }
-    closePopup() {
+    async closePopup() {
         this.setState({
             show: false
         })
@@ -144,21 +141,25 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
 
     render() {
         return (
-            <View className='members-picker-wrap'>
-                <View onClick={() => this.openPopup()} className='chooseText'>
-                    {this.state.choooseList
-                        .map(item => item.familyName + item.givenName)
-                        .join(',') || '请选择成员'}
+            <View className='members-container'>
+                <View className='members-picker-wrap'>
+                    <View
+                      onClick={() => this.openPopup()}
+                      className='chooseText'
+                    >
+                        {this.state.choooseList
+                            .map(item => item.familyName + item.givenName)
+                            .join(',') || '请选择成员'}
+                    </View>
                 </View>
-                <van-popup
-                  position='bottom'
-                  show={this.state.show}
-                  onclick-overlay={() => {
-                        this.closePopup()
-                    }}
-                >
-                    <View className='picker-container' style={
-                            { height: `calc(100vh - 88rpx - ${this.state.statusBarHeight}px)` }}
+                    <View
+                      className='picker-modal'
+                      style={{
+                            height: `calc(100vh - ${this.state.statusBarHeight}px)`,
+                            paddingTop: `88rpx`,
+                            marginTop: `${this.state.statusBarHeight}px`,
+                            display: this.state.show ? 'block' : 'none'
+                        }}
                     >
                         <View className='tags-box'>
                             <View className='tags-container'>
@@ -197,8 +198,12 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
                                 <View className='picker-button'>添加群组</View>
                             </Picker>
                         </View>
-                        <ScrollView className='scrollview' scrollY  style={
-                            { height: `calc(100vh - 88rpx - ${this.state.statusBarHeight}px - 80rpx)` }}
+                        <ScrollView
+                          className='scrollview'
+                          scrollY
+                          style={{
+                                height: `calc(100vh - 88rpx - ${this.state.statusBarHeight}px - 80rpx - 100rpx)`
+                            }}
                         >
                             {this.state.list.map(item => {
                                 return (
@@ -218,16 +223,14 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
                                                     item.givenName}
                                             </View>
                                             {/* <View className='email'>
-                                                {item.email}
-                                            </View> */}
+                                           {item.email}
+                                       </View> */}
                                         </View>
                                     </View>
                                 )
                             })}
                         </ScrollView>
-                      
-                    </View>
-                    <View className='sub-button-container' style={{ bottom: `-${this.state.statusBarHeight}px` }}>
+                        <View className='sub-button-container'>
                             <AtButton
                               onClick={() => this.sub()}
                               className='member-sub-button'
@@ -235,8 +238,8 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
                                 确认添加
                             </AtButton>
                         </View>
-                </van-popup>
-            </View>
+                    </View>
+                </View>
         )
     }
 }

@@ -1,8 +1,10 @@
 @import '../../variable.scss';
 .event-card-wrap {
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
     overflow: hidden;
+    box-sizing: border-box;
+
 }
 .sub-button {
     background: $actvity;

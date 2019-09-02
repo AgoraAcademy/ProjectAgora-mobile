@@ -11,7 +11,7 @@ export interface stateInterface {
     selectorChecked: string[] | number[] | Object[];
     show: boolean;
     statusBarHeight: number;
-   
+    first: boolean;
 }
 
 /**

@@ -22,7 +22,7 @@ class home extends Component<homeProps, homeState> {
             statusBarHeight: 0,
             isIPX: false,
             refreshing: false, // 将refreshing设为true，可支持自动触发下拉刷新的场景。同样会触发refresh事件
-            refreshed: false, // 将本属性设置为true，收起下拉刷新，可多次设置为true（即便原来已经是true了）
+            refreshed: false // 将本属性设置为true，收起下拉刷新，可多次设置为true（即便原来已经是true了）
         }
     }
 
@@ -42,11 +42,11 @@ class home extends Component<homeProps, homeState> {
             })
         })
         console.log(this.$router.params)
-
     }
     config: Config = {
         usingComponents: {
-            "pulldown-refresh": '../../components/pullDownRefresh/pullDownRefresh'
+            'pulldown-refresh':
+                '../../components/pullDownRefresh/pullDownRefresh'
         },
         navigationBarTitleText: '首页',
         disableScroll: true
@@ -60,14 +60,17 @@ class home extends Component<homeProps, homeState> {
     }
     finishRefresh() {
         // console.log('refresh')
-        this.setState({
-            refreshed: true
-        }, () => {
-            this.setState({
-                refreshed: false,
-                refreshing: false
-            })
-        })
+        this.setState(
+            {
+                refreshed: true
+            },
+            () => {
+                this.setState({
+                    refreshed: false,
+                    refreshing: false
+                })
+            }
+        )
     }
     async _renderNoticeList() {
         const res = await this.$api({
@@ -80,11 +83,14 @@ class home extends Component<homeProps, homeState> {
         noticeList.forEach(item => {
             item['status'] = false
         })
-        this.setState({
-            noticeList
-        }, () => {
-            this.finishRefresh()
-        })
+        this.setState(
+            {
+                noticeList
+            },
+            () => {
+                this.finishRefresh()
+            }
+        )
     }
     async _renderPushList() {
         try {
@@ -100,11 +106,14 @@ class home extends Component<homeProps, homeState> {
                 item['status'] = false
             })
 
-            this.setState({
-                pushList
-            }, () => {
-                this.finishRefresh()
-            })
+            this.setState(
+                {
+                    pushList
+                },
+                () => {
+                    this.finishRefresh()
+                }
+            )
         } catch (error) {
             console.log(error)
             return Promise.reject()
@@ -176,7 +185,7 @@ class home extends Component<homeProps, homeState> {
                 method: 'DELETE'
             })
             this._renderPushList()
-        } catch (err) { }
+        } catch (err) {}
     }
     toggle(item, event) {
         // console.log({ event ,item});
@@ -212,11 +221,20 @@ class home extends Component<homeProps, homeState> {
     }
     getBg(type) {
         return {
-            活动: 'green',
+            活动日程: 'green',
             社区: 'red',
             项目: 'blue',
             预约: 'orange',
             计划: 'yellow'
+        }[type]
+    }
+    getListType(type) {
+        return {
+            活动日程: '活动',
+            社区: '活动日程',
+            项目: '项目',
+            预约: '预约',
+            计划: '计划'
         }[type]
     }
     toggleBottomTab(type) {
@@ -233,7 +251,6 @@ class home extends Component<homeProps, homeState> {
                     break
             }
         })
-
     }
     render() {
         const data =
@@ -243,7 +260,9 @@ class home extends Component<homeProps, homeState> {
         const listComponent =
             data.length > 0 ? (
                 data.map(item => {
-                    const time = item.content.timeInfo ? item.content.timeInfo.split('-') : ['0', '0']
+                    const time = item.content.timeInfo
+                        ? item.content.timeInfo.split('-')
+                        : ['0', '0']
                     const startTime = formatDate(time[0]).simpleTimes
                     const endTime = formatDate(time[1]).simpleTimes
                     return (
@@ -283,69 +302,73 @@ class home extends Component<homeProps, homeState> {
                                     </View>
                                 </View>
                                 {item.senderId ===
-                                    +Taro.getStorageSync('learnerId') ? (
-                                        <View
-                                          onClick={this.goEdit.bind(
-                                                this,
-                                                this.state.chooseType,
-                                                item
-                                            )}
-                                        >
-                                            <AtButton className='sub-button'>
-                                                编辑
-                                        </AtButton>
-                                        </View>
-                                    ) : this.hadJoin(item.rsvp) ? (
-                                        <View
-                                          onClick={this.toggle.bind(this, item)}
-                                        >
-                                            <AtButton className='sub-button'>
-                                                已报名
-                                        </AtButton>
-                                        </View>
-                                    ) : (
-                                            <View onClick={this.join.bind(this, item)}>
-                                                <AtButton className='sub-button'>
-                                                    报名
-                                        </AtButton>
-                                            </View>
+                                +Taro.getStorageSync('learnerId') ? (
+                                    <View
+                                      onClick={this.goEdit.bind(
+                                            this,
+                                            this.state.chooseType,
+                                            item
                                         )}
+                                    >
+                                        <AtButton className='sub-button'>
+                                            编辑
+                                        </AtButton>
+                                    </View>
+                                ) : this.hadJoin(item.rsvp) ? (
+                                    <View
+                                      onClick={this.toggle.bind(this, item)}
+                                    >
+                                        <AtButton className='sub-button'>
+                                            已报名
+                                        </AtButton>
+                                    </View>
+                                ) : (
+                                    <View onClick={this.join.bind(this, item)}>
+                                        <AtButton className='sub-button'>
+                                            报名
+                                        </AtButton>
+                                    </View>
+                                )}
 
                                 <View className='at-icon at-icon-chevron-right icon-right' />
                             </View>
                             {item.status &&
-                                item.senderId !==
+                            item.senderId !==
                                 +Taro.getStorageSync('learnerId') ? (
-                                    <View className='action-panel'>
-                                        <View
-                                          className='action-item'
-                                          onClick={this.cancel.bind(this, item)}
-                                        >
-                                            <View className='at-icon at-icon-close icon-close' />
-                                            <Text className='text'>取消</Text>
-                                        </View>
-                                        <View
-                                          className='action-item'
-                                          onClick={this.join.bind(this, item)}
-                                        >
-                                            <View className='at-icon at-icon-help icon-help' />
-                                            <Text className='text'>可能参加</Text>
-                                        </View>
+                                <View className='action-panel'>
+                                    <View
+                                      className='action-item'
+                                      onClick={this.cancel.bind(this, item)}
+                                    >
+                                        <View className='at-icon at-icon-close icon-close' />
+                                        <Text className='text'>取消</Text>
                                     </View>
-                                ) : null}
+                                    <View
+                                      className='action-item'
+                                      onClick={this.join.bind(this, item)}
+                                    >
+                                        <View className='at-icon at-icon-help icon-help' />
+                                        <Text className='text'>可能参加</Text>
+                                    </View>
+                                </View>
+                            ) : null}
                         </View>
                     )
                 })
             ) : (
-                    <View className='no-data'>暂无数据</View>
-                )
+                <View className='no-data'>暂无数据</View>
+            )
 
         const noticeListComponent =
             data.length > 0 ? (
                 data.map(item => {
                     // const time = item.content.timeInfo.split('-')
-                    const startTime = formatDate(new Date(item.content.startDateTime)).simpleTimes
-                    const endTime = formatDate(new Date(item.content.endDateTime)).simpleTimes
+                    const startTime = formatDate(
+                        new Date(item.content.startDateTime)
+                    ).simpleTimes
+                    const endTime = formatDate(
+                        new Date(item.content.endDateTime)
+                    ).simpleTimes
                     return (
                         <View
                           key={item.id}
@@ -360,10 +383,10 @@ class home extends Component<homeProps, homeState> {
                                 <View
                                   className={classnames(
                                         'tag',
-                                        this.getBg(item.content.tagInfo)
+                                        this.getBg(item.notificationType)
                                     )}
                                 >
-                                    {item.content.tagInfo}
+                                    {this.getListType(item.notificationType)}
                                 </View>
                                 <View className='left-panel'>
                                     <View className='avatar'>
@@ -372,9 +395,7 @@ class home extends Component<homeProps, homeState> {
                                     {/* <ImageView img-class="avatar" pathId=""></ImageView> */}
                                 </View>
                                 <View className='infoPanel'>
-                                    <View className='title'>
-                                        {item.title}
-                                    </View>
+                                    <View className='title'>{item.title}</View>
                                     <View className='date'>
                                         {startTime + '-' + endTime}
                                     </View>
@@ -382,17 +403,32 @@ class home extends Component<homeProps, homeState> {
                                         {item.description}
                                     </View>
                                 </View>
-                                <View
-                                  onClick={this.goEdit.bind(
-                                        this,
-                                        this.state.chooseType,
-                                        item
-                                    )}
-                                >
-                                    <AtButton className='sub-button'>
-                                        改期
+                                {item.content.initiatorId ===
+                                +Taro.getStorageSync('learnerId') ? (
+                                    <View
+                                      onClick={this.goEdit.bind(
+                                            this,
+                                            this.state.chooseType,
+                                            item
+                                        )}
+                                    >
+                                        <AtButton className='sub-button'>
+                                            改期
                                         </AtButton>
-                                </View>
+                                    </View>
+                                ) : (
+                                    <View
+                                      onClick={this.goDetail.bind(
+                                            this,
+                                            this.state.chooseType,
+                                            item
+                                        )}
+                                    >
+                                        <AtButton className='sub-button'>
+                                            修改
+                                        </AtButton>
+                                    </View>
+                                )}
 
                                 <View className='at-icon at-icon-chevron-right icon-right' />
                             </View>
@@ -400,8 +436,8 @@ class home extends Component<homeProps, homeState> {
                     )
                 })
             ) : (
-                    <View className='no-data'>暂无数据</View>
-                )
+                <View className='no-data'>暂无数据</View>
+            )
         const tabList = [
             {
                 type: 'push',
@@ -418,39 +454,47 @@ class home extends Component<homeProps, homeState> {
         return (
             <View className='home-wrap'>
                 <ComponentBaseNavigation type='normal-page' />
-                <pulldown-refresh refreshing={this.state.refreshing} refreshed={this.state.refreshed} onRefresh={() => this._renderPushList()}>
+                <pulldown-refresh
+                  refreshing={this.state.refreshing}
+                  refreshed={this.state.refreshed}
+                  onRefresh={() => this._renderPushList()}
+                >
                     <ScrollView
                       className='scrollview'
                       scrollY
                       style={
                             this.state.chooseType === 'push'
                                 ? 'height:calc(100vh - ' +
-                                '134rpx' +
-                                ' - ' +
-                                this.state.statusBarHeight +
-                                'px' +
-                                //   (this.state.isIPX ? " - 44rpx " : '') +
-                                ' - 88rpx' +
-                                ')'
+                                  '134rpx' +
+                                  ' - ' +
+                                  this.state.statusBarHeight +
+                                  'px' +
+                                  //   (this.state.isIPX ? " - 44rpx " : '') +
+                                  ' - 88rpx' +
+                                  ')'
                                 : 'display:none;'
                         }
                     >
                         <View className='ul-ele'>{listComponent}</View>
                     </ScrollView>
                 </pulldown-refresh>
-                <pulldown-refresh refreshing={this.state.refreshing} refreshed={this.state.refreshed} onRefresh={() => this._renderNoticeList()}>
+                <pulldown-refresh
+                  refreshing={this.state.refreshing}
+                  refreshed={this.state.refreshed}
+                  onRefresh={() => this._renderNoticeList()}
+                >
                     <ScrollView
                       className='scrollview'
                       scrollY
                       style={
                             this.state.chooseType === 'notice'
                                 ? 'height:calc(100vh - ' +
-                                '134rpx' +
-                                ' - ' +
-                                this.state.statusBarHeight +
-                                'px' +
-                                ' - 88rpx' +
-                                ')'
+                                  '134rpx' +
+                                  ' - ' +
+                                  this.state.statusBarHeight +
+                                  'px' +
+                                  ' - 88rpx' +
+                                  ')'
                                 : 'display:none;'
                         }
                     >

@@ -1,24 +1,26 @@
 @import '../../variable.scss';
-.members-picker-wrap,
-.picker-container {
+.members-picker-wrap {
     position: relative;
     background: white;
     box-sizing: border-box;
-    padding-top:1px;
+    // padding-top:1px;
 }
-.members-picker-wrap{
-    overflow: hidden;
-    
-   
-}
-.picker-container{
+
+.picker-modal{
+    position: fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    z-index:99999;
+    background: white;
+    // outline: 1px solid blue;
     box-sizing: border-box;
-    // outline: 1px solid red;
-    // position: fixed;
-    width:100vw;
-    transform: translateX(-1px);
-    // padding-bottom:100rpx;
+   
+
+    // background: red;
 }
+
 .result-input {
     height: 100rpx;
     padding: 0 20rpx;
@@ -64,8 +66,9 @@
     }
 }
 .scrollview {
-    padding-bottom:100rpx;
+    // padding-bottom:100rpx;
     box-sizing: border-box;
+    width:100%;
 
 }
 .li-item {
@@ -74,6 +77,8 @@
     padding: 20rpx 40rpx;
     // border:1px solid red;
     align-items: center;
+    width:100%;
+
     // .avatar{
 
     // }
@@ -83,6 +88,8 @@
         width: 100%;
         height: 100%;
         padding: 20rpx 0;
+        // border:1px solid green;
+        display: block;
 
         .name {
             font-size: 34rpx;
@@ -95,9 +102,12 @@
 }
 .sub-button-container {
     position: absolute;
-    // bottom: -20rpx;
+    // top:0;
+    // top:0;
+    bottom: 20rpx;
     left:50%;
     transform: translateX(-50%);
+    height:70rpx;
     // outline: 1px solid red;
     
 }
