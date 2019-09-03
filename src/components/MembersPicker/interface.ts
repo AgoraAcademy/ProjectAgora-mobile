@@ -8,7 +8,7 @@ export interface stateInterface {
     list: Array<any>;
     choooseList: Array<any>;
     selector: Array<any>;
-    selectorChecked: string[] | number[] | Object[];
+    selectorChecked: number[];
     show: boolean;
     statusBarHeight: number;
     first: boolean;
@@ -24,4 +24,5 @@ export interface propsInterface {
     onChange: Function;
     idList: Array<any>;
     onShowChange: Function;
+    onGroupChange: Function;
 }

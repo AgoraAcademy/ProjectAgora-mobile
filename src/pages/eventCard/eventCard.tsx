@@ -11,6 +11,7 @@ import DateTimePicker from '../../components/DateTimePicker'
 import MembersPicker from '../../components/MembersPicker'
 import { formatDateFromStr } from '../../utils/common'
 import CustomTextarea from '../../components/CustomTextarea'
+import { roleSelectList } from '../../globalData'
 
 const numReg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/
 
@@ -32,7 +33,8 @@ class EventCard extends Component<propsInterface, stateInterface> {
             initiatorId: null,
             open: false,
             navigateType: 'child-page',
-            location: ""
+            location: '',
+            groupChoose: []
         }
     }
 
@@ -65,7 +67,9 @@ class EventCard extends Component<propsInterface, stateInterface> {
             thumbnail: data.thumbnail,
             membersChoose: data.invitee[0].content.map(item => ({ id: item })),
             initiatorId: data.initiatorId,
-            location: data.eventInfo.location[0] ? data.eventInfo.location[0].name : ''
+            location: data.eventInfo.location[0]
+                ? data.eventInfo.location[0].name
+                : ''
         })
     }
     hadJoin(rsvp) {
@@ -77,6 +81,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
         })
     }
     async submit() {
+       
         if (!this.checkForm()) {
             return
         }
@@ -84,24 +89,44 @@ class EventCard extends Component<propsInterface, stateInterface> {
         this.setState({
             loading: true
         })
-        let invitee = [
-            this.state.membersChoose.length > 0
-                ? {
-                      content: this.state.membersChoose.map(item => item.id),
-                      // .join(','),
-                      type: 'list'
-                  }
-                : {
-                      content: [
-                          {
-                              scope: '校区',
-                              value: Taro.getStorageSync('branch')
-                          }
-                      ],
-                      // .join(','),
-                      type: 'filters'
-                  }
-        ].filter(item => item)
+        let invitee: Array<any> = []
+        if (this.state.membersChoose.length > 0) {
+            invitee.push({
+                content: this.state.membersChoose.map(item => item.id),
+                // .join(','),
+                type: 'list'
+            })
+        }
+        if (this.state.groupChoose.length > 0) {
+            invitee.push({
+                type: 'filters',
+                content: [
+                    {
+                        scope: '校区',
+                        value: roleSelectList[0].slice(1)[this.state.groupChoose[0]]
+                    }
+                ]
+            })
+            invitee.push({
+                type: 'filters',
+                content: [
+                    {
+                        scope: '角色',
+                        value: roleSelectList[1][this.state.groupChoose[1]]
+                    }
+                ]
+            })
+        }else{
+            invitee.push({
+                type: 'filters',
+                content: [
+                    {
+                        scope: '校区',
+                        value: Taro.getStorageSync('branch')
+                    }
+                ]
+            })
+        }
 
         let sendData: any = {
             content: {
@@ -125,12 +150,14 @@ class EventCard extends Component<propsInterface, stateInterface> {
                 description: this.state.description,
                 endDateTime: this.state.endDateTime,
                 fee: this.state.fee,
-                location: [{
-                    name: this.state.location, //位置名称
-                    address: '', //详细地址
-                    latitude: '', //纬度
-                    longtitude: '', //经度
-                }],
+                location: [
+                    {
+                        name: this.state.location, //位置名称
+                        address: '', //详细地址
+                        latitude: '', //纬度
+                        longtitude: '' //经度
+                    }
+                ],
                 expireDateTime:
                     this.state.expireDateTime || this.state.endDateTime,
                 startDateTime: this.state.startDateTime,
@@ -155,12 +182,11 @@ class EventCard extends Component<propsInterface, stateInterface> {
                     name: this.state.location, //位置名称
                     address: '', //详细地址
                     latitude: '', //纬度
-                    longtitude: '', //经度
+                    longtitude: '' //经度
                 }
             }
         }
         console.log({ sendData })
-
         try {
             const url =
                 this.$router.params.type === 'edit'
@@ -250,7 +276,7 @@ class EventCard extends Component<propsInterface, stateInterface> {
     dateChange(val) {
         console.log(val)
     }
-    
+
     async del() {
         const { id } = this.$router.params
         try {
@@ -309,18 +335,18 @@ class EventCard extends Component<propsInterface, stateInterface> {
                         </View>
                     </View>
                     <View className='my-form-item'>
-                            <View className='label-item'>活动地点</View>
-                            <View className='value-item'>
-                                <Input
-                                  type='text'
-                                  placeholder='活动地点'
-                                  value={this.state.location}
-                                  onInput={ev => {
-                                        this.setState({ location: ev.detail.value })
-                                    }}
-                                />
-                            </View>
+                        <View className='label-item'>活动地点</View>
+                        <View className='value-item'>
+                            <Input
+                              type='text'
+                              placeholder='活动地点'
+                              value={this.state.location}
+                              onInput={ev => {
+                                    this.setState({ location: ev.detail.value })
+                                }}
+                            />
                         </View>
+                    </View>
                     <View className='my-form-item'>
                         <View className='label-item'>开始时间</View>
                         <View className='value-item'>
@@ -329,7 +355,6 @@ class EventCard extends Component<propsInterface, stateInterface> {
                                     this.setState({ startDateTime: val })
                                 }
                               initTime={this.state.startDateTime}
-                              
                               placeholder='请选择活动开始时间'
                             />
                         </View>
@@ -341,7 +366,9 @@ class EventCard extends Component<propsInterface, stateInterface> {
                               onChange={val =>
                                     this.setState({ endDateTime: val })
                                 }
-                              minDate={Date.parse(this.state.startDateTime) + 60000}
+                              minDate={
+                                    Date.parse(this.state.startDateTime) + 60000
+                                }
                               initTime={this.state.endDateTime}
                               placeholder='请选择活动结束时间'
                             />
@@ -391,9 +418,16 @@ class EventCard extends Component<propsInterface, stateInterface> {
                                   onChange={val =>
                                         this.setState({ membersChoose: val })
                                     }
-                                  onShowChange={(val)=>this.setState({
-                                        navigateType: val ? 'picker-page' : 'child-page'
-                                    })}
+                                  onGroupChange={val =>
+                                        this.setState({ groupChoose: val })
+                                    }
+                                  onShowChange={val =>
+                                        this.setState({
+                                            navigateType: val
+                                                ? 'picker-page'
+                                                : 'child-page'
+                                        })
+                                    }
                                 />
                             </View>
                         </View>
@@ -420,8 +454,6 @@ class EventCard extends Component<propsInterface, stateInterface> {
                             ? '保存'
                             : '确认发起'}
                     </AtButton>
-
-                   
 
                     {this.state.initiatorId ===
                     +Taro.getStorageSync('learnerId') ? (

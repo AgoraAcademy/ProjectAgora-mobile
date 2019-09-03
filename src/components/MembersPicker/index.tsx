@@ -1,6 +1,5 @@
 import Taro, { PureComponent, Config } from '@tarojs/taro'
 import { View, Picker, ScrollView, Text } from '@tarojs/components'
-import classNames from 'classnames'
 import { AtButton } from 'taro-ui'
 import { produce } from 'immer'
 import { propsInterface, stateInterface } from './interface'
@@ -13,11 +12,14 @@ import { colorList, roleSelectList } from '../../globalData'
 class NoticeCard extends PureComponent<propsInterface, stateInterface> {
     constructor(props: propsInterface) {
         super(props)
+        let selectList = JSON.parse(JSON.stringify(roleSelectList))
+        selectList[0] = selectList[0].slice(1)
+        const branchIndex = selectList[0].indexOf(Taro.getStorageSync('branch'))
         this.state = {
             list: [],
             choooseList: [],
-            selector: roleSelectList,
-            selectorChecked: [],
+            selector: selectList,
+            selectorChecked: [branchIndex, selectList[1].length - 1],
             show: false,
             statusBarHeight: 0,
             first: true
@@ -114,12 +116,13 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
         })
     }
     onChange(e) {
+        console.log(e.detail.value)
+        const value = e.detail.value
         this.setState(
             {
-                selectorChecked: e.detail.value // 数组
-            },
-            () => {
-                this.getData()
+                selectorChecked: value // 数组
+            }, ()=>{
+                this.props.onGroupChange(value)
             }
         )
     }
@@ -138,6 +141,13 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
         this.props.onChange(this.state.choooseList)
         this.closePopup()
     }
+    getChoose(){
+        let selectList = JSON.parse(JSON.stringify(roleSelectList))
+        selectList[0] = selectList[0].slice(1)
+        return this.state.choooseList
+        .map(item => item.familyName + item.givenName)
+        .join('，') + (this.state.choooseList.length > 0 ? '，' : '') + selectList[0][this.state.selectorChecked[0]] + "，" + selectList[1][this.state.selectorChecked[1]] || '请选择成员'
+    }
 
     render() {
         return (
@@ -147,9 +157,7 @@ class NoticeCard extends PureComponent<propsInterface, stateInterface> {
                       onClick={() => this.openPopup()}
                       className='chooseText'
                     >
-                        {this.state.choooseList
-                            .map(item => item.familyName + item.givenName)
-                            .join(',') || '请选择成员'}
+                        {this.getChoose()}
                     </View>
                 </View>
                     <View

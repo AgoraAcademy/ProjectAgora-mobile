@@ -33,6 +33,7 @@ export interface stateInterface {
     open: boolean;
     navigateType: 'normal-page' | 'child-page' | 'picker-page';
     location: string;
+    groupChoose: Array<any>;
 }
 
 /**
