@@ -375,9 +375,9 @@ class home extends Component<homeProps, homeState> {
                           className={classnames('li-ele card', {
                                 active: this.hadJoin(item.rsvp)
                             })}
-                          onClick={() => {
-                                this.goDetail(this.state.chooseType, item)
-                            }}
+                        //   onClick={() => {
+                        //         this.goDetail(this.state.chooseType, item)
+                        //     }}
                         >
                             <View className='main-panel'>
                                 <View

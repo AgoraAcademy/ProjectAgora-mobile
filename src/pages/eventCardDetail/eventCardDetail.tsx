@@ -74,9 +74,11 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
     }
     async getData() {
         const { id } = this.$router.params
+        Taro.showLoading({ title: '加载中…' })
         const res = await this.$api({
             url: `${MAINHOST}/event/${id}`
         })
+        Taro.hideLoading()
         this.setState(
             {
                 pageInfo: res.data
@@ -100,14 +102,17 @@ class EventCardDetail extends Component<propsInterface, stateInterface> {
             rsvp: status
         }
         const { id } = this.$router.params
+        Taro.showLoading({ title: '提交中…' })
         try {
             await this.$api({
                 url: `${MAINHOST}/event/${id}/patch`,
                 data: sendData,
                 method: 'POST'
             })
+            Taro.hideLoading()
             return true
         } catch (error) {
+            Taro.hideLoading()
             return false
         }
     }
