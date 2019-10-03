@@ -56,8 +56,8 @@ class ComponentHomeNavigation extends Component<
     render() {
         const routeMap = [
             { path: '/pages/home/home', name: '我的' },
-            { path: '/pages/study/study', name: '学习' },
-            { path: '/pages/community/community', name: '社区' }
+            // { path: '/pages/study/study', name: '学习' },
+            // { path: '/pages/community/community', name: '社区' }
         ];
         const type = this.props.type;
         return (

@@ -73,6 +73,9 @@ export class Request {
         return Taro.getStorageSync('token')
     }
     static goAuthorize() {
+        if(this.isAuditMode()){
+            return 
+        }
         const route = this.getCurrentPages().route
         // console.log({
         //     route
@@ -90,16 +93,19 @@ export class Request {
     static async request(opts: Options) {
         // token不存在或learnerFullName不存在
         if (!this.getToken()) {
+            
             // await this.dealLogin()
             this.goAuthorize()
             return Promise.reject()
-        }
+        }  
+        
 
         // token存在
         Object.assign(opts, { header: { token: this.getToken() } })
         //  Taro.request 请求
         console.log('before TaroRequest', opts)
         const res = await Taro.request(opts)
+       
         const code = res.data.code
         if (code === -1001) {
             this.goAuthorize()
@@ -143,7 +149,10 @@ export class Request {
         return this.loginReadyPromise
     }
     static async checkLogin() {
-        return new Promise(async (resolve) => {
+        return new Promise(async (resolve,reject) => {
+            if(this.isAuditMode()){
+               return 
+            }
             if (!Taro.getStorageSync('code')) {
                 const { code } = await Taro.login()
                 Taro.setStorageSync('code', code)
@@ -165,8 +174,16 @@ export class Request {
             })
         })
     }
+    static isAuditMode(){
+        console.log(Taro.getStorageSync('mode')==='audit')
+        return Taro.getStorageSync('mode')==='audit'
+    }
     static async dealLogin() {
         await this.checkLogin()
+        if(this.isAuditMode()){
+           
+            return true
+        }
         try {
             const res = await Taro.request({
                 url: `${MAINHOST}${requestConfig.loginUrl}`,
