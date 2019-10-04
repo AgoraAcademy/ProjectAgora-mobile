@@ -181,7 +181,6 @@ export class Request {
     static async dealLogin() {
         await this.checkLogin()
         if(this.isAuditMode()){
-           
             return true
         }
         try {

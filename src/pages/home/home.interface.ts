@@ -21,4 +21,7 @@ export interface homeState {
  * @export
  * @interface homeProps
  */
-export interface homeProps {}
+export interface homeProps {
+    dispatch: any,
+    hadClear:any
+}

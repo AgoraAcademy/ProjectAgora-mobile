@@ -3,6 +3,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import classnames from 'classnames'
 import { AtButton } from 'taro-ui'
 import { produce } from 'immer'
+import { connect } from '@tarojs/redux'
 import Tips from '../../utils/tips'
 import { MAINHOST } from '../../config'
 import { homeProps, homeState } from './home.interface'
@@ -11,6 +12,11 @@ import ComponentBaseNavigation from '../../components/ComponentHomeNavigation/co
 import Avatar from '../../components/Avatar'
 import { formatDate } from '../../utils/common'
 
+
+@connect(({ home, loading }) => ({
+    ...home,
+    loading
+}))
 class home extends Component<homeProps, homeState> {
     constructor(props: homeProps) {
         super(props)
@@ -52,19 +58,35 @@ class home extends Component<homeProps, homeState> {
         disableScroll: true
     }
     async init() {
+        if(this.props.hadClear){
+            return
+        }
+        const version = "0.0.6"
         const res = await Taro.request({
             url: `${MAINHOST}/ping`
         })
         const mode = res.data.data.mode
-        if (mode === 'audit') {
+        const serverVersion = res.data.data.prodVer
+        if (mode === 'audit' && version < serverVersion) {
             Taro.setStorageSync('mode', mode)
+            console.log("命中")
+            await Taro.setStorageSync('token', 'bquCl04Eb4BvufTd0MwhXw==')
+            await Taro.setStorageSync('learnerFullName', '游客')
+            await Taro.setStorageSync('unionid', '游客')
+            await Taro.setStorageSync('isAdmin', false)
+            await Taro.setStorageSync('learnerId', '007')
+            await Taro.setStorageSync('branch', '深圳·安格')
+        } else {
+            await this.props.dispatch({
+                type: "home/hadClear",
+                payload: 'true'
+            })
+            console.log(this.props.hadClear)
+            Taro.clearStorageSync()
+            console.log('清除')
+            
         }
-        await Taro.setStorageSync('token', 'bquCl04Eb4BvufTd0MwhXw==')
-        await Taro.setStorageSync('learnerFullName', '游客')
-        await Taro.setStorageSync('unionid', '游客')
-        await Taro.setStorageSync('isAdmin', false)
-        await Taro.setStorageSync('learnerId', '007')
-        await Taro.setStorageSync('branch', '深圳·安格')
+
     }
     onShareAppMessage(): any {
         // 自定义分享内容
