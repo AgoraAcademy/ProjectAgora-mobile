@@ -36,7 +36,7 @@
 		"classnames": "^2.2.6",
 		"dva-core": "^1.4.0",
 		"dva-loading": "^3.0.12",
-		"immer": "^3.2.0",
+		"immer": "^9.0.6",
 		"moment": "^2.24.0",
 		"nerv-devtools": "^1.4.4",
 		"nervjs": "^1.4.4",
